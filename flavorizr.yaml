@@ -4,12 +4,16 @@ flavors:
       name: "Wrap Dev"
     android:
       applicationId: "com.vlad.wrapmyfinances.dev"
+      icon: "assets/icon/icon_light_dev.png"
     ios:
       bundleId: "com.vlad.wrapmyfinances.dev"
+      icon: "assets/icon/icon_light_dev.png"
   prod:
     app:
       name: "Wrap"
     android:
       applicationId: "com.vlad.wrapmyfinances"
+      icon: "assets/icon/icon_light.png"
     ios:
       bundleId: "com.vlad.wrapmyfinances"
+      icon: "assets/icon/icon_light.png"

@@ -46,10 +46,12 @@ dev_dependencies:
   fake_cloud_firestore: ^4.2.0
   firebase_auth_mocks: ^0.15.2
   flutter_flavorizr: ^2.6.0
-  flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
+  image: ^4.9.1
   injectable_generator: ^3.1.1
+  integration_test:
+    sdk: flutter
   mocktail: ^1.0.5
   very_good_analysis: ^10.3.0
 
@@ -64,10 +66,11 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  # Source app icon artwork (see tool/generate_app_icon.dart). The light
+  # variants are wired as the actual launcher icons via flavorizr.yaml; the
+  # dark variants are committed for a future dark-icon-appearance fast-follow.
+  assets:
+    - assets/icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

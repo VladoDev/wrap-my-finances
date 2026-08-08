@@ -245,9 +245,13 @@ command rather than relying on the default.
 ### 5.3 Create both Firebase projects
 
 ```bash
-firebase projects:create wrap-my-finances-dev  --display-name "Wrap My Finances (Dev)"
+firebase projects:create wrap-my-finances-dev  --display-name "Wrap My Finances Dev"
 firebase projects:create wrap-my-finances-prod --display-name "Wrap My Finances"
 ```
+
+> Google Cloud project display names reject parentheses (`(`/`)`) — `--display-name "Wrap My
+> Finances (Dev)"` fails with `project display name contains invalid characters`. Use
+> `"Wrap My Finances Dev"` instead, as shown above.
 
 Notes the agent must handle:
 

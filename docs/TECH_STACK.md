@@ -7,7 +7,9 @@ package at bootstrap, let `pubspec.lock` be the source of truth, and commit it.
 
 - **Framework:** Flutter (latest stable channel)
 - **Language:** Dart
-- **Minimum target platforms:** iOS 14.0+, Android API 24+
+- **Minimum target platforms:** iOS 15.0+, Android API 24+ — the Firebase iOS SDK (via Swift
+  Package Manager) requires iOS 15.0 as of the versions resolved during Phase 0; raised from the
+  originally-planned 14.0 when the real build failed with `Target Integrity` errors demanding 15.0
 - **Targets:** iOS and Android only. Web and desktop are explicit anti-goals.
 
 ## Architecture & State Management

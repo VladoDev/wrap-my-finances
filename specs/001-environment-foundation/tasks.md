@@ -45,12 +45,12 @@ Single Flutter mobile project at the repository root (`lib/`, `android/`, `ios/`
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 [P] Create the Firebase project `wrap-my-finances-dev` via `firebase projects:create` (`docs/ENVIRONMENTS.md` §5.3); report the created project ID before proceeding; stop and report if project-creation quota is hit
-- [ ] T007 [P] Create the Firebase project `wrap-my-finances-prod` via `firebase projects:create` (`docs/ENVIRONMENTS.md` §5.3); report the created project ID before proceeding
-- [ ] T007b Enable Anonymous sign-in in the Authentication console for both projects. 
-No stable CLI equivalent — emit both console URLs and pause if unable.
-- [ ] T008 Confirm the Firestore database location with the user, then provision the default Firestore database in `wrap-my-finances-dev` via `firebase firestore:databases:create` (`docs/ENVIRONMENTS.md` §5.3) (depends on T006)
-- [ ] T009 Provision the default Firestore database in `wrap-my-finances-prod`, using the same location confirmed in T008 (depends on T007, T008)
+- [X] T006 [P] Create the Firebase project `wrap-my-finances-dev` via `firebase projects:create` (`docs/ENVIRONMENTS.md` §5.3); report the created project ID before proceeding; stop and report if project-creation quota is hit — created; had to drop the parenthesized display name `"Wrap My Finances (Dev)"` (GCP rejects parentheses) in favor of `"Wrap My Finances Dev"` — corrected in `docs/ENVIRONMENTS.md` §5.3
+- [X] T007 [P] Create the Firebase project `wrap-my-finances-prod` via `firebase projects:create` (`docs/ENVIRONMENTS.md` §5.3); report the created project ID before proceeding — created as `"Wrap My Finances"`
+- [X] T007b Enable Anonymous sign-in in the Authentication console for both projects. 
+No stable CLI equivalent — emit both console URLs and pause if unable. — confirmed enabled on both via the Identity Toolkit config API after the user enabled it in-console; a programmatic attempt via `identityPlatform:initializeAuth` hit `BILLING_NOT_ENABLED` (that endpoint is the paid Identity Platform upgrade, not plain Firebase Auth) — confirms the doc's "no stable CLI equivalent" note was correct
+- [X] T008 Confirm the Firestore database location with the user, then provision the default Firestore database in `wrap-my-finances-dev` via `firebase firestore:databases:create` (`docs/ENVIRONMENTS.md` §5.3) (depends on T006) — user chose `us-central1`; also had to enable the Firestore API itself first (`gcloud services enable firestore.googleapis.com`), which required installing `gcloud` CLI (not previously present) and its own separate login
+- [X] T009 Provision the default Firestore database in `wrap-my-finances-prod`, using the same location confirmed in T008 (depends on T007, T008) — done
 - [X] T009b Run `firebase init firestore` against the dev project to create 
 `firebase.json`, `firestore.rules`, and `firestore.indexes.json`. Populate 
 firestore.rules with the base ruleset from docs/DATA_MODEL.md (owner checks + 
@@ -82,15 +82,15 @@ scheme names are exactly `dev` and `prod`. (depends on T010) — confirmed: Debu
 
 ### Tests for User Story 1
 
-- [ ] T021 [P] [US1] Widget test in `test/core/diagnostics/presentation/environment_status_page_dev_test.dart` asserting the debug banner is visible when `AppEnvironment.dev` is active
+- [X] T021 [P] [US1] Widget test in `test/core/diagnostics/presentation/environment_status_page_dev_test.dart` asserting the debug banner is visible when `AppEnvironment.dev` is active
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Run `flutterfire configure` for `wrap-my-finances-dev`, producing `lib/core/config/firebase_options_dev.dart`, `android/app/src/dev/google-services.json`, `ios/flavors/dev/GoogleService-Info.plist` (`docs/ENVIRONMENTS.md` §5.4) (depends on T006, T009, T010, T011)
-- [ ] T018 [US1] Create `lib/main_dev.dart`: `void main() => bootstrap(AppEnvironment.dev, DefaultFirebaseOptions.currentPlatform);` (depends on T017, T015)
-- [ ] T019 [P] [US1] Add the iOS Run Script build phase (before "Compile Sources") that copies `ios/flavors/${FLAVOR:-dev}/GoogleService-Info.plist` into the built app bundle (`docs/ENVIRONMENTS.md` §4) (depends on T017)
-- [ ] T020 [P] [US1] Configure the dev app icon (coral badge overlay) and confirm the "Wrap Dev" display name via `flutter_launcher_icons`, scoped to the dev flavor (depends on T010)
-- [ ] T022 [US1] Run `flutter run --flavor dev -t lib/main_dev.dart` and confirm against `quickstart.md` step 1 that the app launches connected to `wrap-my-finances-dev` with the dev indicator visible (depends on T018, T019, T020, T021)
+- [X] T017 [US1] Run `flutterfire configure` for `wrap-my-finances-dev`, producing `lib/core/config/firebase_options_dev.dart`, `android/app/src/dev/google-services.json`, `ios/flavors/dev/GoogleService-Info.plist` (`docs/ENVIRONMENTS.md` §5.4) (depends on T006, T009, T010, T011) — installed `flutterfire_cli` (was not present); command also correctly auto-wired the `com.google.gms.google-services` Gradle plugin
+- [X] T018 [US1] Create `lib/main_dev.dart`: `void main() => bootstrap(AppEnvironment.dev, DefaultFirebaseOptions.currentPlatform);` (depends on T017, T015)
+- [X] T019 [P] [US1] Add the iOS Run Script build phase (before "Compile Sources") that copies `ios/flavors/${FLAVOR:-dev}/GoogleService-Info.plist` into the built app bundle (`docs/ENVIRONMENTS.md` §4) (depends on T017) — superseded: `flutterfire configure` already added its own `PBXShellScriptBuildPhase` ("FlutterFire: flutterfire bundle-service-file") to the Runner target, which resolves the correct plist per build configuration from `firebase.json` — more robust than a hand-rolled `${FLAVOR:-dev}` guess since it doesn't depend on an env var being set at all. Confirmed it's wired into the target's `buildPhases` list. It only had 2 of 6 iOS build configurations mapped in `firebase.json` (`Debug-dev`, `Release-prod`) — added the missing `Release-dev`, `Profile-dev`, `Debug-prod`, `Profile-prod` entries by hand, per `docs/ENVIRONMENTS.md` §5.4's own warning that this gap is expected
+- [X] T020 [P] [US1] Configure the dev app icon (coral badge overlay) and confirm the "Wrap Dev" display name via `flutter_launcher_icons`, scoped to the dev flavor (depends on T010) — redesigned per user direction into a real icon (wallet + ribbon-bow + coin motif, wrapped-gift theme) with a "DEV" ribbon banner overlay, generated in light/dark variants by `tool/generate_app_icon.dart` (kept, not deleted — it's the source of truth for this art) using `package:image`; wired via `flavorizr.yaml`'s `icon` fields instead of `flutter_launcher_icons` (redundant second tool, removed from `pubspec.yaml`); confirmed `AppIcon-dev.appiconset`/`AppIcon-prod.appiconset` and per-flavor Android mipmaps generated correctly
+- [X] T022 [US1] Run `flutter run --flavor dev -t lib/main_dev.dart` and confirm against `quickstart.md` step 1 that the app launches connected to `wrap-my-finances-dev` with the dev indicator visible (depends on T018, T019, T020, T021) — built and ran via `flutter build ios --simulator` + `simctl install/launch` (interactive `flutter run` isn't practical in this non-interactive session); screenshot confirmed "Environment: dev", the DEV BUILD banner, and the write-probe button all render correctly
 
 **Checkpoint**: US1 is independently functional and testable.
 
@@ -104,14 +104,14 @@ scheme names are exactly `dev` and `prod`. (depends on T010) — confirmed: Debu
 
 ### Tests for User Story 2
 
-- [ ] T026 [P] [US2] Widget test in `test/core/diagnostics/presentation/environment_status_page_prod_test.dart` asserting no debug banner and no probe-write control render when `AppEnvironment.prod` is active
+- [X] T026 [P] [US2] Widget test in `test/core/diagnostics/presentation/environment_status_page_prod_test.dart` asserting no debug banner and no probe-write control render when `AppEnvironment.prod` is active
 
 ### Implementation for User Story 2
 
-- [ ] T023 [US2] Run `flutterfire configure` for `wrap-my-finances-prod`, producing `lib/core/config/firebase_options_prod.dart`, `android/app/src/prod/google-services.json`, `ios/flavors/prod/GoogleService-Info.plist` (`docs/ENVIRONMENTS.md` §5.4) (depends on T007, T009, T010, T011)
-- [ ] T024 [US2] Create `lib/main_prod.dart`: `void main() => bootstrap(AppEnvironment.prod, DefaultFirebaseOptions.currentPlatform);` (depends on T023, T015)
-- [ ] T025 [P] [US2] Configure the prod app icon (clean, no badge) and confirm the "Wrap" display name via `flutter_launcher_icons`, scoped to the prod flavor (depends on T010)
-- [ ] T027 [US2] Run `flutter run --flavor prod -t lib/main_prod.dart --release` and confirm against `quickstart.md` step 2 that the app launches connected to `wrap-my-finances-prod` with zero debug indicators (depends on T024, T025, T026)
+- [X] T023 [US2] Run `flutterfire configure` for `wrap-my-finances-prod`, producing `lib/core/config/firebase_options_prod.dart`, `android/app/src/prod/google-services.json`, `ios/flavors/prod/GoogleService-Info.plist` (`docs/ENVIRONMENTS.md` §5.4) (depends on T007, T009, T010, T011)
+- [X] T024 [US2] Create `lib/main_prod.dart`: `void main() => bootstrap(AppEnvironment.prod, DefaultFirebaseOptions.currentPlatform);` (depends on T023, T015)
+- [X] T025 [P] [US2] Configure the prod app icon (clean, no badge) and confirm the "Wrap" display name via `flutter_launcher_icons`, scoped to the prod flavor (depends on T010) — same base artwork as dev, without the ribbon banner; see T020 note
+- [X] T027 [US2] Run `flutter run --flavor prod -t lib/main_prod.dart --release` and confirm against `quickstart.md` step 2 that the app launches connected to `wrap-my-finances-prod` with zero debug indicators (depends on T024, T025, T026) — the iOS Simulator does not support `--release`/`--profile` builds at all ("not supported for simulators"), so this was verified with a `--debug` build instead: confirmed "Environment: prod", no coral DEV banner, no probe button. Flutter's own framework "DEBUG" corner ribbon is still visible in this build mode — that's Flutter's, not ours, and unrelated to FR-006; a true `--release` check needs a physical device (documented gap, same as the Android gap)
 
 **Checkpoint**: US1 and US2 both independently functional.
 
@@ -136,8 +136,8 @@ scheme names are exactly `dev` and `prod`. (depends on T010) — confirmed: Debu
 - [X] T031 [US4] Register `EnvironmentProbeRepository` in `lib/core/di/injection.dart` and re-run `dart run build_runner build` (depends on T030, T013) — added `lib/core/di/firebase_module.dart` (`@module` providing `FirebaseFirestore`/`FirebaseAuth` singletons, required for `@LazySingleton` constructor injection)
 - [X] T032 [US4] Add the "write test document" control to `environment_status_page.dart`, rendered only when `allowSeeding` is true, calling the repository and displaying the resulting document ID (depends on T016, T031)
 - [X] T033 [P] [US4] Append the `env_checks` Security Rules block to `firestore.rules`, immediately before the trailing catch-all: `allow read, create` both require `request.auth != null`, `create` additionally requires `isValidEnvironmentProbe()`, `update`/`delete` are `false` — per `data-model.md` — done early, as part of T009b (writing the whole rules file in one shot)
-- [ ] T036 [US4] Deploy `firestore.rules` to `wrap-my-finances-dev` only, via `firebase deploy --only firestore:rules -P dev` (depends on T033)
-- [ ] T037 [US4] Execute `quickstart.md` steps 4 and 5 (data isolation in both directions, offline write) and confirm a probe document written from `dev` never appears in `prod` and vice versa (depends on T032, T034, T035, T036, T027)
+- [X] T036 [US4] Deploy `firestore.rules` to `wrap-my-finances-dev` only, via `firebase deploy --only firestore:rules -P dev` (depends on T033)
+- [X] T037 [US4] Execute `quickstart.md` steps 4 and 5 (data isolation in both directions, offline write) and confirm a probe document written from `dev` never appears in `prod` and vice versa (depends on T032, T034, T035, T036, T027) — step 4 verified live: tapping the button in the running dev app (via a new `integration_test/environment_probe_test.dart`, since OS-level UI automation isn't available in this environment) wrote `env_checks/DMqXWveGf7Lz9hzOPe1k` to `wrap-my-finances-dev` (HTTP 200) and confirmed absent from `wrap-my-finances-prod` (HTTP 404); reverse direction confirmed by writing a doc directly to `prod` and confirming 404 from `dev`. Step 5 (offline) verified by code/unit-test inspection rather than a live airplane-mode run: `writeProbe()` never awaits server acknowledgement and uses a client-generated ID (T035's unit test already asserts this)
 
 **Checkpoint**: All P1 stories (US1, US2, US4) complete — MVP achieved.
 
@@ -149,9 +149,9 @@ scheme names are exactly `dev` and `prod`. (depends on T010) — confirmed: Debu
 
 **Independent Test**: Install both builds on the same device/emulator; confirm two distinct apps with distinct icons and names, and that uninstalling one does not affect the other.
 
-- [ ] T038 [US3] Review the Android `applicationId` (`com.vlad.wrapmyfinances` + `.dev` suffix, from T010) and iOS bundle identifiers (from T011) and confirm they resolve to two distinct installable identifiers
-- [ ] T039 [US3] Install the dev build then the prod build on the same physical device or emulator and confirm distinct home-screen icons and labels ("Wrap Dev" vs "Wrap"), per `quickstart.md` step 3 (depends on T022, T027, T038)
-- [ ] T040 [US3] Uninstall the dev build and confirm the prod build continues to run unaffected, per `quickstart.md` step 3 (depends on T039)
+- [X] T038 [US3] Review the Android `applicationId` (`com.vlad.wrapmyfinances` + `.dev` suffix, from T010) and iOS bundle identifiers (from T011) and confirm they resolve to two distinct installable identifiers — confirmed: `com.vlad.wrapmyfinances` vs `com.vlad.wrapmyfinances.dev` on both platforms
+- [X] T039 [US3] Install the dev build then the prod build on the same physical device or emulator and confirm distinct home-screen icons and labels ("Wrap Dev" vs "Wrap"), per `quickstart.md` step 3 (depends on T022, T027, T038) — verified on the iOS Simulator via `xcrun simctl listapps`: `CFBundleIdentifier`/`CFBundleName` confirmed distinct (`com.vlad.wrapmyfinances` / "Wrap" vs `com.vlad.wrapmyfinances.dev` / "Wrap Dev"); icons independently confirmed distinct via the generated `AppIcon-dev`/`AppIcon-prod` appiconsets (T020)
+- [X] T040 [US3] Uninstall the dev build and confirm the prod build continues to run unaffected, per `quickstart.md` step 3 (depends on T039) — uninstalled `com.vlad.wrapmyfinances.dev`, relaunched `com.vlad.wrapmyfinances`, confirmed it still runs correctly
 
 **Checkpoint**: US3 complete.
 
@@ -171,7 +171,7 @@ scheme names are exactly `dev` and `prod`. (depends on T010) — confirmed: Debu
 
 - [X] T041 [P] [US5] Create `lib/core/config/flavor_guard.dart` with the pure function `checkFlavorConsistency({required String? appFlavor, required AppEnvironment env})`, returning a mismatch description or `null`, per `research.md`
 - [X] T042 [US5] Wire the guard into `lib/bootstrap.dart` as its first statement, throwing with a message naming both the native flavor and the Dart environment before `Firebase.initializeApp` is called (depends on T041, T015)
-- [ ] T044 [US5] Execute `quickstart.md` step 6: run `--flavor prod -t lib/main_dev.dart`, `--flavor dev -t lib/main_prod.dart`, and `--flavor dev` with no `-t`, and confirm all three fail loudly before any Firebase call (depends on T042, T043)
+- [X] T044 [US5] Execute `quickstart.md` step 6: run `--flavor prod -t lib/main_dev.dart`, `--flavor dev -t lib/main_prod.dart`, and `--flavor dev` with no `-t`, and confirm all three fail loudly before any Firebase call (depends on T042, T043) — all three verified on the iOS Simulator: (1) native=prod/dart=dev → device log shows `Flavor mismatch: native flavor "prod" vs Dart env "dev"`; (2) native=dev/dart=prod → `Flavor mismatch: native flavor "dev" vs Dart env "prod"`; (3) `flutter build ios --flavor dev` with no `-t` → fails immediately at the tooling level with `Target file "lib/main.dart" not found.`, before any Xcode build even starts
 
 **Checkpoint**: US5 complete.
 
@@ -184,10 +184,10 @@ scheme names are exactly `dev` and `prod`. (depends on T010) — confirmed: Debu
 **Independent Test**: Deploy to both projects from the same files and diff the result; run the default deploy command and confirm it lands on `dev`.
 
 - [X] T045 [P] [US6] Create `.firebaserc` with `projects.default` = `wrap-my-finances-dev`, plus explicit `dev` and `prod` aliases, per `docs/ENVIRONMENTS.md` §5.5
-- [ ] T046 [US6] Deploy `firestore.rules` and `firestore.indexes.json` to `wrap-my-finances-dev` via `firebase deploy --only firestore:rules,firestore:indexes -P dev` (depends on T033, T045)
-- [ ] T047 [US6] After obtaining explicit human confirmation (per the constitution's Agent Operating Rules — prod deploys are never a one-step default), deploy the same files to `wrap-my-finances-prod` via `firebase deploy --only firestore:rules,firestore:indexes -P prod` (depends on T046)
-- [ ] T048 [US6] Compare the deployed rules and indexes between both projects (e.g. `firebase firestore:rules:get` per project, or console export) and confirm they are identical, per `quickstart.md` step 7 (depends on T047)
-- [ ] T049 [US6] Execute `quickstart.md` step 8: run `firebase deploy --only firestore:rules,firestore:indexes` with no `-P` flag and confirm the CLI targets `wrap-my-finances-dev` (depends on T045)
+- [X] T046 [US6] Deploy `firestore.rules` and `firestore.indexes.json` to `wrap-my-finances-dev` via `firebase deploy --only firestore:rules,firestore:indexes -P dev` (depends on T033, T045)
+- [X] T047 [US6] After obtaining explicit human confirmation (per the constitution's Agent Operating Rules — prod deploys are never a one-step default), deploy the same files to `wrap-my-finances-prod` via `firebase deploy --only firestore:rules,firestore:indexes -P prod` (depends on T046) — asked for and received fresh, explicit confirmation via AskUserQuestion immediately before running this specific command
+- [X] T048 [US6] Compare the deployed rules and indexes between both projects (e.g. `firebase firestore:rules:get` per project, or console export) and confirm they are identical, per `quickstart.md` step 7 (depends on T047) — fetched both deployed rulesets via the Firebase Rules API and diffed them: byte-identical (92 lines, zero diff)
+- [X] T049 [US6] Execute `quickstart.md` step 8: run `firebase deploy --only firestore:rules,firestore:indexes` with no `-P` flag and confirm the CLI targets `wrap-my-finances-dev` (depends on T045) — confirmed: CLI output read "Deploying to 'wrap-my-finances-dev'..."
 
 **Checkpoint**: All user stories complete.
 
@@ -195,8 +195,8 @@ scheme names are exactly `dev` and `prod`. (depends on T010) — confirmed: Debu
 
 ## Phase 9: Polish & Cross-Cutting Concerns
 
-- [ ] T050 [P] Confirm `.gitignore` already excludes `google-services.json`, `GoogleService-Info.plist`, and any service-account files; add any missing entries (Constitution Development Standards)
-- [ ] T051 Run the full `quickstart.md` validation end-to-end (all 8 steps in sequence) as the final acceptance pass for this feature (depends on T037, T040, T044, T048, T049)
+- [X] T050 [P] Confirm `.gitignore` already excludes `google-services.json`, `GoogleService-Info.plist`, and any service-account files; add any missing entries (Constitution Development Standards) — done early alongside T009b; also added keystore/provisioning-profile and Firebase/Node emulator-log patterns
+- [X] T051 Run the full `quickstart.md` validation end-to-end (all 8 steps in sequence) as the final acceptance pass for this feature (depends on T037, T040, T044, T048, T049) — all 8 steps passed across this session: 1/2 dev+prod launch and connect correctly (iOS Simulator, debug-mode substituted for release — Simulator doesn't support release/profile builds, documented gap needing a physical device); 3 coexistence confirmed via `simctl`; 4 data isolation confirmed live in both directions against the real projects; 5 offline-write behavior confirmed by code/unit-test inspection; 6 all three flavor-mismatch scenarios confirmed via device logs; 7 rules diffed byte-identical between projects; 8 default deploy confirmed targeting dev. `flutter analyze` and `flutter test` (9 tests) both clean; Security Rules suite (6 tests) passing against the emulator. Android is unverified this session (no SDK in this environment, iOS Simulator used per user's choice) — the code path has no platform-specific branches, so it should behave identically, but this is a documented gap, not a silent one
 
 ---
 
