@@ -1,0 +1,15 @@
+flavors:
+  dev:
+    app:
+      name: "Wrap Dev"
+    android:
+      applicationId: "com.vlad.wrapmyfinances.dev"
+    ios:
+      bundleId: "com.vlad.wrapmyfinances.dev"
+  prod:
+    app:
+      name: "Wrap"
+    android:
+      applicationId: "com.vlad.wrapmyfinances"
+    ios:
+      bundleId: "com.vlad.wrapmyfinances"

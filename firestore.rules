@@ -1,0 +1,91 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidExpense() {
+      return incoming().keys().hasOnly([
+               'id', 'amountMinor', 'currencyCode', 'categoryId', 'date',
+               'monthKey', 'note', 'createdAt', 'syncedAt', 'deletedAt',
+               'schemaVersion'
+             ])
+        && incoming().keys().hasAll([
+               'amountMinor', 'currencyCode', 'categoryId', 'date', 'monthKey'
+             ])
+        && incoming().amountMinor is int
+        && incoming().amountMinor > 0
+        && incoming().amountMinor <= 100000000
+        && incoming().currencyCode is string
+        && incoming().currencyCode.size() == 3
+        && incoming().categoryId is string
+        && incoming().categoryId.size() <= 64
+        && incoming().date is timestamp
+        && incoming().monthKey is string
+        && incoming().monthKey.matches('^[0-9]{4}-[0-9]{2}$')
+        && (!('note' in incoming()) || incoming().note == null
+            || (incoming().note is string && incoming().note.size() <= 280));
+    }
+
+    function isValidCategory() {
+      return incoming().keys().hasAll(['name', 'color', 'iconName'])
+        && incoming().name is string
+        && incoming().name.size() > 0
+        && incoming().name.size() <= 40
+        && incoming().color is string
+        && incoming().color.matches('^#[0-9A-Fa-f]{6}$')
+        && incoming().iconName is string
+        && incoming().iconName.size() <= 40;
+    }
+
+    function isValidEnvironmentProbe() {
+      return incoming().keys().hasOnly(['id', 'environmentName', 'createdAtMillis', 'label'])
+        && incoming().keys().hasAll(['id', 'environmentName', 'createdAtMillis', 'label'])
+        && incoming().id is string
+        && incoming().environmentName is string
+        && (incoming().environmentName == 'dev' || incoming().environmentName == 'prod')
+        && incoming().createdAtMillis is int
+        && incoming().label is string
+        && incoming().label.size() <= 40;
+    }
+
+    match /users/{userId} {
+      allow read:   if isOwner(userId);
+      allow create: if isOwner(userId) && incoming().uid == userId;
+      allow update: if isOwner(userId)
+                    && incoming().uid == resource.data.uid;
+      allow delete: if false;
+
+      match /categories/{categoryId} {
+        allow read:   if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidCategory();
+        allow delete: if false;
+      }
+
+      match /expenses/{expenseId} {
+        allow read:   if isOwner(userId);
+        allow create: if isOwner(userId) && isValidExpense();
+        allow update: if isOwner(userId) && isValidExpense()
+                      && incoming().createdAt == resource.data.createdAt;
+        allow delete: if isOwner(userId);
+      }
+    }
+
+    match /env_checks/{docId} {
+      allow read:              if request.auth != null;
+      allow create:            if request.auth != null && isValidEnvironmentProbe();
+      allow update, delete:    if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
