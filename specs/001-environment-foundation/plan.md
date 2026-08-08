@@ -44,7 +44,9 @@ only — no UI), `get_it` + `injectable` (environment singleton registration), `
 repository against `fake_cloud_firestore`); `@firebase/rules-unit-testing` against the local
 emulator for the new Security Rules block
 
-**Target Platform**: iOS 14+, Android API 24+ (per `TECH_STACK.md`; web/desktop are anti-goals)
+**Target Platform**: iOS 15+, Android API 24+ (per `TECH_STACK.md`; web/desktop are anti-goals) —
+raised from the originally-planned iOS 14+ mid-implementation when the Firebase iOS SDK's Swift
+Package Manager integration required 15.0
 
 **Project Type**: Mobile app (Flutter, iOS + Android)
 
