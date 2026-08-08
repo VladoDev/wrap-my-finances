@@ -39,6 +39,10 @@ launch, write to their own Firestore project, and can be installed side by side 
   tests.
 - **Anonymous sign-in during `bootstrap()`**, non-blocking, with the in-memory buffer for
   expenses logged before the UID resolves.
+- Set up `l10n.yaml`, `flutter_localizations`, and `gen_l10n`.
+- Author all five ARB files (`en`, `es`, `pt`, `it`, `fr`), including the `category_*` keys for
+  every default category, per the key convention in TECH_STACK.md § Localization.
+- Add the CI check that fails the build on any missing translation key in any locale.
 - Enable Firestore offline persistence with unlimited cache.
 - Build the custom oversized numeric keypad, including decimal, maximum, and formatting rules.
 - Seed default categories on first launch.
@@ -99,9 +103,10 @@ month, can navigate it fully, and can share a card.
 - 30-day purge of soft-deleted expenses.
 - Haptic feedback across the app, respecting the Settings toggle.
 - Accessibility audit: contrast, tap targets, semantic labels, 200% text scale.
+- Native-speaker translation quality review across all five locales, prioritizing the
+  `wrapped_*` copy flagged for human review in the ARB files.
 - Account deletion flow (required by both stores).
 - Privacy policy, App Store privacy nutrition labels, Play Data Safety form.
-- Localization pass — Spanish and English.
 - QA on physical iOS and Android devices, including a low-end Android and airplane-mode runs.
 - Store assets highlighting the Wrapped feature.
 - Submit to App Store and Google Play from the `prod` flavor.

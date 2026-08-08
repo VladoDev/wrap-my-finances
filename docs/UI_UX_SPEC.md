@@ -213,3 +213,13 @@ against the wrong environment — or worse, test data will be entered into produ
 - The banner must not overlap the amount display or intercept touches.
 - **Prod builds contain no debug affordances at all** — no environment label, no hidden developer
   menu, no seed-data button.
+
+## 7. Layout under translation
+
+Spanish, Portuguese, Italian, and French run roughly 15–30% longer than English. Pill
+buttons and category tiles MUST size to their content with a minimum width, never a
+fixed one. Text MUST wrap to two lines rather than ellipsize. Category tiles in the
+picker grid MUST hold their longest translated label at 200% text scale without
+clipping — verify against `category_food` in French, the current worst case.
+
+The keypad is exempt: digits and the currency symbol are the only text on it.

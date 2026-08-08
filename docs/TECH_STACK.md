@@ -135,6 +135,16 @@ one user's data and another's; they are not verified by hand-clicking the consol
 - **Money:** integer minor units, never `double` — see DATA_MODEL.md
 - **Time zones:** the user's IANA time zone is stored and used for month boundaries, so a
   purchase at 23:50 on the last day of the month lands in the right Wrapped
+- **Localization**
+  - `flutter_localizations` + `gen_l10n` (ARB files, `l10n.yaml` at project root)
+  - Template locale: `en`. Supported: `en`, `es`, `pt`, `it`, `fr`
+  - `intl` for locale-aware date, number, and currency formatting
+  - CI fails on any missing key in any locale
+  - **Key convention:** `snake_case`, prefixed by domain — `category_*` for default category
+    names, `wrapped_*` for Wrapped story copy, `settings_*`, `keypad_*`, and `common_*` for
+    strings shared across features. `wrapped_*` keys carry an `@`-metadata comment in the ARB
+    file flagging them for native-speaker review rather than machine translation — that copy
+    carries the product's voice and is the one place a literal translation can read as flat.
 
 ## CI/CD
 

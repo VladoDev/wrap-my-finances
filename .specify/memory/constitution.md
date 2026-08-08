@@ -1,3 +1,20 @@
+<!--
+Sync Impact Report — Constitution Amendment
+Version change: 1.0.0 → 1.1.0 (MINOR — new principle added, no existing principle redefined)
+Modified principles: none renamed or redefined
+Added sections:
+  - Principle 9: Localized and Consistent by Construction
+Removed sections: none
+Templates/docs requiring follow-up (not modified by this command — out of scope for
+/speckit.constitution; track as separate work):
+  - docs/UI_UX_SPEC.md: confirm app_colors.dart / app_typography.dart / app_spacing.dart token
+    files are named and scoped exactly as Principle 9 assumes.
+  - docs/TECH_STACK.md: already lists `intl` for locale-aware formatting; no contradiction found.
+  - CI configuration: add the "missing ARB key fails the build" check described in Principle 9
+    once CI is set up (tracked in ROADMAP.md Phase 0, not yet implemented as of this amendment).
+Deferred TODOs: none
+-->
+
 # Wrap My Finances Constitution
 
 Wrap My Finances is a mobile expense tracker whose entire product thesis is that logging a
@@ -116,6 +133,28 @@ categories, which are precisely the two most common accessibility failures. Nami
 what prevents the aesthetic from producing them. Retrofitting accessibility costs several times
 what building it in does.
 
+### Principle 9: Localized and Consistent by Construction
+
+**Rule**: No user-visible string may be embedded in Dart code. All text lives in ARB files and is
+accessed through the generated localization class. Every feature MUST ship complete translations
+in all five supported languages — English, Spanish, Portuguese, Italian, and French — before it
+can be considered done. A missing key in any locale is a CI failure, not a warning. Dates,
+numbers, and amounts MUST be formatted with `intl` according to the active locale, never by
+manual string concatenation.
+
+All UI MUST be built from the design system tokens defined in `docs/UI_UX_SPEC.md`. No hex color
+value may appear outside `app_colors.dart`; no `TextStyle` may be constructed ad hoc outside
+`app_typography.dart`; no border radius or spacing value may be written as a literal outside
+`app_spacing.dart`. Layouts MUST tolerate text expansion without clipping or overflowing.
+
+Default categories are stored with a translation key, not a literal name. Only user-created
+categories store literal text.
+
+**Rationale**: Retrofitting translation is several times more expensive than translating from the
+start, and a design system that applies "almost always" is not a design system. The cartoon
+aesthetic depends on pill-shaped buttons and content-width cards, which are exactly the layouts
+that break when French and Portuguese run 15 to 30 percent longer than English.
+
 ---
 
 ## Development Standards
@@ -169,4 +208,4 @@ measurement, not by assertion — the time-to-log instrumentation is the check.
 **Complexity justification**: Any deviation toward more complexity must be justified in writing
 in the plan that introduces it. "It might be useful later" is not a justification.
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-07 | **Last Amended**: 2026-08-07
+**Version**: 1.1.0 | **Ratified**: 2026-08-07 | **Last Amended**: 2026-08-08
