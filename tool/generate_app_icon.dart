@@ -3,11 +3,10 @@
 // its output (assets/icon/*.png) is what actually gets committed and wired
 // via flavorizr.yaml.
 //
-// Design: a wrapped-gift wallet — a wallet (finances) with a ribbon bow
-// across it (the "Wrapped" feature) and a peeking coin, in the product's
-// Modern Playful palette. Same motif for dev/prod; dev adds a diagonal
-// "DEV" ribbon banner. Light and dark background variants are generated for
-// both.
+// Design: a minimalist receipt with a coin — instantly reads as "track your
+// spending" with no dependency on any product-name wordplay. Same motif for
+// dev/prod; dev adds a diagonal "DEV" ribbon banner. Light and dark
+// background variants are generated for both.
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -21,10 +20,9 @@ final ColorRgb8 goldBottom = ColorRgb8(255, 183, 77); // #FFB74D
 final ColorRgb8 plumTop = ColorRgb8(74, 37, 69); // #4A2545
 final ColorRgb8 navyBottom = ColorRgb8(36, 27, 78); // #241B4E
 
-final ColorRgb8 walletCream = ColorRgb8(255, 248, 240); // #FFF8F0
-final ColorRgb8 walletCreamShadow = ColorRgb8(235, 222, 208); // #EBDED0
-final ColorRgb8 ribbonCoral = ColorRgb8(232, 93, 75); // #E85D4B
-final ColorRgb8 ribbonCoralDark = ColorRgb8(200, 70, 55); // #C84637
+final ColorRgb8 receiptCream = ColorRgb8(255, 248, 240); // #FFF8F0
+final ColorRgb8 lineMuted = ColorRgb8(214, 201, 186); // #D6C9BA — line items
+final ColorRgb8 lineAccent = ColorRgb8(232, 93, 75); // #E85D4B — total line
 final ColorRgb8 coinGold = ColorRgb8(245, 196, 81); // #F5C451
 final ColorRgb8 coinGoldDark = ColorRgb8(214, 163, 48); // #D6A330
 final ColorRgb8 coinGoldLight = ColorRgb8(255, 224, 150); // #FFE096
@@ -44,70 +42,87 @@ void verticalGradient(Image img, ColorRgb8 top, ColorRgb8 bottom) {
   }
 }
 
+ColorRgb8 gradientColorAt(int y, ColorRgb8 top, ColorRgb8 bottom) {
+  final t = y / (size - 1);
+  return ColorRgb8(
+    (top.r + (bottom.r - top.r) * t).round(),
+    (top.g + (bottom.g - top.g) * t).round(),
+    (top.b + (bottom.b - top.b) * t).round(),
+  );
+}
+
 Image buildBaseIcon({required bool dark}) {
   final img = Image(width: size, height: size, numChannels: 4);
+  final top = dark ? plumTop : coralTop;
+  final bottom = dark ? navyBottom : goldBottom;
 
-  verticalGradient(
-    img,
-    dark ? plumTop : coralTop,
-    dark ? navyBottom : goldBottom,
-  );
+  verticalGradient(img, top, bottom);
 
-  // Wallet body (drop shadow + body) — centered, filling most of the frame
-  // with room left above for the bow and coin.
-  const walletW = 680;
-  const walletH = 480;
-  const walletX = (size - walletW) ~/ 2;
-  const walletY = 400;
+  // The receipt: a tall cream card, centered, with a torn/zigzag bottom
+  // edge — the single most universal "this app is about purchases" glyph.
+  const receiptW = 460;
+  const receiptH = 620;
+  const receiptX = (size - receiptW) ~/ 2;
+  const receiptY = 220;
+  const receiptBottom = receiptY + receiptH;
 
   fillRect(
     img,
-    x1: walletX + 14,
-    y1: walletY + 18,
-    x2: walletX + walletW + 14,
-    y2: walletY + walletH + 18,
-    color: walletCreamShadow,
-    radius: 56,
-  );
-  fillRect(
-    img,
-    x1: walletX,
-    y1: walletY,
-    x2: walletX + walletW,
-    y2: walletY + walletH,
-    color: walletCream,
-    radius: 56,
+    x1: receiptX,
+    y1: receiptY,
+    x2: receiptX + receiptW,
+    y2: receiptBottom,
+    color: receiptCream,
+    radius: 28,
   );
 
-  // Wallet flap — the top third, slightly darker, with a rounded bottom
-  // edge suggested by a second, shorter rounded rect.
-  fillRect(
-    img,
-    x1: walletX,
-    y1: walletY,
-    x2: walletX + walletW,
-    y2: walletY + (walletH * 0.42).round(),
-    color: walletCreamShadow,
-    radius: 56,
-  );
-  // Snap button on the flap.
-  fillCircle(
-    img,
-    x: size ~/ 2,
-    y: walletY + (walletH * 0.42).round(),
-    radius: 14,
-    color: coinGoldDark,
-    antialias: true,
-  );
+  // Zigzag: carve triangular notches out of the bottom edge using the
+  // background color sampled at that height, so the receipt reads as torn
+  // off a roll rather than a plain rounded card.
+  const teeth = 8;
+  const toothW = receiptW / teeth;
+  const notchDepth = 26;
+  final notchColor = gradientColorAt(receiptBottom, top, bottom);
+  for (var i = 0; i < teeth; i++) {
+    final xLeft = receiptX + i * toothW;
+    final xRight = receiptX + (i + 1) * toothW;
+    fillPolygon(
+      img,
+      vertices: [
+        Point(xLeft, receiptBottom + 2),
+        Point(xRight, receiptBottom + 2),
+        Point(xLeft + toothW / 2, receiptBottom - notchDepth),
+      ],
+      color: notchColor,
+    );
+  }
 
-  // Coin peeking from the top-right of the wallet.
-  const coinCx = walletX + walletW - 90;
-  const coinCy = walletY - 20;
+  // Line items: a couple of muted bars suggest itemized entries; one
+  // accent-colored bar near the bottom reads as the highlighted total.
+  void bar(int y, double widthFraction, ColorRgb8 color, int height) {
+    fillRect(
+      img,
+      x1: receiptX + 48,
+      y1: y,
+      x2: receiptX + 48 + (receiptW * widthFraction).round(),
+      y2: y + height,
+      color: color,
+      radius: (height / 2).floor(),
+    );
+  }
+
+  bar(receiptY + 110, 0.58, lineMuted, 26);
+  bar(receiptY + 172, 0.42, lineMuted, 26);
+  bar(receiptBottom - 150, 0.50, lineAccent, 32);
+
+  // Coin peeking over the receipt's top-right corner.
+  const coinCx = receiptX + receiptW - 30;
+  const coinCy = receiptY + 10;
   fillCircle(
     img,
     x: coinCx,
     y: coinCy,
-    radius: 116,
+    radius: 108,
     color: coinGoldDark,
     antialias: true,
   );
@@ -115,58 +130,20 @@ Image buildBaseIcon({required bool dark}) {
     img,
     x: coinCx,
     y: coinCy,
-    radius: 100,
+    radius: 92,
     color: coinGold,
     antialias: true,
   );
   fillCircle(
     img,
-    x: coinCx - 30,
-    y: coinCy - 30,
-    radius: 26,
+    x: coinCx - 26,
+    y: coinCy - 26,
+    radius: 24,
     color: coinGoldLight,
     antialias: true,
   );
 
-  // Ribbon bow across the wallet: two loops + center knot + two tails.
-  const cx = size / 2;
-  const cy = walletY + 24.0;
-
-  Image drawLoop(Image target, double dx) {
-    final vertices = [
-      Point(cx, cy),
-      Point(cx + dx * 48, cy - 108),
-      Point(cx + dx * 228, cy - 84),
-      Point(cx + dx * 240, cy + 36),
-      Point(cx + dx * 108, cy + 66),
-    ];
-    return fillPolygon(target, vertices: vertices, color: ribbonCoral);
-  }
-
-  var out = img;
-  out = drawLoop(out, -1);
-  out = drawLoop(out, 1);
-  out = fillPolygon(
-    out,
-    vertices: [
-      Point(cx - 31, cy + 36),
-      Point(cx + 31, cy + 36),
-      Point(cx + 48, cy + 264),
-      Point(cx, cy + 228),
-      Point(cx - 48, cy + 264),
-    ],
-    color: ribbonCoralDark,
-  );
-  out = fillCircle(
-    out,
-    x: cx.round(),
-    y: cy.round(),
-    radius: 41,
-    color: ribbonCoralDark,
-    antialias: true,
-  );
-
-  return out;
+  return img;
 }
 
 Image addDevRibbon(Image base) {
