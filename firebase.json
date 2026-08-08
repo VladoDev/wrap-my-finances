@@ -1,0 +1,91 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true
+    }
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "buildConfigurations": {
+          "src/dev": {
+            "projectId": "wrap-my-finances-dev",
+            "appId": "1:577652764816:android:0239e6e41462545a56e815",
+            "fileOutput": "android/app/src/dev/google-services.json"
+          },
+          "src/prod": {
+            "projectId": "wrap-my-finances-prod",
+            "appId": "1:119031605120:android:ec5e4385e7db67e67e0365",
+            "fileOutput": "android/app/src/prod/google-services.json"
+          }
+        }
+      },
+      "ios": {
+        "buildConfigurations": {
+          "Debug-dev": {
+            "projectId": "wrap-my-finances-dev",
+            "appId": "1:577652764816:ios:d243c8ca5fdb8ec856e815",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/flavors/dev/GoogleService-Info.plist"
+          },
+          "Release-dev": {
+            "projectId": "wrap-my-finances-dev",
+            "appId": "1:577652764816:ios:d243c8ca5fdb8ec856e815",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/flavors/dev/GoogleService-Info.plist"
+          },
+          "Profile-dev": {
+            "projectId": "wrap-my-finances-dev",
+            "appId": "1:577652764816:ios:d243c8ca5fdb8ec856e815",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/flavors/dev/GoogleService-Info.plist"
+          },
+          "Debug-prod": {
+            "projectId": "wrap-my-finances-prod",
+            "appId": "1:119031605120:ios:31a4b7fd355171427e0365",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/flavors/prod/GoogleService-Info.plist"
+          },
+          "Release-prod": {
+            "projectId": "wrap-my-finances-prod",
+            "appId": "1:119031605120:ios:31a4b7fd355171427e0365",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/flavors/prod/GoogleService-Info.plist"
+          },
+          "Profile-prod": {
+            "projectId": "wrap-my-finances-prod",
+            "appId": "1:119031605120:ios:31a4b7fd355171427e0365",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/flavors/prod/GoogleService-Info.plist"
+          }
+        }
+      },
+      "dart": {
+        "lib/core/config/firebase_options_dev.dart": {
+          "projectId": "wrap-my-finances-dev",
+          "configurations": {
+            "android": "1:577652764816:android:0239e6e41462545a56e815",
+            "ios": "1:577652764816:ios:d243c8ca5fdb8ec856e815"
+          }
+        },
+        "lib/core/config/firebase_options_prod.dart": {
+          "projectId": "wrap-my-finances-prod",
+          "configurations": {
+            "android": "1:119031605120:android:ec5e4385e7db67e67e0365",
+            "ios": "1:119031605120:ios:31a4b7fd355171427e0365"
+          }
+        }
+      }
+    }
+  }
+}
