@@ -36,12 +36,17 @@ dependencies:
   firebase_core: ^4.13.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_riverpod: ^2.6.1
   get_it: ^9.2.1
   go_router: ^17.4.0
+  google_fonts: ^8.2.1
   injectable: ^3.0.0
+  intl: ^0.20.2
   riverpod_annotation: ^2.6.1
 dev_dependencies:
+  alchemist: ^0.12.1
   build_runner: ^2.15.1
   fake_cloud_firestore: ^4.2.0
   firebase_auth_mocks: ^0.15.2
@@ -53,6 +58,7 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   mocktail: ^1.0.5
+  path: ^1.9.1
   very_good_analysis: ^10.3.0
 
 # For information on the generic Dart part of this file, see the
@@ -72,28 +78,26 @@ flutter:
   assets:
     - assets/icon/
 
+  # ARB-driven localization (see l10n.yaml at the repo root).
+  generate: true
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  # Nunito, bundled as a variable-font asset (not fetched at runtime — see
+  # research.md and lib/bootstrap.dart's GoogleFonts.config.allowRuntimeFetching
+  # = false). Both weight entries point at the same variable TTF; Skia resolves
+  # the requested static instance from its `wght` axis.
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Variable.ttf
+          weight: 400
+        - asset: assets/fonts/Nunito-Variable.ttf
+          weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show appFlavor;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wrap_my_finances/app.dart';
 import 'package:wrap_my_finances/core/config/app_environment.dart';
 import 'package:wrap_my_finances/core/config/flavor_guard.dart';
@@ -20,6 +21,11 @@ Future<void> bootstrap(
   FirebaseOptions options,
 ) async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Nunito ships bundled under assets/fonts/ (see pubspec.yaml); this stops
+  // google_fonts from ever attempting a network fetch, so first frame never
+  // waits on one. See research.md.
+  GoogleFonts.config.allowRuntimeFetching = false;
 
   final mismatch = checkFlavorConsistency(appFlavor: appFlavor, env: env);
   if (mismatch != null) {
