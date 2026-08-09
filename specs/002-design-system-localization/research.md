@@ -121,6 +121,26 @@ in `docs/TECH_STACK.md` as of this writing.
   alchemist's CI-only deterministic-font mode, which is exactly the failure mode this project would
   hit first (developers on macOS, CI on Linux runners per `docs/TECH_STACK.md`'s CI/CD section).
 
+**Implementation-time correction**: the "CI mode" ("deterministic font fallback") turned out not to
+mean *pixel-identical across host OSes*, only *independent of which font the host has installed*.
+Real CI runs (`ubuntu-latest`) failed against `ci/*.png` references generated on a macOS laptop,
+because Skia still rasterizes shapes, borders, and shadows with slightly different antialiasing
+between macOS and Linux even with text blocked out — the same class of problem alchemist's CI mode
+solves for *text*, just not for everything else. Two changes fixed this:
+
+1. `PlatformGoldensConfig` defaults to running the human-readable "platform" variant on
+   *every* host OS (`HostPlatform.values`), not just the one that generated the reference image —
+   restricted to `{HostPlatform.macOS}` in `test/flutter_test_config.dart`, since only a macOS
+   reference is committed.
+2. Both golden variants are now mutually exclusive by environment, gated on the `CI` environment
+   variable GitHub Actions sets automatically (`Platform.environment.containsKey('CI')`): locally,
+   only the "platform" (macOS, human-readable) variant runs and is compared; in CI, only the "ci"
+   (Ahem-font, obscured-text) variant runs, compared against reference images generated from an
+   actual `ubuntu-latest` run of `flutter test --update-goldens` (via a temporary CI job, downloaded
+   and committed, then removed). Each variant is therefore only ever compared against a reference
+   generated on the same OS that renders it — the general rule for golden testing on any framework,
+   which this project's original setup violated by assuming alchemist's CI mode was exempt from it.
+
 ## Decision: ARB key completeness is enforced by a dedicated test, not by `gen_l10n` alone
 
 **Decision**: `test/l10n/arb_keys_complete_test.dart` loads every `.arb` file under `lib/l10n/`,

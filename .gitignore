@@ -33,6 +33,11 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Golden test failure diffs (flutter_test/alchemist write these next to the
+# comparing test on any mismatch; the committed reference images are the
+# only golden artifacts that belong in version control)
+**/failures/
+
 # Symbolication related
 app.*.symbols
 
