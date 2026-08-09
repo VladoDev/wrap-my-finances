@@ -67,7 +67,7 @@ service cloud.firestore {
 
       match /expenses/{expenseId} {
         allow read:   if isOwner(userId);
-        allow create: if isOwner(userId) && isValidExpense();
+        allow create: if isValidExpense();
         allow update: if isOwner(userId) && isValidExpense()
                       && incoming().createdAt == resource.data.createdAt;
         allow delete: if isOwner(userId);
