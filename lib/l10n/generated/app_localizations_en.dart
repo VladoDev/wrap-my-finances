@@ -19,4 +19,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonDelete => 'Delete';
+
+  @override
+  String get commonDevBuild => 'DEV BUILD';
 }

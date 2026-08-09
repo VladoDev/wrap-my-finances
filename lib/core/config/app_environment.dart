@@ -4,39 +4,19 @@
 /// compares it against `appFlavor` at startup.
 enum AppEnvironment {
   /// Development flavor: connects to `wrap-my-finances-dev`, shows a debug
-  /// indicator, and allows writing environment-probe test documents.
-  dev(
-    name: 'dev',
-    showDebugBanner: true,
-    allowSeeding: true,
-    firestoreCollectionPath: 'env_checks',
-  ),
+  /// indicator.
+  dev(name: 'dev', showDebugBanner: true),
 
   /// Production flavor: connects to `wrap-my-finances-prod`, with no debug
   /// affordance of any kind.
-  prod(
-    name: 'prod',
-    showDebugBanner: false,
-    allowSeeding: false,
-    firestoreCollectionPath: 'env_checks',
-  );
+  prod(name: 'prod', showDebugBanner: false);
 
-  const AppEnvironment({
-    required this.name,
-    required this.showDebugBanner,
-    required this.allowSeeding,
-    required this.firestoreCollectionPath,
-  });
+  const AppEnvironment({required this.name, required this.showDebugBanner});
 
   /// Must equal the native flavor name (`appFlavor`) exactly.
   final String name;
 
-  /// Whether the diagnostics screen shows a visible debug indicator.
+  /// Whether the app shows a visible debug indicator (the dev-flavor ribbon
+  /// banner, per `docs/UI_UX_SPEC.md` §6).
   final bool showDebugBanner;
-
-  /// Whether the diagnostics screen offers the "write test document" control.
-  final bool allowSeeding;
-
-  /// Firestore collection used for the environment-isolation probe document.
-  final String firestoreCollectionPath;
 }

@@ -15,5 +15,9 @@
   "commonDelete": "Delete",
   "@commonDelete": {
     "description": "Label for a destructive button that removes an item."
+  },
+  "commonDevBuild": "DEV BUILD",
+  "@commonDevBuild": {
+    "description": "Label shown on the dev-flavor ribbon banner, never present in prod builds."
   }
 }
