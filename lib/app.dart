@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wrap_my_finances/core/design_system/theme/app_theme.dart';
-import 'package:wrap_my_finances/core/diagnostics/presentation/pages/environment_status_page.dart';
+import 'package:wrap_my_finances/core/presentation/pages/placeholder_home_page.dart';
 import 'package:wrap_my_finances/l10n/generated/app_localizations.dart';
 
 final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const EnvironmentStatusPage(),
+      builder: (context, state) => const PlaceholderHomePage(),
     ),
   ],
 );
 
 /// The app shell: a single-route [MaterialApp.router] pointing at
-/// [EnvironmentStatusPage]. This feature adds no other screens.
+/// [PlaceholderHomePage]. No feature through `003` adds a product screen.
 ///
 /// [ThemeMode] is fixed to [AppTheme.themeMode] (light) and no `darkTheme`
 /// is provided, so system dark mode has no effect (FR-005/FR-006).

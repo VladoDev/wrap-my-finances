@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show appFlavor;
@@ -11,10 +10,11 @@ import 'package:wrap_my_finances/app.dart';
 import 'package:wrap_my_finances/core/config/app_environment.dart';
 import 'package:wrap_my_finances/core/config/flavor_guard.dart';
 import 'package:wrap_my_finances/core/di/injection.dart';
+import 'package:wrap_my_finances/features/auth/domain/usecases/sign_in_anonymously.dart';
 
 /// Shared init for every flavor entrypoint, in order: flavor-consistency
-/// guard, Firebase, Firestore offline settings, a silent anonymous session,
-/// dependency injection, then `runApp`. Callers pass the flavor-specific
+/// guard, Firebase, Firestore offline settings, dependency injection, a
+/// silent anonymous session, then `runApp`. Callers pass the flavor-specific
 /// [env] and Firebase [options].
 Future<void> bootstrap(
   AppEnvironment env,
@@ -39,12 +39,12 @@ Future<void> bootstrap(
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
 
-  // Fire-and-forget: never blocks first frame. Writes that need a session
-  // (e.g. the environment probe) await FirebaseAuth.instance.currentUser
-  // themselves — see FirestoreEnvironmentProbeRepository. See research.md.
-  unawaited(FirebaseAuth.instance.signInAnonymously());
-
   await configureDependencies(env);
+
+  // Fire-and-forget: never blocks first frame. Writes that need a session
+  // call AuthRepository.runWhenAuthenticated themselves, which buffers
+  // until sign-in resolves — see features/auth and research.md.
+  unawaited(getIt<SignInAnonymouslyUseCase>().call());
 
   runApp(
     const ProviderScope(

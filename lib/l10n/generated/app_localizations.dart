@@ -127,6 +127,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get commonDelete;
+
+  /// Label shown on the dev-flavor ribbon banner, never present in prod builds.
+  ///
+  /// In en, this message translates to:
+  /// **'DEV BUILD'**
+  String get commonDevBuild;
 }
 
 class _AppLocalizationsDelegate

@@ -19,4 +19,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonDelete => 'Supprimer';
+
+  @override
+  String get commonDevBuild => 'VERSION DEV';
 }

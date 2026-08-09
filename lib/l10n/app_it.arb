@@ -3,5 +3,6 @@
   "commonContinue": "Continua",
   "commonCancel": "Annulla",
   "commonRetry": "Riprova",
-  "commonDelete": "Elimina"
+  "commonDelete": "Elimina",
+  "commonDevBuild": "VERSIONE DEV"
 }
