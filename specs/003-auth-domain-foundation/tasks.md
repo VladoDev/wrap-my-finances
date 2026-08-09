@@ -182,9 +182,9 @@ Single Flutter mobile project at the repository root (`lib/`, `test/`), per `pla
 
 ### Implementation for User Story 7
 
-- [ ] T046 [US7] Add a `rules-tests` job to `.github/workflows/ci.yml`, parallel to `analyze-and-test`: checkout, `actions/setup-node`, `actions/setup-java` (Firestore/Auth emulator dependency), `npm install -g firebase-tools`, `npm ci --prefix firebase/tests`, then `firebase emulators:exec --only auth,firestore "npm test"` run from `firebase/tests/` (depends on T045)
-- [ ] T047 [US7] Push this branch and confirm, per `quickstart.md` step 8, that the GitHub Actions run shows both `analyze-and-test` and `rules-tests` as required jobs of the same workflow run, both passing (depends on T046)
-- [ ] T048 [US7] In a scratch commit, temporarily remove the `isOwner` check from the `expenses` rule, push, and confirm `rules-tests` fails the workflow; then revert (depends on T047)
+- [X] T046 [US7] Add a `rules-tests` job to `.github/workflows/ci.yml`, parallel to `analyze-and-test`: checkout, `actions/setup-node`, `actions/setup-java` (Firestore/Auth emulator dependency), `npm install -g firebase-tools`, `npm ci --prefix firebase/tests`, then `firebase emulators:exec --only auth,firestore "npm test"` run from `firebase/tests/` (depends on T045) — verified locally with the exact CI-shaped command (`--prefix firebase/tests` instead of a `working-directory`, since `firebase emulators:exec` needs `firebase.json` at repo root) before pushing
+- [X] T047 [US7] Push this branch and confirm, per `quickstart.md` step 8, that the GitHub Actions run shows both `analyze-and-test` and `rules-tests` as required jobs of the same workflow run, both passing (depends on T046) — PR #3 opened against `dev`; run [31295015368](https://github.com/VladoDev/wrap-my-finances/actions/runs/31295015368) shows both jobs green in the same workflow run
+- [X] T048 [US7] In a scratch commit, temporarily remove the `isOwner` check from the `expenses` rule, push, and confirm `rules-tests` fails the workflow; then revert (depends on T047)
 
 **Checkpoint**: All user stories complete — the full feature is verified end to end, automatically, on every future pull request.
 
