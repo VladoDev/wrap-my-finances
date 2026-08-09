@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "commonContinue": "Continue",
+  "@commonContinue": {
+    "description": "Label for a primary button that advances to the next step."
+  },
+  "commonCancel": "Cancel",
+  "@commonCancel": {
+    "description": "Label for a button that dismisses the current action without saving."
+  },
+  "commonRetry": "Retry",
+  "@commonRetry": {
+    "description": "Label for a button that retries a failed action."
+  },
+  "commonDelete": "Delete",
+  "@commonDelete": {
+    "description": "Label for a destructive button that removes an item."
+  }
+}

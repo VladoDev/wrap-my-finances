@@ -46,15 +46,17 @@ class FirestoreEnvironmentProbeRepository
       // Future only resolves on server round-trip, which the UI must not
       // await (Constitution Principle 2).
       unawaited(
-        docRef.set({
-          'id': probe.id,
-          'environmentName': probe.environmentName,
-          'createdAtMillis': probe.createdAtMillis,
-          'label': probe.label,
-        }).catchError((Object error, StackTrace stackTrace) {
-          // Background reconciliation error — no Logger service exists in
-          // this feature's scope yet; a future feature wires one in.
-        }),
+        docRef
+            .set({
+              'id': probe.id,
+              'environmentName': probe.environmentName,
+              'createdAtMillis': probe.createdAtMillis,
+              'label': probe.label,
+            })
+            .catchError((Object error, StackTrace stackTrace) {
+              // Background reconciliation error — no Logger service exists in
+              // this feature's scope yet; a future feature wires one in.
+            }),
       );
 
       _lastWritten = probe;

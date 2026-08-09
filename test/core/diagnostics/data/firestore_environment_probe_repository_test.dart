@@ -35,8 +35,10 @@ void main() {
       expect(probe.environmentName, 'dev');
       expect(probe.label, 'probe');
 
-      final snapshot =
-          await firestore.collection('env_checks').doc(probe.id).get();
+      final snapshot = await firestore
+          .collection('env_checks')
+          .doc(probe.id)
+          .get();
       expect(snapshot.exists, isTrue);
 
       final data = snapshot.data()!;
