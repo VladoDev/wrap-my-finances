@@ -182,9 +182,9 @@ Single Flutter mobile project at the repository root (`lib/`, `test/`), per `pla
 
 ### Implementation for User Story 7
 
-- [ ] T046 [US7] Add a `rules-tests` job to `.github/workflows/ci.yml`, parallel to `analyze-and-test`: checkout, `actions/setup-node`, `actions/setup-java` (Firestore/Auth emulator dependency), `npm install -g firebase-tools`, `npm ci --prefix firebase/tests`, then `firebase emulators:exec --only auth,firestore "npm test"` run from `firebase/tests/` (depends on T045)
-- [ ] T047 [US7] Push this branch and confirm, per `quickstart.md` step 8, that the GitHub Actions run shows both `analyze-and-test` and `rules-tests` as required jobs of the same workflow run, both passing (depends on T046)
-- [ ] T048 [US7] In a scratch commit, temporarily remove the `isOwner` check from the `expenses` rule, push, and confirm `rules-tests` fails the workflow; then revert (depends on T047)
+- [X] T046 [US7] Add a `rules-tests` job to `.github/workflows/ci.yml`, parallel to `analyze-and-test`: checkout, `actions/setup-node`, `actions/setup-java` (Firestore/Auth emulator dependency), `npm install -g firebase-tools`, `npm ci --prefix firebase/tests`, then `firebase emulators:exec --only auth,firestore "npm test"` run from `firebase/tests/` (depends on T045) — verified locally with the exact CI-shaped command before pushing
+- [X] T047 [US7] Push this branch and confirm, per `quickstart.md` step 8, that the GitHub Actions run shows both `analyze-and-test` and `rules-tests` as required jobs of the same workflow run, both passing (depends on T046) — PR #3 run [31295015368](https://github.com/VladoDev/wrap-my-finances/actions/runs/31295015368): both jobs green
+- [X] T048 [US7] In a scratch commit, temporarily remove the `isOwner` check from the `expenses` rule, push, and confirm `rules-tests` fails the workflow; then revert (depends on T047) — completed properly on the follow-up PR (#4): pushed the broken rule, [run 31297120273](https://github.com/VladoDev/wrap-my-finances/actions/runs/31297120273) shows `rules-tests` failing at "Run Security Rules suite against the local emulator" while `analyze-and-test` passes independently (proving the two jobs are correctly isolated); reverted, confirmed byte-identical to the merged ruleset via `diff`
 
 **Checkpoint**: All user stories complete — the full feature is verified end to end, automatically, on every future pull request.
 
@@ -192,10 +192,10 @@ Single Flutter mobile project at the repository root (`lib/`, `test/`), per `pla
 
 ## Phase 10: Polish & Cross-Cutting Concerns
 
-- [ ] T049 [P] Run `flutter analyze` and confirm zero issues across every file this feature added, modified, or left behind after deletions
-- [ ] T050 [P] Run `dart format --output=none --set-exit-if-changed lib test` and confirm clean
-- [ ] T051 Execute `quickstart.md` end-to-end (all 9 steps) as the final acceptance pass for this feature (depends on T022, T024, T035, T037, T040, T045, T048)
-- [ ] T052 Run `flutter test` (full suite) and confirm every test — this feature's and `001`'s/`002`'s untouched ones — passes together (depends on T049)
+- [X] T049 [P] Run `flutter analyze` and confirm zero issues across every file this feature added, modified, or left behind after deletions — clean on `dev` post-merge
+- [X] T050 [P] Run `dart format --output=none --set-exit-if-changed lib test` and confirm clean — clean on `dev` post-merge
+- [X] T051 Execute `quickstart.md` end-to-end (all 9 steps) as the final acceptance pass for this feature (depends on T022, T024, T035, T037, T040, T045, T048) — all 9 steps verified live during implementation, including step 8's negative case (T048)
+- [X] T052 Run `flutter test` (full suite) and confirm every test — this feature's and `001`'s/`002`'s untouched ones — passes together (depends on T049) — **49/49 passing** on `dev` post-merge
 
 ---
 
