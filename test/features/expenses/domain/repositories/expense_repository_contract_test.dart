@@ -25,6 +25,16 @@ class _FakeExpenseRepository implements ExpenseRepository {
   Stream<List<Expense>> watchByMonth(String monthKey) {
     return Stream.value(_stored);
   }
+
+  @override
+  Stream<List<Expense>> watchAll() {
+    return Stream.value(_stored);
+  }
+
+  @override
+  Future<Result<void>> purgeDeletedOlderThan(DateTime cutoff) async {
+    return const Success(null);
+  }
 }
 
 void main() {

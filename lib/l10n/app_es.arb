@@ -14,5 +14,11 @@
   "categoryOther": "Otro",
   "categoryPickerTitle": "Elige una categoría",
   "expenseSaveErrorMessage": "No se pudo guardar — inténtalo de nuevo",
-  "keypadAmountSemanticLabel": "Monto"
+  "keypadAmountSemanticLabel": "Monto",
+  "commonUndo": "Deshacer",
+  "historyExpenseDeletedMessage": "Gasto eliminado",
+  "historyEmptyTitle": "Todavía no hay nada aquí",
+  "historyEmptySubtitle": "Los gastos que registres aparecerán aquí",
+  "navCaptureLabel": "Registrar gasto",
+  "navHistoryLabel": "Historial"
 }

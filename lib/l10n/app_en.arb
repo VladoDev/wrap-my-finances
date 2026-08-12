@@ -59,5 +59,29 @@
   "keypadAmountSemanticLabel": "Amount",
   "@keypadAmountSemanticLabel": {
     "description": "Screen-reader label for the large amount display on the capture screen."
+  },
+  "commonUndo": "Undo",
+  "@commonUndo": {
+    "description": "Action label for reversing the most recent action, e.g. a deleted expense."
+  },
+  "historyExpenseDeletedMessage": "Expense deleted",
+  "@historyExpenseDeletedMessage": {
+    "description": "Snackbar text shown after swiping an expense away in the history screen."
+  },
+  "historyEmptyTitle": "Nothing here yet",
+  "@historyEmptyTitle": {
+    "description": "Heading shown in the history screen when no expenses have been logged."
+  },
+  "historyEmptySubtitle": "Expenses you log will show up here",
+  "@historyEmptySubtitle": {
+    "description": "Body text shown under historyEmptyTitle in the history screen's empty state."
+  },
+  "navCaptureLabel": "Log expense",
+  "@navCaptureLabel": {
+    "description": "Semantic/visible label for the navigation bar's capture destination."
+  },
+  "navHistoryLabel": "History",
+  "@navHistoryLabel": {
+    "description": "Semantic/visible label for the navigation bar's history destination."
   }
 }

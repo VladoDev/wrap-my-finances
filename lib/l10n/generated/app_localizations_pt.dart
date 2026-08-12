@@ -53,4 +53,23 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get keypadAmountSemanticLabel => 'Valor';
+
+  @override
+  String get commonUndo => 'Desfazer';
+
+  @override
+  String get historyExpenseDeletedMessage => 'Despesa excluída';
+
+  @override
+  String get historyEmptyTitle => 'Ainda não há nada aqui';
+
+  @override
+  String get historyEmptySubtitle =>
+      'As despesas que você registrar vão aparecer aqui';
+
+  @override
+  String get navCaptureLabel => 'Registrar despesa';
+
+  @override
+  String get navHistoryLabel => 'Histórico';
 }

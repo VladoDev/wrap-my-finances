@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wrap_my_finances/core/design_system/theme/app_theme.dart';
+import 'package:wrap_my_finances/core/navigation/app_shell.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/pages/expense_capture_page.dart';
+import 'package:wrap_my_finances/features/expenses/presentation/pages/expense_history_page.dart';
 import 'package:wrap_my_finances/l10n/generated/app_localizations.dart';
 
+// `initialLocation` defaults to the first route ('/') and no code path here
+// persists or restores a prior location — this, not an explicit check, is
+// what keeps capture the fixed launch destination (FR-012,
+// specs/005-expense-history-undo/research.md).
 final _router = GoRouter(
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const ExpenseCapturePage(),
+    ShellRoute(
+      builder: (context, state, child) =>
+          AppShell(currentLocation: state.uri.toString(), child: child),
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const ExpenseCapturePage(),
+        ),
+        GoRoute(
+          path: '/history',
+          builder: (context, state) => const ExpenseHistoryPage(),
+        ),
+      ],
     ),
   ],
 );
 
-/// The app shell: a single-route [MaterialApp.router] pointing at
-/// [ExpenseCapturePage] — the app's only screen (FR-001).
+/// The app shell: [MaterialApp.router] with two routes — capture (always
+/// the launch destination, FR-001/FR-012) and history — wrapped in
+/// [AppShell]'s floating nav bar.
 ///
 /// [ThemeMode] is fixed to [AppTheme.themeMode] (light) and no `darkTheme`
 /// is provided, so system dark mode has no effect (FR-005/FR-006).

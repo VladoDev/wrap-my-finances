@@ -43,6 +43,8 @@ import 'package:wrap_my_finances/features/expenses/domain/repositories/expense_r
     as _i345;
 import 'package:wrap_my_finances/features/expenses/domain/usecases/log_expense.dart'
     as _i672;
+import 'package:wrap_my_finances/features/expenses/domain/usecases/purge_expired_deleted_expenses.dart'
+    as _i520;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -95,6 +97,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i496.CategoryRepository>(),
         gh<_i346.AppLaunchClock>(),
         gh<_i499.AnalyticsService>(),
+      ),
+    );
+    gh.factory<_i520.PurgeExpiredDeletedExpensesUseCase>(
+      () => _i520.PurgeExpiredDeletedExpensesUseCase(
+        gh<_i261.AuthRepository>(),
+        gh<_i345.ExpenseRepository>(),
       ),
     );
     return this;

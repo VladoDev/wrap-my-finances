@@ -92,7 +92,14 @@ class _ExpenseCapturePageState extends ConsumerState<ExpenseCapturePage> {
           next.step == CaptureStep.amount;
       if (justSucceeded) {
         if (_categorySheetOpen) {
-          Navigator.of(context, rootNavigator: true).pop();
+          // The *nearest* Navigator, not rootNavigator: true — 005's
+          // go_router ShellRoute added a nested Navigator above this
+          // page's route, so "root" no longer means "the bottom sheet's
+          // own navigator" the way it coincidentally did in 004's
+          // single-route tree. Popping the wrong one crashes go_router by
+          // popping the last page off its stack instead of dismissing the
+          // sheet.
+          Navigator.of(context).pop();
         }
         setState(() => _showSuccess = true);
       }
@@ -133,6 +140,17 @@ class _ExpenseCapturePageState extends ConsumerState<ExpenseCapturePage> {
                     onDecimalSeparator: controller.appendDecimalSeparator,
                     onBackspace: controller.backspace,
                     onNext: controller.advanceToCategory,
+                  ),
+                  // Reserves clearance for AppShell's floating nav pill
+                  // (005) so it never overlaps "Continuar" — composed from
+                  // existing spacing tokens, not a new literal value.
+                  // Verified against the pill's actual on-device footprint
+                  // (icon height + its own padding/margin), not guessed.
+                  SizedBox(
+                    height:
+                        spacing.spacingXl +
+                        spacing.spacingXl +
+                        spacing.spacingMd,
                   ),
                 ],
               ),

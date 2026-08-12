@@ -14,5 +14,11 @@
   "categoryOther": "Autre",
   "categoryPickerTitle": "Choisissez une catégorie",
   "expenseSaveErrorMessage": "Impossible d'enregistrer — réessayez",
-  "keypadAmountSemanticLabel": "Montant"
+  "keypadAmountSemanticLabel": "Montant",
+  "commonUndo": "Annuler",
+  "historyExpenseDeletedMessage": "Dépense supprimée",
+  "historyEmptyTitle": "Rien ici pour l'instant",
+  "historyEmptySubtitle": "Les dépenses que vous enregistrez apparaîtront ici",
+  "navCaptureLabel": "Enregistrer une dépense",
+  "navHistoryLabel": "Historique"
 }

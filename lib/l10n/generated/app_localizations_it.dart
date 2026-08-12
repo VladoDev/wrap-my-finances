@@ -52,4 +52,22 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get keypadAmountSemanticLabel => 'Importo';
+
+  @override
+  String get commonUndo => 'Annulla';
+
+  @override
+  String get historyExpenseDeletedMessage => 'Spesa eliminata';
+
+  @override
+  String get historyEmptyTitle => 'Non c\'è ancora nulla qui';
+
+  @override
+  String get historyEmptySubtitle => 'Le spese che registri appariranno qui';
+
+  @override
+  String get navCaptureLabel => 'Registra spesa';
+
+  @override
+  String get navHistoryLabel => 'Cronologia';
 }
