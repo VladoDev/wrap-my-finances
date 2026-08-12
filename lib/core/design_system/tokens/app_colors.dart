@@ -12,6 +12,19 @@ const Color _white = Color(0xFFFFFFFF);
 const Color _darkNeutral = Color(0xFF2D3436);
 const Color _danger = Color(0xFFE17055);
 
+// Category swatch palette — fills behind category icons/accents only, never
+// small text (see docs/UI_UX_SPEC.md §1), so these are not held to the
+// text-contrast pairing the tokens above are. Kept here, not as literals in
+// seeding code, so this remains the one file allowed to hold a hex literal —
+// see specs/004-quick-expense-capture/research.md.
+const Color _categorySun = Color(0xFFFFB84C);
+const Color _categoryGrape = Color(0xFF9B5DE5);
+const Color _categoryMint = Color(0xFF06D6A0);
+const Color _categorySky = Color(0xFF4CC9F0);
+const Color _categoryPeach = Color(0xFFFF9F80);
+const Color _categoryRose = Color(0xFFEF476F);
+const Color _categoryOlive = Color(0xFF8D9440);
+
 /// Semantic color tokens, resolved from [BuildContext] via
 /// `context.colors` (see `theme/design_tokens.dart`). No widget may
 /// reference a [Color] literal directly — see Constitution Principle 9.
@@ -31,6 +44,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.danger,
     required this.onDanger,
     required this.outline,
+    required this.categoryPalette,
   });
 
   /// The single light color scheme this feature ships. A future dark scheme
@@ -49,6 +63,15 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     danger: _danger,
     onDanger: _white,
     outline: _darkNeutral,
+    categoryPalette: [
+      _categorySun,
+      _categoryGrape,
+      _categoryMint,
+      _categorySky,
+      _categoryPeach,
+      _categoryRose,
+      _categoryOlive,
+    ],
   );
 
   /// App-level background, behind every screen.
@@ -89,6 +112,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   /// not part of the WCAG contrast contract.
   final Color outline;
 
+  /// Fixed 7-entry swatch palette for default category tiles/icon fills,
+  /// indexed by the seed order in data-model.md. Never used for text.
+  final List<Color> categoryPalette;
+
   @override
   AppColorsExtension copyWith({
     Color? background,
@@ -102,6 +129,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? danger,
     Color? onDanger,
     Color? outline,
+    List<Color>? categoryPalette,
   }) {
     return AppColorsExtension(
       background: background ?? this.background,
@@ -115,6 +143,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       danger: danger ?? this.danger,
       onDanger: onDanger ?? this.onDanger,
       outline: outline ?? this.outline,
+      categoryPalette: categoryPalette ?? this.categoryPalette,
     );
   }
 
@@ -133,6 +162,10 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       danger: Color.lerp(danger, other.danger, t)!,
       onDanger: Color.lerp(onDanger, other.onDanger, t)!,
       outline: Color.lerp(outline, other.outline, t)!,
+      categoryPalette: [
+        for (var i = 0; i < categoryPalette.length; i++)
+          Color.lerp(categoryPalette[i], other.categoryPalette[i], t)!,
+      ],
     );
   }
 }

@@ -10,7 +10,9 @@ import 'package:wrap_my_finances/app.dart';
 import 'package:wrap_my_finances/core/config/app_environment.dart';
 import 'package:wrap_my_finances/core/config/flavor_guard.dart';
 import 'package:wrap_my_finances/core/di/injection.dart';
+import 'package:wrap_my_finances/core/instrumentation/app_launch_clock.dart';
 import 'package:wrap_my_finances/features/auth/domain/usecases/sign_in_anonymously.dart';
+import 'package:wrap_my_finances/features/categories/domain/usecases/seed_default_categories.dart';
 
 /// Shared init for every flavor entrypoint, in order: flavor-consistency
 /// guard, Firebase, Firestore offline settings, dependency injection, a
@@ -20,6 +22,10 @@ Future<void> bootstrap(
   AppEnvironment env,
   FirebaseOptions options,
 ) async {
+  // "Process start" for FR-003/SC-001's timing budget — captured before
+  // anything else runs. See specs/004-quick-expense-capture/research.md.
+  getIt.registerSingleton<AppLaunchClock>(AppLaunchClock(DateTime.now()));
+
   WidgetsFlutterBinding.ensureInitialized();
 
   // Nunito ships bundled under assets/fonts/ (see pubspec.yaml); this stops
@@ -45,6 +51,12 @@ Future<void> bootstrap(
   // call AuthRepository.runWhenAuthenticated themselves, which buffers
   // until sign-in resolves — see features/auth and research.md.
   unawaited(getIt<SignInAnonymouslyUseCase>().call());
+
+  // Also fire-and-forget, in parallel with sign-in, so default categories
+  // are normally already seeded by the time the user reaches the category
+  // step. Idempotent — safe on every launch. See
+  // specs/004-quick-expense-capture/research.md.
+  unawaited(getIt<SeedDefaultCategoriesUseCase>().call());
 
   runApp(
     const ProviderScope(

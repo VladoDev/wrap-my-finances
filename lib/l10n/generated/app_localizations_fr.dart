@@ -22,4 +22,34 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonDevBuild => 'VERSION DEV';
+
+  @override
+  String get categoryFood => 'Alimentation';
+
+  @override
+  String get categoryTransport => 'Transport';
+
+  @override
+  String get categoryShopping => 'Achats';
+
+  @override
+  String get categoryEntertainment => 'Divertissement';
+
+  @override
+  String get categoryHealth => 'Santé';
+
+  @override
+  String get categoryHousing => 'Logement';
+
+  @override
+  String get categoryOther => 'Autre';
+
+  @override
+  String get categoryPickerTitle => 'Choisissez une catégorie';
+
+  @override
+  String get expenseSaveErrorMessage => 'Impossible d\'enregistrer — réessayez';
+
+  @override
+  String get keypadAmountSemanticLabel => 'Montant';
 }

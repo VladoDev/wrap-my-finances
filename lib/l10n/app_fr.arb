@@ -4,5 +4,15 @@
   "commonCancel": "Annuler",
   "commonRetry": "Réessayer",
   "commonDelete": "Supprimer",
-  "commonDevBuild": "VERSION DEV"
+  "commonDevBuild": "VERSION DEV",
+  "categoryFood": "Alimentation",
+  "categoryTransport": "Transport",
+  "categoryShopping": "Achats",
+  "categoryEntertainment": "Divertissement",
+  "categoryHealth": "Santé",
+  "categoryHousing": "Logement",
+  "categoryOther": "Autre",
+  "categoryPickerTitle": "Choisissez une catégorie",
+  "expenseSaveErrorMessage": "Impossible d'enregistrer — réessayez",
+  "keypadAmountSemanticLabel": "Montant"
 }

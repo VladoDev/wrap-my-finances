@@ -22,4 +22,35 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get commonDevBuild => 'VERSÃO DEV';
+
+  @override
+  String get categoryFood => 'Alimentação';
+
+  @override
+  String get categoryTransport => 'Transporte';
+
+  @override
+  String get categoryShopping => 'Compras';
+
+  @override
+  String get categoryEntertainment => 'Entretenimento';
+
+  @override
+  String get categoryHealth => 'Saúde';
+
+  @override
+  String get categoryHousing => 'Moradia';
+
+  @override
+  String get categoryOther => 'Outro';
+
+  @override
+  String get categoryPickerTitle => 'Escolha uma categoria';
+
+  @override
+  String get expenseSaveErrorMessage =>
+      'Não foi possível salvar — tente novamente';
+
+  @override
+  String get keypadAmountSemanticLabel => 'Valor';
 }
