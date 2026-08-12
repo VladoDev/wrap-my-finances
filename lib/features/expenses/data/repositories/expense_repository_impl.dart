@@ -62,4 +62,19 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   Stream<List<Expense>> watchByMonth(String monthKey) {
     return _remoteDataSource.watchByMonth(_currentUserId, monthKey);
   }
+
+  @override
+  Stream<List<Expense>> watchAll() {
+    return _remoteDataSource.watchAll(_currentUserId);
+  }
+
+  @override
+  Future<Result<void>> purgeDeletedOlderThan(DateTime cutoff) async {
+    try {
+      await _remoteDataSource.purgeOlderThan(_currentUserId, cutoff);
+      return const Success(null);
+    } on Object catch (error, stackTrace) {
+      return Failed(UnknownFailure(error, stackTrace));
+    }
+  }
 }

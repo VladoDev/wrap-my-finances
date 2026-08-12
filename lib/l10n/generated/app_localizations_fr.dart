@@ -52,4 +52,23 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get keypadAmountSemanticLabel => 'Montant';
+
+  @override
+  String get commonUndo => 'Annuler';
+
+  @override
+  String get historyExpenseDeletedMessage => 'Dépense supprimée';
+
+  @override
+  String get historyEmptyTitle => 'Rien ici pour l\'instant';
+
+  @override
+  String get historyEmptySubtitle =>
+      'Les dépenses que vous enregistrez apparaîtront ici';
+
+  @override
+  String get navCaptureLabel => 'Enregistrer une dépense';
+
+  @override
+  String get navHistoryLabel => 'Historique';
 }

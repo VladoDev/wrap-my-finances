@@ -193,6 +193,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Amount'**
   String get keypadAmountSemanticLabel;
+
+  /// Action label for reversing the most recent action, e.g. a deleted expense.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get commonUndo;
+
+  /// Snackbar text shown after swiping an expense away in the history screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense deleted'**
+  String get historyExpenseDeletedMessage;
+
+  /// Heading shown in the history screen when no expenses have been logged.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet'**
+  String get historyEmptyTitle;
+
+  /// Body text shown under historyEmptyTitle in the history screen's empty state.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses you log will show up here'**
+  String get historyEmptySubtitle;
+
+  /// Semantic/visible label for the navigation bar's capture destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Log expense'**
+  String get navCaptureLabel;
+
+  /// Semantic/visible label for the navigation bar's history destination.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get navHistoryLabel;
 }
 
 class _AppLocalizationsDelegate

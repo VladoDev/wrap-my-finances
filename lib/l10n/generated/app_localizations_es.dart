@@ -53,4 +53,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get keypadAmountSemanticLabel => 'Monto';
+
+  @override
+  String get commonUndo => 'Deshacer';
+
+  @override
+  String get historyExpenseDeletedMessage => 'Gasto eliminado';
+
+  @override
+  String get historyEmptyTitle => 'Todavía no hay nada aquí';
+
+  @override
+  String get historyEmptySubtitle => 'Los gastos que registres aparecerán aquí';
+
+  @override
+  String get navCaptureLabel => 'Registrar gasto';
+
+  @override
+  String get navHistoryLabel => 'Historial';
 }

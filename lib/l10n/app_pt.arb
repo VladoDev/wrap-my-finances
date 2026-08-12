@@ -14,5 +14,11 @@
   "categoryOther": "Outro",
   "categoryPickerTitle": "Escolha uma categoria",
   "expenseSaveErrorMessage": "Não foi possível salvar — tente novamente",
-  "keypadAmountSemanticLabel": "Valor"
+  "keypadAmountSemanticLabel": "Valor",
+  "commonUndo": "Desfazer",
+  "historyExpenseDeletedMessage": "Despesa excluída",
+  "historyEmptyTitle": "Ainda não há nada aqui",
+  "historyEmptySubtitle": "As despesas que você registrar vão aparecer aqui",
+  "navCaptureLabel": "Registrar despesa",
+  "navHistoryLabel": "Histórico"
 }

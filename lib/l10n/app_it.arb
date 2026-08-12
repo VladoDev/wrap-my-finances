@@ -14,5 +14,11 @@
   "categoryOther": "Altro",
   "categoryPickerTitle": "Scegli una categoria",
   "expenseSaveErrorMessage": "Impossibile salvare — riprova",
-  "keypadAmountSemanticLabel": "Importo"
+  "keypadAmountSemanticLabel": "Importo",
+  "commonUndo": "Annulla",
+  "historyExpenseDeletedMessage": "Spesa eliminata",
+  "historyEmptyTitle": "Non c'è ancora nulla qui",
+  "historyEmptySubtitle": "Le spese che registri appariranno qui",
+  "navCaptureLabel": "Registra spesa",
+  "navHistoryLabel": "Cronologia"
 }

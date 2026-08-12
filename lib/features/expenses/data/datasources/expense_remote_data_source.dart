@@ -55,11 +55,47 @@ class ExpenseRemoteDataSource {
     return expense;
   }
 
-  /// Soft-delete is a data-layer concern outside this feature's scope
-  /// (FR-017); this hard-deletes for contract completeness only — no caller
-  /// exists yet.
+  /// Soft-deletes [expenseId]: sets `deletedAt` rather than removing the
+  /// document — corrected from `004`'s hard-delete stub now that this
+  /// method has its first real caller (`005`). Fire-and-forget at the call
+  /// site: nothing gates user-visible feedback on this write's completion,
+  /// since the entry already left the view at swipe time — see
+  /// `specs/005-expense-history-undo/research.md`.
   Future<void> delete(String userId, String expenseId) {
-    return _expensesRef(userId).doc(expenseId).delete();
+    return _expensesRef(
+      userId,
+    ).doc(expenseId).update({'deletedAt': Timestamp.now()});
+  }
+
+  /// Live query of every non-deleted expense, newest first, unscoped by
+  /// month — mirrors the existing `(deletedAt, date)` Firestore index.
+  Stream<List<Expense>> watchAll(String userId) {
+    return _expensesRef(userId)
+        .where('deletedAt', isNull: true)
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map(
+                (doc) => ExpenseModel.fromJson(doc.id, doc.data()).toEntity(),
+              )
+              .toList(),
+        );
+  }
+
+  /// Hard-deletes every expense whose `deletedAt` is older than [cutoff].
+  /// A single-field range query — no composite index needed.
+  Future<void> purgeOlderThan(String userId, DateTime cutoff) async {
+    final expired = await _expensesRef(
+      userId,
+    ).where('deletedAt', isLessThan: Timestamp.fromDate(cutoff)).get();
+    if (expired.docs.isEmpty) return;
+
+    final batch = _firestore.batch();
+    for (final doc in expired.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
   }
 
   /// Live query for a month's expenses, ordered by date — not exercised by
