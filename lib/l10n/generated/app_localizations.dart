@@ -133,6 +133,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'DEV BUILD'**
   String get commonDevBuild;
+
+  /// Default category name for food and dining expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get categoryFood;
+
+  /// Default category name for transportation expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get categoryTransport;
+
+  /// Default category name for shopping expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get categoryShopping;
+
+  /// Default category name for entertainment expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Entertainment'**
+  String get categoryEntertainment;
+
+  /// Default category name for health expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get categoryHealth;
+
+  /// Default category name for housing expenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Housing'**
+  String get categoryHousing;
+
+  /// Default category name for expenses that don't fit another category.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get categoryOther;
+
+  /// Heading of the bottom sheet shown after entering an amount, to pick the expense's category.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a category'**
+  String get categoryPickerTitle;
+
+  /// Non-blocking snackbar text shown when an expense can't be written to local storage.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save — try again'**
+  String get expenseSaveErrorMessage;
+
+  /// Screen-reader label for the large amount display on the capture screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get keypadAmountSemanticLabel;
 }
 
 class _AppLocalizationsDelegate

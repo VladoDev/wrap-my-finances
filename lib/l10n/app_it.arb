@@ -4,5 +4,15 @@
   "commonCancel": "Annulla",
   "commonRetry": "Riprova",
   "commonDelete": "Elimina",
-  "commonDevBuild": "VERSIONE DEV"
+  "commonDevBuild": "VERSIONE DEV",
+  "categoryFood": "Cibo",
+  "categoryTransport": "Trasporti",
+  "categoryShopping": "Shopping",
+  "categoryEntertainment": "Intrattenimento",
+  "categoryHealth": "Salute",
+  "categoryHousing": "Casa",
+  "categoryOther": "Altro",
+  "categoryPickerTitle": "Scegli una categoria",
+  "expenseSaveErrorMessage": "Impossibile salvare — riprova",
+  "keypadAmountSemanticLabel": "Importo"
 }

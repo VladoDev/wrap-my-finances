@@ -34,6 +34,11 @@ class _FakeCategoryRepository implements CategoryRepository {
   Future<Result<void>> incrementUsage(String categoryId) async {
     return const Success(null);
   }
+
+  @override
+  Future<Result<void>> seedDefaultsIfNeeded() async {
+    return const Success(null);
+  }
 }
 
 void main() {

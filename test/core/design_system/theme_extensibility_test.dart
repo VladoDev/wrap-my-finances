@@ -26,6 +26,15 @@ const _alternateColors = AppColorsExtension(
   danger: Color(0xFF0000FF),
   onDanger: Color(0xFFFFFFFF),
   outline: Color(0xFFFFFFFF),
+  categoryPalette: [
+    Color(0xFF111111),
+    Color(0xFF222222),
+    Color(0xFF333333),
+    Color(0xFF444444),
+    Color(0xFF555555),
+    Color(0xFF666666),
+    Color(0xFF777777),
+  ],
 );
 
 ThemeData _alternateTheme() {

@@ -16,6 +16,7 @@ const String _fontFamily = 'Nunito';
 class AppTypographyExtension extends ThemeExtension<AppTypographyExtension> {
   /// Creates a typography-token set. Every field is required.
   const AppTypographyExtension({
+    required this.displayLarge,
     required this.titleMedium,
     required this.bodyMedium,
     required this.bodySmall,
@@ -28,6 +29,13 @@ class AppTypographyExtension extends ThemeExtension<AppTypographyExtension> {
   /// fields.
   // ignore: prefer_constructors_over_static_methods
   static AppTypographyExtension get standard => const AppTypographyExtension(
+    displayLarge: TextStyle(
+      fontFamily: _fontFamily,
+      fontWeight: FontWeight.w700,
+      fontSize: 56,
+      height: 1.1,
+      fontFeatures: [FontFeature.tabularFigures()],
+    ),
     titleMedium: TextStyle(
       fontFamily: _fontFamily,
       fontWeight: FontWeight.w700,
@@ -55,6 +63,9 @@ class AppTypographyExtension extends ThemeExtension<AppTypographyExtension> {
     ),
   );
 
+  /// `AmountDisplay`'s large amount readout.
+  final TextStyle displayLarge;
+
   /// `AppCard` title slot.
   final TextStyle titleMedium;
 
@@ -69,12 +80,14 @@ class AppTypographyExtension extends ThemeExtension<AppTypographyExtension> {
 
   @override
   AppTypographyExtension copyWith({
+    TextStyle? displayLarge,
     TextStyle? titleMedium,
     TextStyle? bodyMedium,
     TextStyle? bodySmall,
     TextStyle? labelLarge,
   }) {
     return AppTypographyExtension(
+      displayLarge: displayLarge ?? this.displayLarge,
       titleMedium: titleMedium ?? this.titleMedium,
       bodyMedium: bodyMedium ?? this.bodyMedium,
       bodySmall: bodySmall ?? this.bodySmall,
@@ -89,6 +102,7 @@ class AppTypographyExtension extends ThemeExtension<AppTypographyExtension> {
   ) {
     if (other is! AppTypographyExtension) return this;
     return AppTypographyExtension(
+      displayLarge: TextStyle.lerp(displayLarge, other.displayLarge, t)!,
       titleMedium: TextStyle.lerp(titleMedium, other.titleMedium, t)!,
       bodyMedium: TextStyle.lerp(bodyMedium, other.bodyMedium, t)!,
       bodySmall: TextStyle.lerp(bodySmall, other.bodySmall, t)!,

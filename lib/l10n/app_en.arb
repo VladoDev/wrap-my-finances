@@ -19,5 +19,45 @@
   "commonDevBuild": "DEV BUILD",
   "@commonDevBuild": {
     "description": "Label shown on the dev-flavor ribbon banner, never present in prod builds."
+  },
+  "categoryFood": "Food",
+  "@categoryFood": {
+    "description": "Default category name for food and dining expenses."
+  },
+  "categoryTransport": "Transport",
+  "@categoryTransport": {
+    "description": "Default category name for transportation expenses."
+  },
+  "categoryShopping": "Shopping",
+  "@categoryShopping": {
+    "description": "Default category name for shopping expenses."
+  },
+  "categoryEntertainment": "Entertainment",
+  "@categoryEntertainment": {
+    "description": "Default category name for entertainment expenses."
+  },
+  "categoryHealth": "Health",
+  "@categoryHealth": {
+    "description": "Default category name for health expenses."
+  },
+  "categoryHousing": "Housing",
+  "@categoryHousing": {
+    "description": "Default category name for housing expenses."
+  },
+  "categoryOther": "Other",
+  "@categoryOther": {
+    "description": "Default category name for expenses that don't fit another category."
+  },
+  "categoryPickerTitle": "Choose a category",
+  "@categoryPickerTitle": {
+    "description": "Heading of the bottom sheet shown after entering an amount, to pick the expense's category."
+  },
+  "expenseSaveErrorMessage": "Couldn't save — try again",
+  "@expenseSaveErrorMessage": {
+    "description": "Non-blocking snackbar text shown when an expense can't be written to local storage."
+  },
+  "keypadAmountSemanticLabel": "Amount",
+  "@keypadAmountSemanticLabel": {
+    "description": "Screen-reader label for the large amount display on the capture screen."
   }
 }

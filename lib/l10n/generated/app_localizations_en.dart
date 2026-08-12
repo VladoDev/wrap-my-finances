@@ -22,4 +22,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonDevBuild => 'DEV BUILD';
+
+  @override
+  String get categoryFood => 'Food';
+
+  @override
+  String get categoryTransport => 'Transport';
+
+  @override
+  String get categoryShopping => 'Shopping';
+
+  @override
+  String get categoryEntertainment => 'Entertainment';
+
+  @override
+  String get categoryHealth => 'Health';
+
+  @override
+  String get categoryHousing => 'Housing';
+
+  @override
+  String get categoryOther => 'Other';
+
+  @override
+  String get categoryPickerTitle => 'Choose a category';
+
+  @override
+  String get expenseSaveErrorMessage => 'Couldn\'t save — try again';
+
+  @override
+  String get keypadAmountSemanticLabel => 'Amount';
 }

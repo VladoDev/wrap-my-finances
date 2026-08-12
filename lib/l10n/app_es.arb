@@ -4,5 +4,15 @@
   "commonCancel": "Cancelar",
   "commonRetry": "Reintentar",
   "commonDelete": "Eliminar",
-  "commonDevBuild": "VERSIÓN DEV"
+  "commonDevBuild": "VERSIÓN DEV",
+  "categoryFood": "Comida",
+  "categoryTransport": "Transporte",
+  "categoryShopping": "Compras",
+  "categoryEntertainment": "Entretenimiento",
+  "categoryHealth": "Salud",
+  "categoryHousing": "Vivienda",
+  "categoryOther": "Otro",
+  "categoryPickerTitle": "Elige una categoría",
+  "expenseSaveErrorMessage": "No se pudo guardar — inténtalo de nuevo",
+  "keypadAmountSemanticLabel": "Monto"
 }

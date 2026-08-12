@@ -15,4 +15,11 @@ abstract class CategoryRepository {
   /// Called after a category is used to log an expense, to keep frequency
   /// ordering accurate.
   Future<Result<void>> incrementUsage(String categoryId);
+
+  /// Seeds the default category set if the user has none yet. Idempotent —
+  /// safe to call on every app start. Requires an authenticated UID (call
+  /// via `AuthRepository.runWhenAuthenticated`), since writing a category
+  /// requires `isOwner(userId)`. Additive member introduced by `004` — see
+  /// `specs/004-quick-expense-capture/contracts/expense-capture-api.md`.
+  Future<Result<void>> seedDefaultsIfNeeded();
 }
