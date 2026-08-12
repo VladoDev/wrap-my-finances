@@ -39,6 +39,10 @@ launch, write to their own Firestore project, and can be installed side by side 
   tests.
 - **Anonymous sign-in during `bootstrap()`**, non-blocking, with the in-memory buffer for
   expenses logged before the UID resolves.
+- Set up `l10n.yaml`, `flutter_localizations`, and `gen_l10n`.
+- Author all five ARB files (`en`, `es`, `pt`, `it`, `fr`), including the `category_*` keys for
+  every default category, per the key convention in TECH_STACK.md § Localization.
+- Add the CI check that fails the build on any missing translation key in any locale.
 - Enable Firestore offline persistence with unlimited cache.
 - Build the custom oversized numeric keypad, including decimal, maximum, and formatting rules.
 - Seed default categories on first launch.
@@ -56,10 +60,23 @@ and appears on another device after reconnecting.
 
 ---
 
-## Phase 2: The Wrapped Experience
+## Phase 2: History, Correction & The Wrapped Experience
 
-**Goal:** The monthly summary that drives retention.
+**Goal:** The user can review and correct what they've logged, and the monthly summary that
+drives retention is built only on top of that corrected data.
 
+> **Amendment (documentation, not constitutional):** Timeline/history and swipe-to-delete-with-undo
+> moved here from Phase 4, where they originally sat next to the 30-day purge as pure polish.
+> Wrapped folds a month of expenses into an aggregate; if the only way to fix a mis-logged expense
+> ships two phases later, Wrapped spends its entire Phase-2-through-3 life summarizing data the
+> user had no way to correct. The monthly summary cannot be built on data the user can't correct —
+> so the correction path (history + delete + undo) is sequenced first within this phase, and
+> Wrapped is built on top of it. This reorders build sequence and phase scope only; it changes no
+> constitutional principle and no shipped feature set.
+
+- Timeline screen: chronological list grouped by day with a per-day subtotal, swipe-to-delete,
+  soft delete, and undo.
+- 30-day purge of soft-deleted expenses.
 - `monthKey` aggregation queries and the client-side fold into a `MonthlySummary` entity.
 - Full-screen story UI: progress bars, tap/long-press/swipe controls.
 - Spring-physics animations via `flutter_animate`, with reduce-motion fallbacks.
@@ -69,8 +86,9 @@ and appears on another device after reconnecting.
 - The under-5-expenses suppression rule and the partial-sync state.
 - Manual entry point in Settings for past months.
 
-**Done when:** a user with a month of data sees Wrapped exactly once on the first open of the new
-month, can navigate it fully, and can share a card.
+**Done when:** a user can review their logged expenses grouped by day, swipe one away with a
+working undo window, and — with a month of corrected data in place — sees Wrapped exactly once on
+the first open of the new month, can navigate it fully, and can share a card.
 
 ---
 
@@ -95,13 +113,12 @@ month, can navigate it fully, and can share a card.
 
 - Firebase Crashlytics and Analytics, with the `time_to_log_expense` and
   `wrapped_completion_rate` events and the no-financial-data-in-telemetry rule enforced.
-- Timeline screen with swipe-to-delete, soft delete, and undo.
-- 30-day purge of soft-deleted expenses.
 - Haptic feedback across the app, respecting the Settings toggle.
 - Accessibility audit: contrast, tap targets, semantic labels, 200% text scale.
+- Native-speaker translation quality review across all five locales, prioritizing the
+  `wrapped_*` copy flagged for human review in the ARB files.
 - Account deletion flow (required by both stores).
 - Privacy policy, App Store privacy nutrition labels, Play Data Safety form.
-- Localization pass — Spanish and English.
 - QA on physical iOS and Android devices, including a low-end Android and airplane-mode runs.
 - Store assets highlighting the Wrapped feature.
 - Submit to App Store and Google Play from the `prod` flavor.

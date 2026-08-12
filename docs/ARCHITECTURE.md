@@ -24,15 +24,26 @@ Concretely, and enforced in code review:
 - **Features never import each other's internals.** If `wrapped` needs expenses, it depends on
   `expenses/domain`, and only on the abstract repository.
 - **`core/` depends on nothing in `features/`.**
+- **The generated localization class is consumed only from `presentation/`.** `domain/` and
+  `data/` MUST NOT import it — an entity does not know what language it will be displayed in.
+  Untranslated identifiers (a category's `nameKey`, an enum) cross the boundary; resolving them to
+  display text happens in the widget tree. See Constitution Principle 9.
 
 ## Directory Structure
 
 ```text
+l10n.yaml                            # gen_l10n config: template locale, output dir — repo root
 lib/
 ├── main_dev.dart                    # entrypoint, dev flavor
 ├── main_prod.dart                   # entrypoint, prod flavor
 ├── bootstrap.dart                   # shared init: Firebase, DI, error handlers, runApp
 ├── app.dart                         # MaterialApp.router
+├── l10n/
+│   ├── app_en.arb                   # template locale
+│   ├── app_es.arb
+│   ├── app_pt.arb
+│   ├── app_it.arb
+│   └── app_fr.arb
 ├── core/
 │   ├── config/
 │   │   ├── app_environment.dart     # AppEnvironment enum
@@ -44,6 +55,7 @@ lib/
 │   ├── errors/
 │   │   ├── failure.dart             # sealed Failure union (freezed)
 │   │   └── result.dart              # Result<T> = Either<Failure, T>
+│   ├── l10n/                        # gen_l10n output (AppLocalizations), generated, committed
 │   ├── analytics/                   # AnalyticsService abstraction + Firebase impl
 │   ├── logging/                     # Logger abstraction + Crashlytics sink
 │   ├── routing/

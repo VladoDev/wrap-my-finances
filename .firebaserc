@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "wrap-my-finances-dev",
+    "dev": "wrap-my-finances-dev",
+    "prod": "wrap-my-finances-prod"
+  }
+}

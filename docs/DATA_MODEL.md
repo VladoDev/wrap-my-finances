@@ -99,10 +99,13 @@ Path: `users/{userId}`
 
 Path: `users/{userId}/categories/{categoryId}`
 
+A default category (seeded on first launch) carries a translation key and no literal name:
+
 ```json
 {
   "id": "cat_food",
-  "name": "Food & Dining",
+  "nameKey": "category_food",
+  "name": null,
   "color": "#FF5722",
   "iconName": "restaurant",
   "isDefault": true,
@@ -114,6 +117,33 @@ Path: `users/{userId}/categories/{categoryId}`
 }
 ```
 
+A user-created category carries the literal text they typed and no translation key:
+
+```json
+{
+  "id": "cat_9f2ac1",
+  "nameKey": null,
+  "name": "Side Hustle",
+  "color": "#00BFA5",
+  "iconName": "briefcase",
+  "isDefault": false,
+  "sortOrder": 12,
+  "isActive": true,
+  "usageCount": 3,
+  "lastUsedAt": "2026-08-07T09:15:00Z",
+  "schemaVersion": 1
+}
+```
+
+- **Invariant: exactly one of `nameKey` / `name` is non-null, never both, never neither.**
+  `nameKey` is non-null only when `isDefault` is `true`; it is a key into the app's ARB files
+  (e.g. `"category_food"`, see `docs/TECH_STACK.md` § Localization for the naming convention) and
+  is resolved against the active locale at read time. `name` is non-null only when `isDefault` is
+  `false`; it is the literal text the user typed and is never translated.
+- **Renaming a default category is a one-way conversion to a user category** (Phase 3): the write
+  clears `nameKey` to `null`, sets `name` to the literal text the user chose, and flips `isDefault`
+  to `false`. From that point the category no longer tracks the device locale — it keeps whatever
+  string the user set, in whatever language they typed it.
 - `usageCount` and `lastUsedAt` let the category sheet surface the user's most-used categories
   first. This is the highest-leverage optimization available for the 3-second rule: after two
   weeks of use, the right category is almost always in the first row.
@@ -260,10 +290,17 @@ service cloud.firestore {
     }
 
     function isValidCategory() {
-      return incoming().keys().hasAll(['name', 'color', 'iconName'])
-        && incoming().name is string
-        && incoming().name.size() > 0
-        && incoming().name.size() <= 40
+      return incoming().keys().hasAll(['nameKey', 'name', 'color', 'iconName'])
+        && (incoming().nameKey is string || incoming().nameKey == null)
+        && (incoming().name is string || incoming().name == null)
+        && (incoming().nameKey is string) != (incoming().name is string)
+        && (!(incoming().nameKey is string) || (
+              incoming().nameKey.size() > 0
+              && incoming().nameKey.size() <= 64
+              && incoming().nameKey.matches('^[a-z0-9_]+$')))
+        && (!(incoming().name is string) || (
+              incoming().name.size() > 0
+              && incoming().name.size() <= 40))
         && incoming().color is string
         && incoming().color.matches('^#[0-9A-Fa-f]{6}$')
         && incoming().iconName is string
@@ -310,6 +347,10 @@ Notes:
 - Expense `delete` is allowed so the 30-day purge of soft-deleted documents can run from the
   client. If that purge ever moves to a Cloud Function, tighten this to `false`.
 - The `createdAt` immutability check on update prevents history rewriting.
+- `isValidCategory()`'s `(incoming().nameKey is string) != (incoming().name is string)` is an XOR:
+  it rejects a document where both `nameKey` and `name` are set, and rejects one where neither is,
+  enforcing the § Category Document invariant above server-side rather than trusting the client
+  to send exactly one.
 
 ### Rules are tested, not eyeballed
 

@@ -1,0 +1,98 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidExpense() {
+      return incoming().keys().hasOnly([
+               'id', 'amountMinor', 'currencyCode', 'categoryId', 'date',
+               'monthKey', 'note', 'createdAt', 'syncedAt', 'deletedAt',
+               'schemaVersion'
+             ])
+        && incoming().keys().hasAll([
+               'amountMinor', 'currencyCode', 'categoryId', 'date', 'monthKey'
+             ])
+        && incoming().amountMinor is int
+        && incoming().amountMinor > 0
+        && incoming().amountMinor <= 100000000
+        && incoming().currencyCode is string
+        && incoming().currencyCode.size() == 3
+        && incoming().categoryId is string
+        && incoming().categoryId.size() <= 64
+        && incoming().date is timestamp
+        && incoming().monthKey is string
+        && incoming().monthKey.matches('^[0-9]{4}-[0-9]{2}$')
+        && (!('note' in incoming()) || incoming().note == null
+            || (incoming().note is string && incoming().note.size() <= 280));
+    }
+
+    function isValidUserProfile() {
+      return incoming().keys().hasOnly([
+               'uid', 'createdAt', 'lastLogin', 'isAnonymous', 'currencyCode',
+               'locale', 'timeZone', 'defaultCategoryId', 'wrappedLastSeenMonth',
+               'hapticsEnabled', 'schemaVersion'
+             ])
+        && incoming().keys().hasAll(['uid', 'timeZone'])
+        && incoming().uid is string
+        && incoming().timeZone is string
+        && incoming().timeZone.size() > 0
+        && (!('wrappedLastSeenMonth' in incoming())
+            || incoming().wrappedLastSeenMonth == null
+            || (incoming().wrappedLastSeenMonth is string
+                && incoming().wrappedLastSeenMonth.matches('^[0-9]{4}-[0-9]{2}$')));
+    }
+
+    function isValidCategory() {
+      return incoming().keys().hasAll(['nameKey', 'name', 'color', 'iconName'])
+        && (incoming().nameKey is string || incoming().nameKey == null)
+        && (incoming().name is string || incoming().name == null)
+        && (incoming().nameKey is string) != (incoming().name is string)
+        && (!(incoming().nameKey is string) || (
+              incoming().nameKey.size() > 0
+              && incoming().nameKey.size() <= 64
+              && incoming().nameKey.matches('^[a-z0-9_]+$')))
+        && (!(incoming().name is string) || (
+              incoming().name.size() > 0
+              && incoming().name.size() <= 40))
+        && incoming().color is string
+        && incoming().color.matches('^#[0-9A-Fa-f]{6}$')
+        && incoming().iconName is string
+        && incoming().iconName.size() <= 40;
+    }
+
+    match /users/{userId} {
+      allow read:   if isOwner(userId);
+      allow create: if isOwner(userId) && incoming().uid == userId && isValidUserProfile();
+      allow update: if isOwner(userId)
+                    && incoming().uid == resource.data.uid
+                    && isValidUserProfile();
+      allow delete: if false;
+
+      match /categories/{categoryId} {
+        allow read:   if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidCategory();
+        allow delete: if false;
+      }
+
+      match /expenses/{expenseId} {
+        allow read:   if isOwner(userId);
+        allow create: if isOwner(userId) && isValidExpense();
+        allow update: if isOwner(userId) && isValidExpense()
+                      && incoming().createdAt == resource.data.createdAt;
+        allow delete: if isOwner(userId);
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

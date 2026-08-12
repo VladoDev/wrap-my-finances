@@ -1,0 +1,168 @@
+{
+  "@@locale": "en",
+  "commonContinue": "Continue",
+  "@commonContinue": {
+    "description": "Label for a primary button that advances to the next step."
+  },
+  "commonCancel": "Cancel",
+  "@commonCancel": {
+    "description": "Label for a button that dismisses the current action without saving."
+  },
+  "commonRetry": "Retry",
+  "@commonRetry": {
+    "description": "Label for a button that retries a failed action."
+  },
+  "commonDelete": "Delete",
+  "@commonDelete": {
+    "description": "Label for a destructive button that removes an item."
+  },
+  "commonDevBuild": "DEV BUILD",
+  "@commonDevBuild": {
+    "description": "Label shown on the dev-flavor ribbon banner, never present in prod builds."
+  },
+  "categoryFood": "Food",
+  "@categoryFood": {
+    "description": "Default category name for food and dining expenses."
+  },
+  "categoryTransport": "Transport",
+  "@categoryTransport": {
+    "description": "Default category name for transportation expenses."
+  },
+  "categoryShopping": "Shopping",
+  "@categoryShopping": {
+    "description": "Default category name for shopping expenses."
+  },
+  "categoryEntertainment": "Entertainment",
+  "@categoryEntertainment": {
+    "description": "Default category name for entertainment expenses."
+  },
+  "categoryHealth": "Health",
+  "@categoryHealth": {
+    "description": "Default category name for health expenses."
+  },
+  "categoryHousing": "Housing",
+  "@categoryHousing": {
+    "description": "Default category name for housing expenses."
+  },
+  "categoryOther": "Other",
+  "@categoryOther": {
+    "description": "Default category name for expenses that don't fit another category."
+  },
+  "categoryPickerTitle": "Choose a category",
+  "@categoryPickerTitle": {
+    "description": "Heading of the bottom sheet shown after entering an amount, to pick the expense's category."
+  },
+  "expenseSaveErrorMessage": "Couldn't save — try again",
+  "@expenseSaveErrorMessage": {
+    "description": "Non-blocking snackbar text shown when an expense can't be written to local storage."
+  },
+  "keypadAmountSemanticLabel": "Amount",
+  "@keypadAmountSemanticLabel": {
+    "description": "Screen-reader label for the large amount display on the capture screen."
+  },
+  "commonUndo": "Undo",
+  "@commonUndo": {
+    "description": "Action label for reversing the most recent action, e.g. a deleted expense."
+  },
+  "historyExpenseDeletedMessage": "Expense deleted",
+  "@historyExpenseDeletedMessage": {
+    "description": "Snackbar text shown after swiping an expense away in the history screen."
+  },
+  "historyEmptyTitle": "Nothing here yet",
+  "@historyEmptyTitle": {
+    "description": "Heading shown in the history screen when no expenses have been logged."
+  },
+  "historyEmptySubtitle": "Expenses you log will show up here",
+  "@historyEmptySubtitle": {
+    "description": "Body text shown under historyEmptyTitle in the history screen's empty state."
+  },
+  "navCaptureLabel": "Log expense",
+  "@navCaptureLabel": {
+    "description": "Semantic/visible label for the navigation bar's capture destination."
+  },
+  "navHistoryLabel": "History",
+  "@navHistoryLabel": {
+    "description": "Semantic/visible label for the navigation bar's history destination."
+  },
+  "wrappedGrandTotalTitle": "You spent {amount} this month",
+  "@wrappedGrandTotalTitle": {
+    "description": "Wrapped story: the month's total spend. Copy carries the product's voice — flagged for native-speaker review, not machine translation.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "$150.00"
+      }
+    }
+  },
+  "wrappedBlackHoleTitle": "Your top category was {category}",
+  "@wrappedBlackHoleTitle": {
+    "description": "Wrapped story: the month's highest-spend category. Copy carries the product's voice — flagged for native-speaker review, not machine translation.",
+    "placeholders": {
+      "category": {
+        "type": "String",
+        "example": "Food"
+      }
+    }
+  },
+  "wrappedHabitTitle": "You logged {count} transactions in {category}",
+  "@wrappedHabitTitle": {
+    "description": "Wrapped story: how many expenses were logged in the top category. Copy carries the product's voice — flagged for native-speaker review, not machine translation.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "category": {
+        "type": "String",
+        "example": "Food"
+      }
+    }
+  },
+  "wrappedBiggestHitTitle": "Your biggest single expense was {amount}",
+  "@wrappedBiggestHitTitle": {
+    "description": "Wrapped story: the single largest expense of the month. Copy carries the product's voice — flagged for native-speaker review, not machine translation.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "$85.00"
+      }
+    }
+  },
+  "wrappedSyncingMessage": "Still syncing your data…",
+  "@wrappedSyncingMessage": {
+    "description": "Shown instead of any figure when the local cache doesn't yet match the server's document count for the month. Flagged for native-speaker review."
+  },
+  "wrappedShareAmountsToggleLabel": "Show amounts",
+  "@wrappedShareAmountsToggleLabel": {
+    "description": "Label for the visible toggle that opts into including monetary figures on the shared image, off by default."
+  },
+  "wrappedShareButtonLabel": "Share",
+  "@wrappedShareButtonLabel": {
+    "description": "Label for the button that rasterizes and shares the final Wrapped card."
+  },
+  "wrappedShareCardCountLabel": "{count, plural, one{{count} expense} other{{count} expenses}}",
+  "@wrappedShareCardCountLabel": {
+    "description": "Transaction count shown on the shareable card, pluralized. Flagged for native-speaker review.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "wrappedSuppressedCardTitle": "Curious about last month?",
+  "@wrappedSuppressedCardTitle": {
+    "description": "Title of the small, dismissible card offered on the history screen when the month had too few expenses to auto-trigger Wrapped. Flagged for native-speaker review."
+  },
+  "wrappedSuppressedCardCta": "See your summary",
+  "@wrappedSuppressedCardCta": {
+    "description": "Call-to-action label on the suppressed-Wrapped card."
+  },
+  "wrappedMonthPickerEntryLabel": "Past summaries",
+  "@wrappedMonthPickerEntryLabel": {
+    "description": "Label for the button on the history screen that opens the month picker for past Wrapped summaries."
+  },
+  "wrappedMonthPickerTitle": "Choose a month",
+  "@wrappedMonthPickerTitle": {
+    "description": "Heading of the bottom sheet listing past months with data, for manual Wrapped access."
+  }
+}

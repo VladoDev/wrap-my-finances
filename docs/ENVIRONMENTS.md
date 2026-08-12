@@ -6,15 +6,17 @@ must read this file before running a single `firebase` or `flutterfire` command.
 
 ---
 
-## 0. Placeholders — replace before first run
+## 0. Resolved identifiers
 
-Search-and-replace these across the repository exactly once, at project bootstrap:
+These were decided once, at project bootstrap (Phase 0 / `specs/001-environment-foundation`), and
+are now fixed across the repository — the org segment and application ID are immutable after the
+first store submission, so they are not meant to change again:
 
-| Placeholder | Meaning | Example |
-| --- | --- | --- |
-| `yourorg` | Reverse-domain org segment | `estudiomartinez` |
-| `wrap-my-finances-dev` | Firebase project ID, dev | keep or adjust |
-| `wrap-my-finances-prod` | Firebase project ID, prod | keep or adjust |
+| Value | Meaning |
+| --- | --- |
+| `vlad` | Reverse-domain org segment |
+| `wrap-my-finances-dev` | Firebase project ID, dev |
+| `wrap-my-finances-prod` | Firebase project ID, prod |
 
 > **Do not use `com.example.*`.** Google Play rejects it, and the application ID / bundle ID
 > is **immutable** after the first store submission. Decide this once, correctly.
@@ -30,7 +32,7 @@ its own constraints — using the wrong shape in the wrong place breaks the buil
 | Home screen label | `Wrap` / `Wrap Dev` | See below |
 | Dart package (`pubspec.yaml` `name:`) | `wrap_my_finances` | Must be `lower_snake_case` |
 | Repository / directory | `wrap-my-finances` | kebab-case convention |
-| Application ID / bundle ID | `com.yourorg.wrapmyfinances` | No hyphens or underscores permitted |
+| Application ID / bundle ID | `com.vlad.wrapmyfinances` | No hyphens or underscores permitted |
 | Firebase project ID | `wrap-my-finances-{env}` | Globally unique, ≤30 chars, kebab-case |
 
 **On the home screen label:** iOS truncates icon labels at roughly 12 characters and Android at
@@ -51,8 +53,8 @@ copying one row — do not add it until there is a real reason (see Anti-Goals).
 | Flutter flavor | `dev` | `prod` |
 | Entrypoint | `lib/main_dev.dart` | `lib/main_prod.dart` |
 | Firebase project ID | `wrap-my-finances-dev` | `wrap-my-finances-prod` |
-| Android applicationId | `com.yourorg.wrapmyfinances.dev` | `com.yourorg.wrapmyfinances` |
-| iOS bundle ID | `com.yourorg.wrapmyfinances.dev` | `com.yourorg.wrapmyfinances` |
+| Android applicationId | `com.vlad.wrapmyfinances.dev` | `com.vlad.wrapmyfinances` |
+| iOS bundle ID | `com.vlad.wrapmyfinances.dev` | `com.vlad.wrapmyfinances` |
 | Home screen label | `Wrap Dev` | `Wrap` |
 | Store listing name | — | `Wrap My Finances` |
 | App icon | Coral badge overlay | Clean |
@@ -162,7 +164,7 @@ could disagree with.
 ```kotlin
 android {
     defaultConfig {
-        applicationId = "com.yourorg.wrapmyfinances"
+        applicationId = "com.vlad.wrapmyfinances"
         minSdk = 24
     }
     flavorDimensions += "env"
@@ -243,9 +245,13 @@ command rather than relying on the default.
 ### 5.3 Create both Firebase projects
 
 ```bash
-firebase projects:create wrap-my-finances-dev  --display-name "Wrap My Finances (Dev)"
+firebase projects:create wrap-my-finances-dev  --display-name "Wrap My Finances Dev"
 firebase projects:create wrap-my-finances-prod --display-name "Wrap My Finances"
 ```
+
+> Google Cloud project display names reject parentheses (`(`/`)`) — `--display-name "Wrap My
+> Finances (Dev)"` fails with `project display name contains invalid characters`. Use
+> `"Wrap My Finances Dev"` instead, as shown above.
 
 Notes the agent must handle:
 
@@ -279,9 +285,9 @@ flutterfire configure \
   --project=wrap-my-finances-dev \
   --platforms=android,ios \
   --out=lib/core/config/firebase_options_dev.dart \
-  --android-package-name=com.yourorg.wrapmyfinances.dev \
+  --android-package-name=com.vlad.wrapmyfinances.dev \
   --android-out=android/app/src/dev/google-services.json \
-  --ios-bundle-id=com.yourorg.wrapmyfinances.dev \
+  --ios-bundle-id=com.vlad.wrapmyfinances.dev \
   --ios-out=ios/flavors/dev/GoogleService-Info.plist \
   --ios-build-config=Debug-dev \
   --yes
@@ -291,9 +297,9 @@ flutterfire configure \
   --project=wrap-my-finances-prod \
   --platforms=android,ios \
   --out=lib/core/config/firebase_options_prod.dart \
-  --android-package-name=com.yourorg.wrapmyfinances \
+  --android-package-name=com.vlad.wrapmyfinances \
   --android-out=android/app/src/prod/google-services.json \
-  --ios-bundle-id=com.yourorg.wrapmyfinances \
+  --ios-bundle-id=com.vlad.wrapmyfinances \
   --ios-out=ios/flavors/prod/GoogleService-Info.plist \
   --ios-build-config=Release-prod \
   --yes
