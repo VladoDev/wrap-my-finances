@@ -26,6 +26,9 @@ class _FakeAnalyticsService implements AnalyticsService {
 
   @override
   void logExpenseTimeToLog(Duration elapsed) => loggedDurations.add(elapsed);
+
+  @override
+  void logWrappedCompletion(double completionRatio) {}
 }
 
 void main() {

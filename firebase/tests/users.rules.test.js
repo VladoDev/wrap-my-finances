@@ -111,4 +111,70 @@ describe('users security rules', () => {
       setDoc(doc(anon.firestore(), 'users/alice'), validUser('alice')),
     );
   });
+
+  // isValidUserProfile() — added by 006 (specs/006-monthly-wrapped-summary),
+  // the first feature to actually write this document. See
+  // contracts/security-rules-delta.md.
+
+  it('owner can create their profile with only uid and timeZone (what '
+    + 'UserProfileRepository.ensureExists() actually writes)', async () => {
+    const alice = testEnv.authenticatedContext('alice');
+    await assertSucceeds(
+      setDoc(doc(alice.firestore(), 'users/alice'), {
+        uid: 'alice',
+        timeZone: 'America/Mexico_City',
+      }),
+    );
+  });
+
+  it('owner can create their profile with a well-formed wrappedLastSeenMonth', async () => {
+    const alice = testEnv.authenticatedContext('alice');
+    await assertSucceeds(
+      setDoc(doc(alice.firestore(), 'users/alice'), {
+        uid: 'alice',
+        timeZone: 'America/Mexico_City',
+        wrappedLastSeenMonth: '2026-07',
+      }),
+    );
+  });
+
+  it('a malformed wrappedLastSeenMonth is rejected', async () => {
+    // Same "^[0-9]{4}-[0-9]{2}$" shape isValidExpense()'s monthKey already
+    // uses — it checks format, not calendar validity (e.g. "2026-13" would
+    // pass this regex, matching that existing, pre-006 behavior), so these
+    // cases exercise genuinely non-conforming strings.
+    const alice = testEnv.authenticatedContext('alice');
+    await assertFails(
+      setDoc(doc(alice.firestore(), 'users/alice'), {
+        uid: 'alice',
+        timeZone: 'America/Mexico_City',
+        wrappedLastSeenMonth: 'last month',
+      }),
+    );
+    await assertFails(
+      setDoc(doc(alice.firestore(), 'users/bob2'), {
+        uid: 'bob2',
+        timeZone: 'America/Mexico_City',
+        wrappedLastSeenMonth: '2026/07',
+      }),
+    );
+  });
+
+  it('creating a profile without timeZone is rejected', async () => {
+    const alice = testEnv.authenticatedContext('alice');
+    await assertFails(
+      setDoc(doc(alice.firestore(), 'users/alice'), { uid: 'alice' }),
+    );
+  });
+
+  it('creating a profile with an undeclared key is rejected', async () => {
+    const alice = testEnv.authenticatedContext('alice');
+    await assertFails(
+      setDoc(doc(alice.firestore(), 'users/alice'), {
+        uid: 'alice',
+        timeZone: 'America/Mexico_City',
+        notARealField: 'nope',
+      }),
+    );
+  });
 });

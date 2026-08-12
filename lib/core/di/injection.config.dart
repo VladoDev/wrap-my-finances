@@ -45,6 +45,20 @@ import 'package:wrap_my_finances/features/expenses/domain/usecases/log_expense.d
     as _i672;
 import 'package:wrap_my_finances/features/expenses/domain/usecases/purge_expired_deleted_expenses.dart'
     as _i520;
+import 'package:wrap_my_finances/features/user_profile/data/datasources/user_profile_remote_data_source.dart'
+    as _i330;
+import 'package:wrap_my_finances/features/user_profile/data/repositories/user_profile_repository_impl.dart'
+    as _i693;
+import 'package:wrap_my_finances/features/user_profile/domain/repositories/user_profile_repository.dart'
+    as _i616;
+import 'package:wrap_my_finances/features/user_profile/domain/usecases/ensure_user_profile.dart'
+    as _i160;
+import 'package:wrap_my_finances/features/wrapped/data/datasources/wrapped_remote_data_source.dart'
+    as _i493;
+import 'package:wrap_my_finances/features/wrapped/data/repositories/wrapped_repository_impl.dart'
+    as _i938;
+import 'package:wrap_my_finances/features/wrapped/domain/repositories/wrapped_repository.dart'
+    as _i220;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -72,6 +86,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i760.ExpenseRemoteDataSource>(
       () => _i760.ExpenseRemoteDataSource(gh<_i974.FirebaseFirestore>()),
     );
+    gh.factory<_i330.UserProfileRemoteDataSource>(
+      () => _i330.UserProfileRemoteDataSource(gh<_i974.FirebaseFirestore>()),
+    );
+    gh.factory<_i493.WrappedRemoteDataSource>(
+      () => _i493.WrappedRemoteDataSource(gh<_i974.FirebaseFirestore>()),
+    );
     gh.lazySingleton<_i496.CategoryRepository>(
       () => _i968.CategoryRepositoryImpl(
         gh<_i1029.CategoryRemoteDataSource>(),
@@ -81,6 +101,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i345.ExpenseRepository>(
       () => _i274.ExpenseRepositoryImpl(
         gh<_i760.ExpenseRemoteDataSource>(),
+        gh<_i59.FirebaseAuth>(),
+      ),
+    );
+    gh.lazySingleton<_i220.WrappedRepository>(
+      () => _i938.WrappedRepositoryImpl(
+        gh<_i345.ExpenseRepository>(),
+        gh<_i496.CategoryRepository>(),
+        gh<_i493.WrappedRemoteDataSource>(),
         gh<_i59.FirebaseAuth>(),
       ),
     );
@@ -99,10 +127,22 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i499.AnalyticsService>(),
       ),
     );
+    gh.lazySingleton<_i616.UserProfileRepository>(
+      () => _i693.UserProfileRepositoryImpl(
+        gh<_i330.UserProfileRemoteDataSource>(),
+        gh<_i59.FirebaseAuth>(),
+      ),
+    );
     gh.factory<_i520.PurgeExpiredDeletedExpensesUseCase>(
       () => _i520.PurgeExpiredDeletedExpensesUseCase(
         gh<_i261.AuthRepository>(),
         gh<_i345.ExpenseRepository>(),
+      ),
+    );
+    gh.factory<_i160.EnsureUserProfileUseCase>(
+      () => _i160.EnsureUserProfileUseCase(
+        gh<_i261.AuthRepository>(),
+        gh<_i616.UserProfileRepository>(),
       ),
     );
     return this;

@@ -1,11 +1,14 @@
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wrap_my_finances/core/analytics/analytics_service.dart';
 import 'package:wrap_my_finances/core/config/app_environment.dart';
 import 'package:wrap_my_finances/core/di/injection.dart';
 import 'package:wrap_my_finances/features/categories/domain/repositories/category_repository.dart';
 import 'package:wrap_my_finances/features/expenses/domain/repositories/expense_repository.dart';
 import 'package:wrap_my_finances/features/expenses/domain/usecases/log_expense.dart';
+import 'package:wrap_my_finances/features/user_profile/domain/repositories/user_profile_repository.dart';
+import 'package:wrap_my_finances/features/wrapped/domain/repositories/wrapped_repository.dart';
 
 /// The single bridge between GetIt's [AppEnvironment] singleton and Riverpod.
 /// Widgets read this instead of calling `getIt` directly.
@@ -30,6 +33,25 @@ final categoryRepositoryProvider = Provider<CategoryRepository>(
 /// `ExpenseCaptureController` reads this instead of calling `getIt`
 /// directly.
 final logExpenseProvider = Provider<LogExpense>((ref) => getIt<LogExpense>());
+
+/// Bridge for [UserProfileRepository], same reasoning as
+/// [expenseRepositoryProvider].
+final userProfileRepositoryProvider = Provider<UserProfileRepository>(
+  (ref) => getIt<UserProfileRepository>(),
+);
+
+/// Bridge for [WrappedRepository], same reasoning as
+/// [expenseRepositoryProvider].
+final wrappedRepositoryProvider = Provider<WrappedRepository>(
+  (ref) => getIt<WrappedRepository>(),
+);
+
+/// Bridge for [AnalyticsService], same reasoning as
+/// [expenseRepositoryProvider] — `WrappedRoutePage` reads this instead of
+/// calling `getIt` directly.
+final analyticsServiceProvider = Provider<AnalyticsService>(
+  (ref) => getIt<AnalyticsService>(),
+);
 
 /// The device's current primary language code, read without needing a
 /// `BuildContext` — lets `ExpenseCaptureController` be constructed inside a

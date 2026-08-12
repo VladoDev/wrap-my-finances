@@ -70,4 +70,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navHistoryLabel => 'History';
+
+  @override
+  String wrappedGrandTotalTitle(String amount) {
+    return 'You spent $amount this month';
+  }
+
+  @override
+  String wrappedBlackHoleTitle(String category) {
+    return 'Your top category was $category';
+  }
+
+  @override
+  String wrappedHabitTitle(int count, String category) {
+    return 'You logged $count transactions in $category';
+  }
+
+  @override
+  String wrappedBiggestHitTitle(String amount) {
+    return 'Your biggest single expense was $amount';
+  }
+
+  @override
+  String get wrappedSyncingMessage => 'Still syncing your data…';
+
+  @override
+  String get wrappedShareAmountsToggleLabel => 'Show amounts';
+
+  @override
+  String get wrappedShareButtonLabel => 'Share';
+
+  @override
+  String wrappedShareCardCountLabel(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString expenses',
+      one: '$countString expense',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get wrappedSuppressedCardTitle => 'Curious about last month?';
+
+  @override
+  String get wrappedSuppressedCardCta => 'See your summary';
+
+  @override
+  String get wrappedMonthPickerEntryLabel => 'Past summaries';
+
+  @override
+  String get wrappedMonthPickerTitle => 'Choose a month';
 }

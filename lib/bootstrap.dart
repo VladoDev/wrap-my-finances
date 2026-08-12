@@ -14,6 +14,7 @@ import 'package:wrap_my_finances/core/instrumentation/app_launch_clock.dart';
 import 'package:wrap_my_finances/features/auth/domain/usecases/sign_in_anonymously.dart';
 import 'package:wrap_my_finances/features/categories/domain/usecases/seed_default_categories.dart';
 import 'package:wrap_my_finances/features/expenses/domain/usecases/purge_expired_deleted_expenses.dart';
+import 'package:wrap_my_finances/features/user_profile/domain/usecases/ensure_user_profile.dart';
 
 /// Shared init for every flavor entrypoint, in order: flavor-consistency
 /// guard, Firebase, Firestore offline settings, dependency injection, a
@@ -63,6 +64,12 @@ Future<void> bootstrap(
   // soft-deleted more than 30 days ago. Idempotent, never blocks first
   // frame. See specs/005-expense-history-undo/research.md.
   unawaited(getIt<PurgeExpiredDeletedExpensesUseCase>().call());
+
+  // Also fire-and-forget, at every launch: creates users/{uid} (timeZone +
+  // wrappedLastSeenMonth) if it doesn't exist yet — no feature wrote to
+  // this document before 006. Idempotent, never blocks first frame. See
+  // specs/006-monthly-wrapped-summary/research.md #1.
+  unawaited(getIt<EnsureUserProfileUseCase>().call());
 
   runApp(
     const ProviderScope(

@@ -71,4 +71,62 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get navHistoryLabel => 'Historique';
+
+  @override
+  String wrappedGrandTotalTitle(String amount) {
+    return 'Vous avez dépensé $amount ce mois-ci';
+  }
+
+  @override
+  String wrappedBlackHoleTitle(String category) {
+    return 'Votre catégorie principale était $category';
+  }
+
+  @override
+  String wrappedHabitTitle(int count, String category) {
+    return 'Vous avez enregistré $count dépenses dans $category';
+  }
+
+  @override
+  String wrappedBiggestHitTitle(String amount) {
+    return 'Votre dépense individuelle la plus élevée était $amount';
+  }
+
+  @override
+  String get wrappedSyncingMessage =>
+      'Synchronisation de vos données en cours…';
+
+  @override
+  String get wrappedShareAmountsToggleLabel => 'Afficher les montants';
+
+  @override
+  String get wrappedShareButtonLabel => 'Partager';
+
+  @override
+  String wrappedShareCardCountLabel(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString dépenses',
+      one: '$countString dépense',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get wrappedSuppressedCardTitle => 'Curieux du mois dernier ?';
+
+  @override
+  String get wrappedSuppressedCardCta => 'Voir votre résumé';
+
+  @override
+  String get wrappedMonthPickerEntryLabel => 'Résumés précédents';
+
+  @override
+  String get wrappedMonthPickerTitle => 'Choisissez un mois';
 }

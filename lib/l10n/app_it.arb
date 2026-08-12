@@ -20,5 +20,17 @@
   "historyEmptyTitle": "Non c'è ancora nulla qui",
   "historyEmptySubtitle": "Le spese che registri appariranno qui",
   "navCaptureLabel": "Registra spesa",
-  "navHistoryLabel": "Cronologia"
+  "navHistoryLabel": "Cronologia",
+  "wrappedGrandTotalTitle": "Hai speso {amount} questo mese",
+  "wrappedBlackHoleTitle": "La tua categoria principale è stata {category}",
+  "wrappedHabitTitle": "Hai registrato {count} spese in {category}",
+  "wrappedBiggestHitTitle": "La tua spesa singola più alta è stata {amount}",
+  "wrappedSyncingMessage": "Sincronizzazione dei dati in corso…",
+  "wrappedShareAmountsToggleLabel": "Mostra importi",
+  "wrappedShareButtonLabel": "Condividi",
+  "wrappedShareCardCountLabel": "{count, plural, one{{count} spesa} other{{count} spese}}",
+  "wrappedSuppressedCardTitle": "Curioso del mese scorso?",
+  "wrappedSuppressedCardCta": "Guarda il tuo riepilogo",
+  "wrappedMonthPickerEntryLabel": "Riepiloghi passati",
+  "wrappedMonthPickerTitle": "Scegli un mese"
 }

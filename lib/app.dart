@@ -4,6 +4,8 @@ import 'package:wrap_my_finances/core/design_system/theme/app_theme.dart';
 import 'package:wrap_my_finances/core/navigation/app_shell.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/pages/expense_capture_page.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/pages/expense_history_page.dart';
+import 'package:wrap_my_finances/features/wrapped/presentation/pages/wrapped_route_page.dart';
+import 'package:wrap_my_finances/features/wrapped/presentation/wrapped_auto_trigger_gate.dart';
 import 'package:wrap_my_finances/l10n/generated/app_localizations.dart';
 
 // `initialLocation` defaults to the first route ('/') and no code path here
@@ -13,8 +15,9 @@ import 'package:wrap_my_finances/l10n/generated/app_localizations.dart';
 final _router = GoRouter(
   routes: [
     ShellRoute(
-      builder: (context, state, child) =>
-          AppShell(currentLocation: state.uri.toString(), child: child),
+      builder: (context, state, child) => WrappedAutoTriggerGate(
+        child: AppShell(currentLocation: state.uri.toString(), child: child),
+      ),
       routes: [
         GoRoute(
           path: '/',
@@ -25,6 +28,22 @@ final _router = GoRouter(
           builder: (context, state) => const ExpenseHistoryPage(),
         ),
       ],
+    ),
+    // A sibling of ShellRoute, not nested inside it — the floating nav bar
+    // has no role in a full-screen, swipe-to-dismiss story sequence. See
+    // specs/006-monthly-wrapped-summary/research.md #8.
+    GoRoute(
+      path: '/wrapped/:monthKey',
+      builder: (context, state) => WrappedRoutePage(
+        monthKey: state.pathParameters['monthKey']!,
+        onDismissed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/');
+          }
+        },
+      ),
     ),
   ],
 );

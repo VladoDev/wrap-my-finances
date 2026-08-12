@@ -26,4 +26,14 @@ class FirebaseAnalyticsService implements AnalyticsService {
       ),
     );
   }
+
+  @override
+  void logWrappedCompletion(double completionRatio) {
+    unawaited(
+      _analytics.logEvent(
+        name: 'wrapped_completion_rate',
+        parameters: {'completion_ratio': completionRatio},
+      ),
+    );
+  }
 }

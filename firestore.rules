@@ -34,6 +34,22 @@ service cloud.firestore {
             || (incoming().note is string && incoming().note.size() <= 280));
     }
 
+    function isValidUserProfile() {
+      return incoming().keys().hasOnly([
+               'uid', 'createdAt', 'lastLogin', 'isAnonymous', 'currencyCode',
+               'locale', 'timeZone', 'defaultCategoryId', 'wrappedLastSeenMonth',
+               'hapticsEnabled', 'schemaVersion'
+             ])
+        && incoming().keys().hasAll(['uid', 'timeZone'])
+        && incoming().uid is string
+        && incoming().timeZone is string
+        && incoming().timeZone.size() > 0
+        && (!('wrappedLastSeenMonth' in incoming())
+            || incoming().wrappedLastSeenMonth == null
+            || (incoming().wrappedLastSeenMonth is string
+                && incoming().wrappedLastSeenMonth.matches('^[0-9]{4}-[0-9]{2}$')));
+    }
+
     function isValidCategory() {
       return incoming().keys().hasAll(['nameKey', 'name', 'color', 'iconName'])
         && (incoming().nameKey is string || incoming().nameKey == null)
@@ -54,9 +70,10 @@ service cloud.firestore {
 
     match /users/{userId} {
       allow read:   if isOwner(userId);
-      allow create: if isOwner(userId) && incoming().uid == userId;
+      allow create: if isOwner(userId) && incoming().uid == userId && isValidUserProfile();
       allow update: if isOwner(userId)
-                    && incoming().uid == resource.data.uid;
+                    && incoming().uid == resource.data.uid
+                    && isValidUserProfile();
       allow delete: if false;
 
       match /categories/{categoryId} {

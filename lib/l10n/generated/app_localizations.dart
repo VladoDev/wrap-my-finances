@@ -229,6 +229,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'History'**
   String get navHistoryLabel;
+
+  /// Wrapped story: the month's total spend. Copy carries the product's voice — flagged for native-speaker review, not machine translation.
+  ///
+  /// In en, this message translates to:
+  /// **'You spent {amount} this month'**
+  String wrappedGrandTotalTitle(String amount);
+
+  /// Wrapped story: the month's highest-spend category. Copy carries the product's voice — flagged for native-speaker review, not machine translation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your top category was {category}'**
+  String wrappedBlackHoleTitle(String category);
+
+  /// Wrapped story: how many expenses were logged in the top category. Copy carries the product's voice — flagged for native-speaker review, not machine translation.
+  ///
+  /// In en, this message translates to:
+  /// **'You logged {count} transactions in {category}'**
+  String wrappedHabitTitle(int count, String category);
+
+  /// Wrapped story: the single largest expense of the month. Copy carries the product's voice — flagged for native-speaker review, not machine translation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your biggest single expense was {amount}'**
+  String wrappedBiggestHitTitle(String amount);
+
+  /// Shown instead of any figure when the local cache doesn't yet match the server's document count for the month. Flagged for native-speaker review.
+  ///
+  /// In en, this message translates to:
+  /// **'Still syncing your data…'**
+  String get wrappedSyncingMessage;
+
+  /// Label for the visible toggle that opts into including monetary figures on the shared image, off by default.
+  ///
+  /// In en, this message translates to:
+  /// **'Show amounts'**
+  String get wrappedShareAmountsToggleLabel;
+
+  /// Label for the button that rasterizes and shares the final Wrapped card.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get wrappedShareButtonLabel;
+
+  /// Transaction count shown on the shareable card, pluralized. Flagged for native-speaker review.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} expense} other{{count} expenses}}'**
+  String wrappedShareCardCountLabel(num count);
+
+  /// Title of the small, dismissible card offered on the history screen when the month had too few expenses to auto-trigger Wrapped. Flagged for native-speaker review.
+  ///
+  /// In en, this message translates to:
+  /// **'Curious about last month?'**
+  String get wrappedSuppressedCardTitle;
+
+  /// Call-to-action label on the suppressed-Wrapped card.
+  ///
+  /// In en, this message translates to:
+  /// **'See your summary'**
+  String get wrappedSuppressedCardCta;
+
+  /// Label for the button on the history screen that opens the month picker for past Wrapped summaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Past summaries'**
+  String get wrappedMonthPickerEntryLabel;
+
+  /// Heading of the bottom sheet listing past months with data, for manual Wrapped access.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a month'**
+  String get wrappedMonthPickerTitle;
 }
 
 class _AppLocalizationsDelegate

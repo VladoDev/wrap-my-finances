@@ -83,5 +83,86 @@
   "navHistoryLabel": "History",
   "@navHistoryLabel": {
     "description": "Semantic/visible label for the navigation bar's history destination."
+  },
+  "wrappedGrandTotalTitle": "You spent {amount} this month",
+  "@wrappedGrandTotalTitle": {
+    "description": "Wrapped story: the month's total spend. Copy carries the product's voice — flagged for native-speaker review, not machine translation.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "$150.00"
+      }
+    }
+  },
+  "wrappedBlackHoleTitle": "Your top category was {category}",
+  "@wrappedBlackHoleTitle": {
+    "description": "Wrapped story: the month's highest-spend category. Copy carries the product's voice — flagged for native-speaker review, not machine translation.",
+    "placeholders": {
+      "category": {
+        "type": "String",
+        "example": "Food"
+      }
+    }
+  },
+  "wrappedHabitTitle": "You logged {count} transactions in {category}",
+  "@wrappedHabitTitle": {
+    "description": "Wrapped story: how many expenses were logged in the top category. Copy carries the product's voice — flagged for native-speaker review, not machine translation.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "category": {
+        "type": "String",
+        "example": "Food"
+      }
+    }
+  },
+  "wrappedBiggestHitTitle": "Your biggest single expense was {amount}",
+  "@wrappedBiggestHitTitle": {
+    "description": "Wrapped story: the single largest expense of the month. Copy carries the product's voice — flagged for native-speaker review, not machine translation.",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "$85.00"
+      }
+    }
+  },
+  "wrappedSyncingMessage": "Still syncing your data…",
+  "@wrappedSyncingMessage": {
+    "description": "Shown instead of any figure when the local cache doesn't yet match the server's document count for the month. Flagged for native-speaker review."
+  },
+  "wrappedShareAmountsToggleLabel": "Show amounts",
+  "@wrappedShareAmountsToggleLabel": {
+    "description": "Label for the visible toggle that opts into including monetary figures on the shared image, off by default."
+  },
+  "wrappedShareButtonLabel": "Share",
+  "@wrappedShareButtonLabel": {
+    "description": "Label for the button that rasterizes and shares the final Wrapped card."
+  },
+  "wrappedShareCardCountLabel": "{count, plural, one{{count} expense} other{{count} expenses}}",
+  "@wrappedShareCardCountLabel": {
+    "description": "Transaction count shown on the shareable card, pluralized. Flagged for native-speaker review.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "wrappedSuppressedCardTitle": "Curious about last month?",
+  "@wrappedSuppressedCardTitle": {
+    "description": "Title of the small, dismissible card offered on the history screen when the month had too few expenses to auto-trigger Wrapped. Flagged for native-speaker review."
+  },
+  "wrappedSuppressedCardCta": "See your summary",
+  "@wrappedSuppressedCardCta": {
+    "description": "Call-to-action label on the suppressed-Wrapped card."
+  },
+  "wrappedMonthPickerEntryLabel": "Past summaries",
+  "@wrappedMonthPickerEntryLabel": {
+    "description": "Label for the button on the history screen that opens the month picker for past Wrapped summaries."
+  },
+  "wrappedMonthPickerTitle": "Choose a month",
+  "@wrappedMonthPickerTitle": {
+    "description": "Heading of the bottom sheet listing past months with data, for manual Wrapped access."
   }
 }

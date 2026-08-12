@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wrap_my_finances/core/design_system/tokens/app_colors.dart';
+import 'package:wrap_my_finances/core/design_system/tokens/app_motion.dart';
 import 'package:wrap_my_finances/core/design_system/tokens/app_spacing.dart';
 import 'package:wrap_my_finances/core/design_system/tokens/app_typography.dart';
 
@@ -28,6 +29,7 @@ abstract final class AppTheme {
       AppColorsExtension.light,
       AppTypographyExtension.standard,
       AppSpacingExtension.standard,
+      AppMotionExtension.standard,
     ],
   );
 }

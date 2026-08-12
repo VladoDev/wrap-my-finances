@@ -20,5 +20,17 @@
   "historyEmptyTitle": "Rien ici pour l'instant",
   "historyEmptySubtitle": "Les dépenses que vous enregistrez apparaîtront ici",
   "navCaptureLabel": "Enregistrer une dépense",
-  "navHistoryLabel": "Historique"
+  "navHistoryLabel": "Historique",
+  "wrappedGrandTotalTitle": "Vous avez dépensé {amount} ce mois-ci",
+  "wrappedBlackHoleTitle": "Votre catégorie principale était {category}",
+  "wrappedHabitTitle": "Vous avez enregistré {count} dépenses dans {category}",
+  "wrappedBiggestHitTitle": "Votre dépense individuelle la plus élevée était {amount}",
+  "wrappedSyncingMessage": "Synchronisation de vos données en cours…",
+  "wrappedShareAmountsToggleLabel": "Afficher les montants",
+  "wrappedShareButtonLabel": "Partager",
+  "wrappedShareCardCountLabel": "{count, plural, one{{count} dépense} other{{count} dépenses}}",
+  "wrappedSuppressedCardTitle": "Curieux du mois dernier ?",
+  "wrappedSuppressedCardCta": "Voir votre résumé",
+  "wrappedMonthPickerEntryLabel": "Résumés précédents",
+  "wrappedMonthPickerTitle": "Choisissez un mois"
 }

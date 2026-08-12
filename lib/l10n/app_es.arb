@@ -20,5 +20,17 @@
   "historyEmptyTitle": "Todavía no hay nada aquí",
   "historyEmptySubtitle": "Los gastos que registres aparecerán aquí",
   "navCaptureLabel": "Registrar gasto",
-  "navHistoryLabel": "Historial"
+  "navHistoryLabel": "Historial",
+  "wrappedGrandTotalTitle": "Gastaste {amount} este mes",
+  "wrappedBlackHoleTitle": "Tu categoría principal fue {category}",
+  "wrappedHabitTitle": "Registraste {count} gastos en {category}",
+  "wrappedBiggestHitTitle": "Tu gasto individual más alto fue {amount}",
+  "wrappedSyncingMessage": "Todavía sincronizando tus datos…",
+  "wrappedShareAmountsToggleLabel": "Mostrar montos",
+  "wrappedShareButtonLabel": "Compartir",
+  "wrappedShareCardCountLabel": "{count, plural, one{{count} gasto} other{{count} gastos}}",
+  "wrappedSuppressedCardTitle": "¿Curiosidad por el mes pasado?",
+  "wrappedSuppressedCardCta": "Ver tu resumen",
+  "wrappedMonthPickerEntryLabel": "Resúmenes anteriores",
+  "wrappedMonthPickerTitle": "Elige un mes"
 }
