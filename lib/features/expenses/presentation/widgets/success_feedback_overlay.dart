@@ -35,7 +35,7 @@ class _SuccessFeedbackOverlayState extends State<SuccessFeedbackOverlay>
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-    unawaited(_controller.forward());
+    _controller.forward();
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) widget.onCompleted();
     });
