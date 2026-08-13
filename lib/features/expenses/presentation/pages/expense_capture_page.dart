@@ -8,6 +8,7 @@ import 'package:wrap_my_finances/core/design_system/tokens/app_spacing.dart';
 import 'package:wrap_my_finances/core/di/providers.dart';
 import 'package:wrap_my_finances/features/categories/presentation/active_categories_provider.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/controllers/expense_capture_controller.dart';
+import 'package:wrap_my_finances/features/expenses/presentation/current_currency_code_provider.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/widgets/amount_display.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/widgets/amount_keypad.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/widgets/category_picker_sheet.dart';
@@ -35,6 +36,14 @@ class _ExpenseCapturePageState extends ConsumerState<ExpenseCapturePage> {
     unawaited(
       showModalBottomSheet<void>(
         context: context,
+        // Without this, the sheet is capped at Flutter's default 9/16 of
+        // screen height with no way to grow or scroll — the category grid
+        // (now open-ended since 007 lets people add their own categories)
+        // was clipping past that cap instead of showing every option.
+        isScrollControlled: true,
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * 0.9,
+        ),
         builder: (_) => Consumer(
           builder: (context, ref, _) {
             final categories =
@@ -113,6 +122,10 @@ class _ExpenseCapturePageState extends ConsumerState<ExpenseCapturePage> {
 
     final state = ref.watch(expenseCaptureControllerProvider);
     final env = ref.watch(appEnvironmentProvider);
+    // Not otherwise used on this screen — watching it here just keeps
+    // currentCurrencyCodeProvider's stream warm from launch (research.md
+    // #5), since capture is always the first screen shown (FR-001).
+    ref.watch(currentCurrencyCodeProvider);
     final colors = context.colors;
     final spacing = context.spacing;
 

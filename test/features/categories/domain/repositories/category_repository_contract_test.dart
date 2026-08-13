@@ -39,6 +39,59 @@ class _FakeCategoryRepository implements CategoryRepository {
   Future<Result<void>> seedDefaultsIfNeeded() async {
     return const Success(null);
   }
+
+  @override
+  Future<Result<List<Category>>> getAll() async {
+    return Success(_stored);
+  }
+
+  @override
+  Stream<List<Category>> watchAll() {
+    return Stream.value(_stored);
+  }
+
+  @override
+  Future<Result<Category>> create({
+    required String name,
+    required String color,
+    required String iconName,
+  }) async {
+    final category = Category(
+      id: 'cat_new',
+      name: name,
+      color: color,
+      iconName: iconName,
+      isDefault: false,
+      sortOrder: _stored.length + 1,
+      isActive: true,
+      usageCount: 0,
+    );
+    _stored.add(category);
+    return Success(category);
+  }
+
+  @override
+  Future<Result<void>> update(
+    String categoryId, {
+    String? name,
+    String? color,
+    String? iconName,
+  }) async {
+    return const Success(null);
+  }
+
+  @override
+  Future<Result<void>> reorder(List<String> orderedIds) async {
+    return const Success(null);
+  }
+
+  @override
+  Future<Result<void>> setActive(
+    String categoryId, {
+    required bool isActive,
+  }) async {
+    return const Success(null);
+  }
 }
 
 void main() {

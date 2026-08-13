@@ -21,8 +21,9 @@ class AppShell extends StatelessWidget {
   /// The active route's content.
   final Widget child;
 
-  /// The router's current location (e.g. `/` or `/history`), used only to
-  /// highlight the matching nav item — never to decide what to render.
+  /// The router's current location (e.g. `/`, `/history`, or `/settings`),
+  /// used only to highlight the matching nav item — never to decide what
+  /// to render.
   final String currentLocation;
 
   @override
@@ -67,6 +68,13 @@ class AppShell extends StatelessWidget {
                           label: l10n.navHistoryLabel,
                           selected: currentLocation == '/history',
                           onTap: () => context.go('/history'),
+                        ),
+                        SizedBox(width: spacing.spacingLg),
+                        _NavItem(
+                          icon: Icons.settings,
+                          label: l10n.settingsTitle,
+                          selected: currentLocation == '/settings',
+                          onTap: () => context.go('/settings'),
                         ),
                       ],
                     ),

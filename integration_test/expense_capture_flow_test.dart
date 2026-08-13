@@ -9,6 +9,8 @@ import 'package:wrap_my_finances/core/config/app_environment.dart';
 import 'package:wrap_my_finances/core/design_system/theme/app_theme.dart';
 import 'package:wrap_my_finances/core/di/providers.dart';
 import 'package:wrap_my_finances/core/instrumentation/app_launch_clock.dart';
+import 'package:wrap_my_finances/features/auth/data/apple_sign_in_credential_provider.dart';
+import 'package:wrap_my_finances/features/auth/data/google_sign_in_credential_provider.dart';
 import 'package:wrap_my_finances/features/auth/data/repositories/firebase_auth_repository.dart';
 import 'package:wrap_my_finances/features/categories/data/datasources/category_remote_data_source.dart';
 import 'package:wrap_my_finances/features/categories/data/repositories/category_repository_impl.dart';
@@ -43,7 +45,6 @@ void main() {
       final auth = MockFirebaseAuth(signedIn: true);
       final uid = auth.currentUser!.uid;
 
-      final authRepository = FirebaseAuthRepository(auth);
       final expenseRepository = ExpenseRepositoryImpl(
         ExpenseRemoteDataSource(firestore),
         auth,
@@ -51,6 +52,14 @@ void main() {
       final categoryRepository = CategoryRepositoryImpl(
         CategoryRemoteDataSource(firestore),
         auth,
+      );
+      final authRepository = FirebaseAuthRepository(
+        auth,
+        firestore,
+        GoogleSignInCredentialProvider(),
+        AppleSignInCredentialProvider(),
+        expenseRepository,
+        categoryRepository,
       );
       final analyticsService = _FakeAnalyticsService();
       final logExpense = LogExpense(

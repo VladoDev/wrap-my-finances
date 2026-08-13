@@ -129,4 +129,91 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get wrappedMonthPickerTitle => 'Choisissez un mois';
+
+  @override
+  String get settingsTitle => 'Réglages';
+
+  @override
+  String get settingsAccountSection => 'Compte';
+
+  @override
+  String get settingsCategoriesSection => 'Catégories';
+
+  @override
+  String get settingsPreferencesSection => 'Préférences';
+
+  @override
+  String get settingsLinkAccountCta => 'Associer un compte';
+
+  @override
+  String settingsLinkedAsLabel(String provider) {
+    return 'Associé via $provider';
+  }
+
+  @override
+  String get settingsLinkGoogleOption => 'Continuer avec Google';
+
+  @override
+  String get settingsLinkAppleOption => 'Continuer avec Apple';
+
+  @override
+  String get settingsLinkUnavailableOfflineMessage =>
+      'Impossible d\'associer un compte maintenant — vous êtes hors ligne';
+
+  @override
+  String get settingsLinkConflictTitle => 'Ce compte a déjà des données';
+
+  @override
+  String get settingsLinkConflictBody =>
+      'Le compte choisi possède déjà son propre historique. Décidez ce qu\'il advient de chaque ensemble de données.';
+
+  @override
+  String get settingsLinkConflictMergeOption => 'Combiner les deux historiques';
+
+  @override
+  String get settingsLinkConflictDiscardOption =>
+      'Conserver uniquement l\'historique de ce compte';
+
+  @override
+  String get settingsLinkConflictDiscardConfirmTitle =>
+      'Supprimer les données de cet appareil ?';
+
+  @override
+  String get settingsLinkConflictDiscardConfirmBody =>
+      'Tout ce qui a été enregistré sur cet appareil sera définitivement supprimé. L\'historique déjà présent sur ce compte sera conservé.';
+
+  @override
+  String get settingsDeleteAccountCta => 'Supprimer le compte';
+
+  @override
+  String get settingsDeleteAccountConfirmTitle => 'Supprimer votre compte ?';
+
+  @override
+  String get settingsDeleteAccountConfirmBody =>
+      'Cela supprime définitivement votre compte et tout ce que vous avez enregistré. Cette action est irréversible.';
+
+  @override
+  String get settingsDeleteAccountReauthMessage =>
+      'Reconnectez-vous pour confirmer que c\'est bien vous';
+
+  @override
+  String get settingsCategoryCreateCta => 'Nouvelle catégorie';
+
+  @override
+  String get settingsCategoryEditorNameLabel => 'Nom';
+
+  @override
+  String get settingsCategoryArchiveCta => 'Archiver';
+
+  @override
+  String get settingsCategoryUnarchiveCta => 'Désarchiver';
+
+  @override
+  String get settingsCategoryArchivedLabel => 'Archivée';
+
+  @override
+  String get settingsCurrencyLabel => 'Devise';
+
+  @override
+  String get settingsTimeZoneLabel => 'Fuseau horaire';
 }

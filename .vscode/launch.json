@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    //
+    // Four configurations, one per (flavor x build mode) pair — matches
+    // docs/ENVIRONMENTS.md's run commands exactly. Every config passes both
+    // --flavor and -t (program): omitting -t silently builds lib/main.dart,
+    // which doesn't exist in this project.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "dev (debug)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_dev.dart",
+            "args": ["--flavor", "dev"],
+            "flutterMode": "debug"
+        },
+        {
+            "name": "dev (release)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_dev.dart",
+            "args": ["--flavor", "dev"],
+            "flutterMode": "release"
+        },
+        {
+            "name": "prod (debug)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_prod.dart",
+            "args": ["--flavor", "prod"],
+            "flutterMode": "debug"
+        },
+        {
+            "name": "prod (release)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_prod.dart",
+            "args": ["--flavor", "prod"],
+            "flutterMode": "release"
+        }
+    ]
+}

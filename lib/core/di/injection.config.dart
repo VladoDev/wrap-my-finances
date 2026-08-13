@@ -21,10 +21,18 @@ import 'package:wrap_my_finances/core/analytics/firebase_analytics_service.dart'
 import 'package:wrap_my_finances/core/di/firebase_module.dart' as _i919;
 import 'package:wrap_my_finances/core/instrumentation/app_launch_clock.dart'
     as _i346;
+import 'package:wrap_my_finances/features/auth/data/apple_sign_in_credential_provider.dart'
+    as _i683;
+import 'package:wrap_my_finances/features/auth/data/google_sign_in_credential_provider.dart'
+    as _i574;
 import 'package:wrap_my_finances/features/auth/data/repositories/firebase_auth_repository.dart'
     as _i153;
 import 'package:wrap_my_finances/features/auth/domain/repositories/auth_repository.dart'
     as _i261;
+import 'package:wrap_my_finances/features/auth/domain/usecases/delete_account.dart'
+    as _i466;
+import 'package:wrap_my_finances/features/auth/domain/usecases/link_account.dart'
+    as _i281;
 import 'package:wrap_my_finances/features/auth/domain/usecases/sign_in_anonymously.dart'
     as _i691;
 import 'package:wrap_my_finances/features/categories/data/datasources/category_remote_data_source.dart'
@@ -71,11 +79,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i974.FirebaseFirestore>(() => firebaseModule.firestore);
     gh.lazySingleton<_i59.FirebaseAuth>(() => firebaseModule.auth);
     gh.lazySingleton<_i398.FirebaseAnalytics>(() => firebaseModule.analytics);
-    gh.lazySingleton<_i261.AuthRepository>(
-      () => _i153.FirebaseAuthRepository(gh<_i59.FirebaseAuth>()),
+    gh.lazySingleton<_i683.AppleSignInCredentialProvider>(
+      () => _i683.AppleSignInCredentialProvider(),
     );
-    gh.factory<_i691.SignInAnonymouslyUseCase>(
-      () => _i691.SignInAnonymouslyUseCase(gh<_i261.AuthRepository>()),
+    gh.lazySingleton<_i574.GoogleSignInCredentialProvider>(
+      () => _i574.GoogleSignInCredentialProvider(),
     );
     gh.lazySingleton<_i499.AnalyticsService>(
       () => _i495.FirebaseAnalyticsService(gh<_i398.FirebaseAnalytics>()),
@@ -102,6 +110,16 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i274.ExpenseRepositoryImpl(
         gh<_i760.ExpenseRemoteDataSource>(),
         gh<_i59.FirebaseAuth>(),
+      ),
+    );
+    gh.lazySingleton<_i261.AuthRepository>(
+      () => _i153.FirebaseAuthRepository(
+        gh<_i59.FirebaseAuth>(),
+        gh<_i974.FirebaseFirestore>(),
+        gh<_i574.GoogleSignInCredentialProvider>(),
+        gh<_i683.AppleSignInCredentialProvider>(),
+        gh<_i345.ExpenseRepository>(),
+        gh<_i496.CategoryRepository>(),
       ),
     );
     gh.lazySingleton<_i220.WrappedRepository>(
@@ -131,6 +149,19 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i693.UserProfileRepositoryImpl(
         gh<_i330.UserProfileRemoteDataSource>(),
         gh<_i59.FirebaseAuth>(),
+      ),
+    );
+    gh.factory<_i466.DeleteAccountUseCase>(
+      () => _i466.DeleteAccountUseCase(gh<_i261.AuthRepository>()),
+    );
+    gh.factory<_i691.SignInAnonymouslyUseCase>(
+      () => _i691.SignInAnonymouslyUseCase(gh<_i261.AuthRepository>()),
+    );
+    gh.factory<_i281.LinkAccountUseCase>(
+      () => _i281.LinkAccountUseCase(
+        gh<_i261.AuthRepository>(),
+        gh<_i345.ExpenseRepository>(),
+        gh<_i496.CategoryRepository>(),
       ),
     );
     gh.factory<_i520.PurgeExpiredDeletedExpensesUseCase>(

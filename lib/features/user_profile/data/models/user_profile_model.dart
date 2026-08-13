@@ -12,6 +12,7 @@ class UserProfileModel {
   const UserProfileModel({
     required this.uid,
     required this.timeZone,
+    this.currencyCode,
     this.wrappedLastSeenMonth,
   });
 
@@ -20,6 +21,7 @@ class UserProfileModel {
     return UserProfileModel(
       uid: json['uid']! as String,
       timeZone: json['timeZone']! as String,
+      currencyCode: json['currencyCode'] as String?,
       wrappedLastSeenMonth: json['wrappedLastSeenMonth'] as String?,
     );
   }
@@ -30,16 +32,20 @@ class UserProfileModel {
   /// IANA time zone identifier.
   final String timeZone;
 
+  /// ISO 4217 code, or `null`.
+  final String? currencyCode;
+
   /// `"YYYY-MM"`, or `null`.
   final String? wrappedLastSeenMonth;
 
-  /// The write payload for creating the document — only the three fields
-  /// this feature populates, per `data-model.md` §3 and
+  /// The write payload for creating the document — only the fields this
+  /// feature populates, per `data-model.md` §3 and
   /// `contracts/security-rules-delta.md`'s `isValidUserProfile()`.
   Map<String, Object?> toJson() {
     return {
       'uid': uid,
       'timeZone': timeZone,
+      'currencyCode': currencyCode,
       'wrappedLastSeenMonth': wrappedLastSeenMonth,
     };
   }
@@ -49,6 +55,7 @@ class UserProfileModel {
     return UserProfile(
       uid: uid,
       timeZone: timeZone,
+      currencyCode: currencyCode,
       wrappedLastSeenMonth: wrappedLastSeenMonth,
     );
   }

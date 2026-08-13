@@ -30,30 +30,47 @@ class CategoryPickerSheet extends StatelessWidget {
     final spacing = context.spacing;
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.all(spacing.spacingLg),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.categoryPickerTitle,
-              style: context.typography.titleMedium.copyWith(
-                color: context.colors.onSurface,
+        padding: EdgeInsets.fromLTRB(
+          spacing.spacingLg,
+          spacing.spacingLg,
+          spacing.spacingLg,
+          // Extra breathing room below the grid, beyond SafeArea's own
+          // system-inset padding — the last row of tiles must never sit
+          // flush against the sheet's bottom edge.
+          spacing.spacingLg + spacing.spacingMd,
+        ),
+        // A safety net, not the primary fix: the caller
+        // (ExpenseCapturePage) passes isScrollControlled: true so the
+        // sheet itself grows to fit this content up to ~90% of the
+        // screen. This still scrolls rather than overflowing/clipping on
+        // a short device or a long, user-grown category list (007 lets
+        // people add their own categories, so this list is no longer a
+        // fixed 7 items).
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.categoryPickerTitle,
+                style: context.typography.titleMedium.copyWith(
+                  color: context.colors.onSurface,
+                ),
               ),
-            ),
-            SizedBox(height: spacing.spacingMd),
-            Wrap(
-              spacing: spacing.spacingSm,
-              runSpacing: spacing.spacingSm,
-              children: [
-                for (final category in categories)
-                  _CategoryTile(
-                    category: category,
-                    onTap: () => onSelected(category.id),
-                  ),
-              ],
-            ),
-          ],
+              SizedBox(height: spacing.spacingMd),
+              Wrap(
+                spacing: spacing.spacingSm,
+                runSpacing: spacing.spacingSm,
+                children: [
+                  for (final category in categories)
+                    _CategoryTile(
+                      category: category,
+                      onTap: () => onSelected(category.id),
+                    ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

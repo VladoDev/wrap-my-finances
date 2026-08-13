@@ -90,12 +90,24 @@ describe('users security rules', () => {
     );
   });
 
-  it('delete is always denied', async () => {
+  // Owner delete — added by 007 (specs/007-account-linking-integrity), so
+  // AuthRepository.deleteAccount() can remove the user document
+  // client-side. See contracts/security-rules-delta.md.
+
+  it('owner can delete their own user document', async () => {
     const alice = testEnv.authenticatedContext('alice');
     await assertSucceeds(
       setDoc(doc(alice.firestore(), 'users/alice'), validUser('alice')),
     );
-    await assertFails(deleteDoc(doc(alice.firestore(), 'users/alice')));
+    await assertSucceeds(deleteDoc(doc(alice.firestore(), 'users/alice')));
+  });
+
+  it('a different user cannot delete alice\'s document', async () => {
+    await testEnv.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), 'users/alice'), validUser('alice'));
+    });
+    const bob = testEnv.authenticatedContext('bob');
+    await assertFails(deleteDoc(doc(bob.firestore(), 'users/alice')));
   });
 
   it('denies writes to an undeclared top-level collection via the catch-all', async () => {
@@ -175,6 +187,55 @@ describe('users security rules', () => {
         timeZone: 'America/Mexico_City',
         notARealField: 'nope',
       }),
+    );
+  });
+
+  // currencyCode validation — added by 007
+  // (specs/007-account-linking-integrity), closing the gap 006 deliberately
+  // left open ("the other six remain unvalidated until a future feature...
+  // writes them for real"). See contracts/security-rules-delta.md.
+
+  it('owner can create their profile with a valid 3-letter currencyCode', async () => {
+    const alice = testEnv.authenticatedContext('alice');
+    await assertSucceeds(
+      setDoc(doc(alice.firestore(), 'users/alice'), {
+        uid: 'alice',
+        timeZone: 'America/Mexico_City',
+        currencyCode: 'MXN',
+      }),
+    );
+  });
+
+  it('owner can update their currencyCode to a valid 3-letter code', async () => {
+    const alice = testEnv.authenticatedContext('alice');
+    await assertSucceeds(
+      setDoc(doc(alice.firestore(), 'users/alice'), {
+        uid: 'alice',
+        timeZone: 'America/Mexico_City',
+      }),
+    );
+    await assertSucceeds(
+      updateDoc(doc(alice.firestore(), 'users/alice'), { currencyCode: 'USD' }),
+    );
+  });
+
+  it('a malformed currencyCode is rejected', async () => {
+    const alice = testEnv.authenticatedContext('alice');
+    await assertFails(
+      setDoc(doc(alice.firestore(), 'users/alice'), {
+        uid: 'alice',
+        timeZone: 'America/Mexico_City',
+        currencyCode: 'MX',
+      }),
+    );
+    await assertSucceeds(
+      setDoc(doc(alice.firestore(), 'users/alice'), {
+        uid: 'alice',
+        timeZone: 'America/Mexico_City',
+      }),
+    );
+    await assertFails(
+      updateDoc(doc(alice.firestore(), 'users/alice'), { currencyCode: 12 }),
     );
   });
 });

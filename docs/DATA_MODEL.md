@@ -88,8 +88,18 @@ Path: `users/{userId}`
 ```
 
 - `timeZone` is an IANA identifier, captured on first launch and editable in Settings. It defines
-  month boundaries for `monthKey`.
-- `currencyCode` is chosen once and applies to every expense. Multi-currency is an anti-goal.
+  month boundaries for `monthKey`. Changing it only affects how *future* expenses are bucketed —
+  never re-evaluates or reassigns the `monthKey` already stored on existing documents.
+- `currencyCode` is captured on first launch and **editable in Settings**, the same "changes the
+  default for new expenses, never touches history" shape as `timeZone`.
+  > **Amendment (documentation, not constitutional — `007-account-linking-integrity`):** earlier
+  > text here said "chosen once." That was never true of `timeZone` and doesn't need to be true
+  > of `currencyCode` either — multi-currency *conversion* is the actual anti-goal (Constitution
+  > Principle 3), not the ability to change a going-forward preference. Changing this field never
+  > converts, reconciles, or re-displays a past expense's already-stored `amountMinor`/
+  > `currencyCode` in a different currency. A user who changes it simply has a spending history
+  > that mixes currency codes across months, exactly as they entered it — the app does not
+  > pretend otherwise.
 - `wrappedLastSeenMonth` drives the "show Wrapped on first open of a new month" trigger, so the
   overlay appears exactly once per month, on any device.
 - `schemaVersion` exists so a future migration has something to branch on. It is cheap now and

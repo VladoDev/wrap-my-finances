@@ -17,7 +17,11 @@ class CategoryRepositoryImpl implements CategoryRepository {
   final CategoryRemoteDataSource _remoteDataSource;
   final FirebaseAuth _auth;
 
-  Future<void>? _seedFuture;
+  // Keyed by uid, not a single Future — `007`'s account-merge flow can
+  // switch this singleton's authenticated identity mid-process
+  // (`FirebaseAuthRepository._mergeIntoExistingAccount`), so a single
+  // shared guard would wrongly no-op the second uid's seed check.
+  final Map<String, Future<void>> _seedFutures = {};
 
   String get _currentUserId {
     final uid = _auth.currentUser?.uid;
@@ -55,17 +59,102 @@ class CategoryRepositoryImpl implements CategoryRepository {
 
   @override
   Future<Result<void>> seedDefaultsIfNeeded() async {
-    // Memoized/shared Future, same pattern FirebaseAuthRepository uses for
-    // ensureSignedIn() — safe because this class is a @LazySingleton, so
-    // exactly one instance (and one guard) exists per process.
+    // Memoized/shared Future per uid — see `_seedFutures`' doc comment.
+    final uid = _currentUserId;
     try {
-      _seedFuture ??= _remoteDataSource.seedDefaultsIfNeeded(_currentUserId);
-      await _seedFuture;
+      final future = _seedFutures.putIfAbsent(
+        uid,
+        () => _remoteDataSource.seedDefaultsIfNeeded(uid),
+      );
+      await future;
       return const Success(null);
     } on Object catch (error, stackTrace) {
       // Allow a later call to retry rather than permanently caching a
-      // failed attempt.
-      _seedFuture = null;
+      // failed attempt. The removed value is itself a Future — discarding
+      // it, not awaiting it, is the point.
+      // ignore: unawaited_futures
+      _seedFutures.remove(uid);
+      return Failed(UnknownFailure(error, stackTrace));
+    }
+  }
+
+  @override
+  Future<Result<List<Category>>> getAll() async {
+    try {
+      return Success(await _remoteDataSource.getAll(_currentUserId));
+    } on Object catch (error, stackTrace) {
+      return Failed(UnknownFailure(error, stackTrace));
+    }
+  }
+
+  @override
+  Stream<List<Category>> watchAll() {
+    return _remoteDataSource.watchAll(_currentUserId);
+  }
+
+  @override
+  Future<Result<Category>> create({
+    required String name,
+    required String color,
+    required String iconName,
+  }) async {
+    try {
+      final category = await _remoteDataSource.create(
+        _currentUserId,
+        name: name,
+        color: color,
+        iconName: iconName,
+      );
+      return Success(category);
+    } on Object catch (error, stackTrace) {
+      return Failed(UnknownFailure(error, stackTrace));
+    }
+  }
+
+  @override
+  Future<Result<void>> update(
+    String categoryId, {
+    String? name,
+    String? color,
+    String? iconName,
+  }) async {
+    try {
+      await _remoteDataSource.update(
+        _currentUserId,
+        categoryId,
+        name: name,
+        color: color,
+        iconName: iconName,
+      );
+      return const Success(null);
+    } on Object catch (error, stackTrace) {
+      return Failed(UnknownFailure(error, stackTrace));
+    }
+  }
+
+  @override
+  Future<Result<void>> reorder(List<String> orderedIds) async {
+    try {
+      await _remoteDataSource.reorder(_currentUserId, orderedIds);
+      return const Success(null);
+    } on Object catch (error, stackTrace) {
+      return Failed(UnknownFailure(error, stackTrace));
+    }
+  }
+
+  @override
+  Future<Result<void>> setActive(
+    String categoryId, {
+    required bool isActive,
+  }) async {
+    try {
+      await _remoteDataSource.setActive(
+        _currentUserId,
+        categoryId,
+        isActive: isActive,
+      );
+      return const Success(null);
+    } on Object catch (error, stackTrace) {
       return Failed(UnknownFailure(error, stackTrace));
     }
   }

@@ -301,6 +301,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose a month'**
   String get wrappedMonthPickerTitle;
+
+  /// Title of the Settings screen and its navigation-bar destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// Heading of the account section in Settings (linking, deletion).
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get settingsAccountSection;
+
+  /// Heading of the category management section in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get settingsCategoriesSection;
+
+  /// Heading of the currency/time-zone preferences section in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get settingsPreferencesSection;
+
+  /// Call-to-action shown in Settings when the current session has not linked a Google or Apple account.
+  ///
+  /// In en, this message translates to:
+  /// **'Link an account'**
+  String get settingsLinkAccountCta;
+
+  /// Status shown in Settings once an account is linked, naming the provider.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked via {provider}'**
+  String settingsLinkedAsLabel(String provider);
+
+  /// Option to link the current session to a Google account.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get settingsLinkGoogleOption;
+
+  /// Option to link the current session to an Apple account.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get settingsLinkAppleOption;
+
+  /// Shown when linking an account fails because the device has no network connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t link right now — you\'re offline'**
+  String get settingsLinkUnavailableOfflineMessage;
+
+  /// Title of the screen shown when the account being linked already has its own history.
+  ///
+  /// In en, this message translates to:
+  /// **'This account already has data'**
+  String get settingsLinkConflictTitle;
+
+  /// Body text explaining the link conflict and that a decision is required.
+  ///
+  /// In en, this message translates to:
+  /// **'The account you chose already has its own history. Decide what happens with each set of data.'**
+  String get settingsLinkConflictBody;
+
+  /// Option to merge the current device's anonymous history into the existing account's history.
+  ///
+  /// In en, this message translates to:
+  /// **'Combine both histories'**
+  String get settingsLinkConflictMergeOption;
+
+  /// Option to discard the current device's anonymous history and keep only the existing account's.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep only this account\'s history'**
+  String get settingsLinkConflictDiscardOption;
+
+  /// Title of the explicit confirmation required before discarding the current device's history.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard this device\'s data?'**
+  String get settingsLinkConflictDiscardConfirmTitle;
+
+  /// Body text naming exactly what will be discarded, before the discard is confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything logged on this device will be permanently deleted. This account\'s existing history will be kept.'**
+  String get settingsLinkConflictDiscardConfirmBody;
+
+  /// Call-to-action in Settings that starts the account-deletion flow.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get settingsDeleteAccountCta;
+
+  /// Title of the explicit confirmation required before deleting the account.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account?'**
+  String get settingsDeleteAccountConfirmTitle;
+
+  /// Body text warning that account deletion is permanent, before it is confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your account and everything you\'ve logged. This can\'t be undone.'**
+  String get settingsDeleteAccountConfirmBody;
+
+  /// Shown when deleting the account requires a fresh sign-in before it can proceed.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in again to confirm it\'s really you'**
+  String get settingsDeleteAccountReauthMessage;
+
+  /// Call-to-action that opens the category editor to create a new category.
+  ///
+  /// In en, this message translates to:
+  /// **'New category'**
+  String get settingsCategoryCreateCta;
+
+  /// Label for the category name field in the category editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get settingsCategoryEditorNameLabel;
+
+  /// Action that archives a category, hiding it from the capture picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get settingsCategoryArchiveCta;
+
+  /// Action that unarchives a category, restoring it to the capture picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Unarchive'**
+  String get settingsCategoryUnarchiveCta;
+
+  /// Label marking an archived category in the management list.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get settingsCategoryArchivedLabel;
+
+  /// Label for the currency preference control in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get settingsCurrencyLabel;
+
+  /// Label for the time-zone preference control in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get settingsTimeZoneLabel;
 }
 
 class _AppLocalizationsDelegate

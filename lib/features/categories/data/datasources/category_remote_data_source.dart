@@ -105,4 +105,113 @@ class CategoryRemoteDataSource {
       'lastUsedAt': FieldValue.serverTimestamp(),
     });
   }
+
+  /// Every category, active and archived, ordered by `sortOrder` — the
+  /// Settings management screen's view. Unlike [getActive]/[watchActive],
+  /// this is not the composite-indexed capture-path query, since it has no
+  /// `isActive` filter to match an index against.
+  Future<List<Category>> getAll(String userId) async {
+    final snapshot = await _categoriesRef(userId).get();
+    return _toSortOrderedEntities(snapshot.docs);
+  }
+
+  /// Live query, same ordering as [getAll].
+  Stream<List<Category>> watchAll(String userId) {
+    return _categoriesRef(
+      userId,
+    ).snapshots().map((s) => _toSortOrderedEntities(s.docs));
+  }
+
+  List<Category> _toSortOrderedEntities(
+    List<QueryDocumentSnapshot<Map<String, Object?>>> docs,
+  ) {
+    final categories = docs
+        .map((doc) => CategoryModel.fromJson(doc.id, doc.data()).toEntity())
+        .toList();
+    return categories..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+  }
+
+  /// Creates a new user category, appended after the current highest
+  /// `sortOrder`. Always `nameKey: null` — this path never creates a
+  /// default/translated category.
+  Future<Category> create(
+    String userId, {
+    required String name,
+    required String color,
+    required String iconName,
+  }) async {
+    final existing = await getAll(userId);
+    final nextSortOrder = existing.isEmpty
+        ? 1
+        : existing.map((c) => c.sortOrder).reduce((a, b) => a > b ? a : b) + 1;
+
+    final docRef = _categoriesRef(userId).doc();
+    final category = Category(
+      id: docRef.id,
+      name: name,
+      color: color,
+      iconName: iconName,
+      isDefault: false,
+      sortOrder: nextSortOrder,
+      isActive: true,
+      usageCount: 0,
+    );
+    await docRef.set(CategoryModel.fromEntity(category).toJson());
+    return category;
+  }
+
+  /// Updates [categoryId]. If it is currently a default category
+  /// (`isDefault: true`) and [name] is given, this is the
+  /// rename-becomes-user-category conversion `docs/DATA_MODEL.md` already
+  /// documents: clears `nameKey`, sets `name`, flips `isDefault` to
+  /// `false` — one write, not two.
+  Future<void> update(
+    String userId,
+    String categoryId, {
+    String? name,
+    String? color,
+    String? iconName,
+  }) async {
+    final ref = _categoriesRef(userId).doc(categoryId);
+    final updates = <String, Object?>{};
+
+    if (name != null) {
+      final snapshot = await ref.get();
+      final isDefault = snapshot.data()?['isDefault'] as bool? ?? false;
+      if (isDefault) {
+        updates['nameKey'] = null;
+        updates['isDefault'] = false;
+      }
+      updates['name'] = name;
+    }
+    if (color != null) updates['color'] = color;
+    if (iconName != null) updates['iconName'] = iconName;
+
+    if (updates.isEmpty) return;
+    await ref.update(updates);
+  }
+
+  /// Rewrites `sortOrder` for every category in [orderedIds], `1`-based, to
+  /// match the given order.
+  Future<void> reorder(String userId, List<String> orderedIds) async {
+    final batch = _firestore.batch();
+    for (var i = 0; i < orderedIds.length; i++) {
+      batch.update(_categoriesRef(userId).doc(orderedIds[i]), {
+        'sortOrder': i + 1,
+      });
+    }
+    await batch.commit();
+  }
+
+  /// Archives (`isActive: false`) or unarchives (`isActive: true`)
+  /// [categoryId]. Never touches any `expenses` document.
+  Future<void> setActive(
+    String userId,
+    String categoryId, {
+    required bool isActive,
+  }) {
+    return _categoriesRef(
+      userId,
+    ).doc(categoryId).update({'isActive': isActive});
+  }
 }

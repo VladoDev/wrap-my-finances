@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:wrap_my_finances/core/design_system/theme/design_tokens.dart';
 
@@ -42,7 +40,7 @@ class _WrappedProgressBarState extends State<WrappedProgressBar>
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
-    if (!widget.isPaused) unawaited(_controller.forward());
+    if (!widget.isPaused) _controller.forward();
   }
 
   @override
@@ -50,12 +48,12 @@ class _WrappedProgressBarState extends State<WrappedProgressBar>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.activeIndex != widget.activeIndex) {
       _controller.duration = widget.duration;
-      unawaited(_controller.forward(from: 0));
+      _controller.forward(from: 0);
     } else if (widget.isPaused != oldWidget.isPaused) {
       if (widget.isPaused) {
         _controller.stop();
       } else {
-        unawaited(_controller.forward());
+        _controller.forward();
       }
     }
   }

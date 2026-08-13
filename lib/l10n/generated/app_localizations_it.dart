@@ -127,4 +127,91 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get wrappedMonthPickerTitle => 'Scegli un mese';
+
+  @override
+  String get settingsTitle => 'Impostazioni';
+
+  @override
+  String get settingsAccountSection => 'Account';
+
+  @override
+  String get settingsCategoriesSection => 'Categorie';
+
+  @override
+  String get settingsPreferencesSection => 'Preferenze';
+
+  @override
+  String get settingsLinkAccountCta => 'Collega un account';
+
+  @override
+  String settingsLinkedAsLabel(String provider) {
+    return 'Collegato con $provider';
+  }
+
+  @override
+  String get settingsLinkGoogleOption => 'Continua con Google';
+
+  @override
+  String get settingsLinkAppleOption => 'Continua con Apple';
+
+  @override
+  String get settingsLinkUnavailableOfflineMessage =>
+      'Impossibile collegare ora — sei offline';
+
+  @override
+  String get settingsLinkConflictTitle => 'Questo account ha già dei dati';
+
+  @override
+  String get settingsLinkConflictBody =>
+      'L\'account scelto ha già una propria cronologia. Decidi cosa fare con ciascun insieme di dati.';
+
+  @override
+  String get settingsLinkConflictMergeOption => 'Unisci entrambe le cronologie';
+
+  @override
+  String get settingsLinkConflictDiscardOption =>
+      'Mantieni solo la cronologia di questo account';
+
+  @override
+  String get settingsLinkConflictDiscardConfirmTitle =>
+      'Eliminare i dati di questo dispositivo?';
+
+  @override
+  String get settingsLinkConflictDiscardConfirmBody =>
+      'Tutto ciò che è stato registrato su questo dispositivo verrà eliminato definitivamente. La cronologia già presente in questo account verrà mantenuta.';
+
+  @override
+  String get settingsDeleteAccountCta => 'Elimina account';
+
+  @override
+  String get settingsDeleteAccountConfirmTitle => 'Eliminare il tuo account?';
+
+  @override
+  String get settingsDeleteAccountConfirmBody =>
+      'Questo elimina definitivamente il tuo account e tutto ciò che hai registrato. Non può essere annullato.';
+
+  @override
+  String get settingsDeleteAccountReauthMessage =>
+      'Accedi di nuovo per confermare che sei tu';
+
+  @override
+  String get settingsCategoryCreateCta => 'Nuova categoria';
+
+  @override
+  String get settingsCategoryEditorNameLabel => 'Nome';
+
+  @override
+  String get settingsCategoryArchiveCta => 'Archivia';
+
+  @override
+  String get settingsCategoryUnarchiveCta => 'Ripristina';
+
+  @override
+  String get settingsCategoryArchivedLabel => 'Archiviata';
+
+  @override
+  String get settingsCurrencyLabel => 'Valuta';
+
+  @override
+  String get settingsTimeZoneLabel => 'Fuso orario';
 }

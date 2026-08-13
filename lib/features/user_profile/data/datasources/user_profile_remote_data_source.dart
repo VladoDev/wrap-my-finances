@@ -59,4 +59,17 @@ class UserProfileRemoteDataSource {
   Future<void> markWrappedSeen(String userId, String monthKey) {
     return _userDocRef(userId).update({'wrappedLastSeenMonth': monthKey});
   }
+
+  /// Sets `currencyCode` to [currencyCode] — a single-field update. Never
+  /// touches any expense document; affects only what future expenses are
+  /// written with (`docs/DATA_MODEL.md`, amended by `007`).
+  Future<void> updateCurrencyCode(String userId, String currencyCode) {
+    return _userDocRef(userId).update({'currencyCode': currencyCode});
+  }
+
+  /// Sets `timeZone` to [timeZone] — a single-field update. Never
+  /// recalculates `monthKey` on any existing expense (`docs/DATA_MODEL.md`).
+  Future<void> updateTimeZone(String userId, String timeZone) {
+    return _userDocRef(userId).update({'timeZone': timeZone});
+  }
 }

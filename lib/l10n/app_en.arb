@@ -164,5 +164,115 @@
   "wrappedMonthPickerTitle": "Choose a month",
   "@wrappedMonthPickerTitle": {
     "description": "Heading of the bottom sheet listing past months with data, for manual Wrapped access."
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Title of the Settings screen and its navigation-bar destination."
+  },
+  "settingsAccountSection": "Account",
+  "@settingsAccountSection": {
+    "description": "Heading of the account section in Settings (linking, deletion)."
+  },
+  "settingsCategoriesSection": "Categories",
+  "@settingsCategoriesSection": {
+    "description": "Heading of the category management section in Settings."
+  },
+  "settingsPreferencesSection": "Preferences",
+  "@settingsPreferencesSection": {
+    "description": "Heading of the currency/time-zone preferences section in Settings."
+  },
+  "settingsLinkAccountCta": "Link an account",
+  "@settingsLinkAccountCta": {
+    "description": "Call-to-action shown in Settings when the current session has not linked a Google or Apple account."
+  },
+  "settingsLinkedAsLabel": "Linked via {provider}",
+  "@settingsLinkedAsLabel": {
+    "description": "Status shown in Settings once an account is linked, naming the provider.",
+    "placeholders": {
+      "provider": {
+        "type": "String",
+        "example": "Google"
+      }
+    }
+  },
+  "settingsLinkGoogleOption": "Continue with Google",
+  "@settingsLinkGoogleOption": {
+    "description": "Option to link the current session to a Google account."
+  },
+  "settingsLinkAppleOption": "Continue with Apple",
+  "@settingsLinkAppleOption": {
+    "description": "Option to link the current session to an Apple account."
+  },
+  "settingsLinkUnavailableOfflineMessage": "Can't link right now — you're offline",
+  "@settingsLinkUnavailableOfflineMessage": {
+    "description": "Shown when linking an account fails because the device has no network connection."
+  },
+  "settingsLinkConflictTitle": "This account already has data",
+  "@settingsLinkConflictTitle": {
+    "description": "Title of the screen shown when the account being linked already has its own history."
+  },
+  "settingsLinkConflictBody": "The account you chose already has its own history. Decide what happens with each set of data.",
+  "@settingsLinkConflictBody": {
+    "description": "Body text explaining the link conflict and that a decision is required."
+  },
+  "settingsLinkConflictMergeOption": "Combine both histories",
+  "@settingsLinkConflictMergeOption": {
+    "description": "Option to merge the current device's anonymous history into the existing account's history."
+  },
+  "settingsLinkConflictDiscardOption": "Keep only this account's history",
+  "@settingsLinkConflictDiscardOption": {
+    "description": "Option to discard the current device's anonymous history and keep only the existing account's."
+  },
+  "settingsLinkConflictDiscardConfirmTitle": "Discard this device's data?",
+  "@settingsLinkConflictDiscardConfirmTitle": {
+    "description": "Title of the explicit confirmation required before discarding the current device's history."
+  },
+  "settingsLinkConflictDiscardConfirmBody": "Everything logged on this device will be permanently deleted. This account's existing history will be kept.",
+  "@settingsLinkConflictDiscardConfirmBody": {
+    "description": "Body text naming exactly what will be discarded, before the discard is confirmed."
+  },
+  "settingsDeleteAccountCta": "Delete account",
+  "@settingsDeleteAccountCta": {
+    "description": "Call-to-action in Settings that starts the account-deletion flow."
+  },
+  "settingsDeleteAccountConfirmTitle": "Delete your account?",
+  "@settingsDeleteAccountConfirmTitle": {
+    "description": "Title of the explicit confirmation required before deleting the account."
+  },
+  "settingsDeleteAccountConfirmBody": "This permanently deletes your account and everything you've logged. This can't be undone.",
+  "@settingsDeleteAccountConfirmBody": {
+    "description": "Body text warning that account deletion is permanent, before it is confirmed."
+  },
+  "settingsDeleteAccountReauthMessage": "Please sign in again to confirm it's really you",
+  "@settingsDeleteAccountReauthMessage": {
+    "description": "Shown when deleting the account requires a fresh sign-in before it can proceed."
+  },
+  "settingsCategoryCreateCta": "New category",
+  "@settingsCategoryCreateCta": {
+    "description": "Call-to-action that opens the category editor to create a new category."
+  },
+  "settingsCategoryEditorNameLabel": "Name",
+  "@settingsCategoryEditorNameLabel": {
+    "description": "Label for the category name field in the category editor."
+  },
+  "settingsCategoryArchiveCta": "Archive",
+  "@settingsCategoryArchiveCta": {
+    "description": "Action that archives a category, hiding it from the capture picker."
+  },
+  "settingsCategoryUnarchiveCta": "Unarchive",
+  "@settingsCategoryUnarchiveCta": {
+    "description": "Action that unarchives a category, restoring it to the capture picker."
+  },
+  "settingsCategoryArchivedLabel": "Archived",
+  "@settingsCategoryArchivedLabel": {
+    "description": "Label marking an archived category in the management list."
+  },
+  "settingsCurrencyLabel": "Currency",
+  "@settingsCurrencyLabel": {
+    "description": "Label for the currency preference control in Settings."
+  },
+  "settingsTimeZoneLabel": "Time zone",
+  "@settingsTimeZoneLabel": {
+    "description": "Label for the time-zone preference control in Settings."
   }
 }

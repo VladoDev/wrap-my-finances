@@ -128,4 +128,91 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get wrappedMonthPickerTitle => 'Elige un mes';
+
+  @override
+  String get settingsTitle => 'Ajustes';
+
+  @override
+  String get settingsAccountSection => 'Cuenta';
+
+  @override
+  String get settingsCategoriesSection => 'Categorías';
+
+  @override
+  String get settingsPreferencesSection => 'Preferencias';
+
+  @override
+  String get settingsLinkAccountCta => 'Vincular una cuenta';
+
+  @override
+  String settingsLinkedAsLabel(String provider) {
+    return 'Vinculada con $provider';
+  }
+
+  @override
+  String get settingsLinkGoogleOption => 'Continuar con Google';
+
+  @override
+  String get settingsLinkAppleOption => 'Continuar con Apple';
+
+  @override
+  String get settingsLinkUnavailableOfflineMessage =>
+      'No se puede vincular ahora — estás sin conexión';
+
+  @override
+  String get settingsLinkConflictTitle => 'Esta cuenta ya tiene datos';
+
+  @override
+  String get settingsLinkConflictBody =>
+      'La cuenta que elegiste ya tiene su propio historial. Decide qué hacer con cada conjunto de datos.';
+
+  @override
+  String get settingsLinkConflictMergeOption => 'Combinar ambos historiales';
+
+  @override
+  String get settingsLinkConflictDiscardOption =>
+      'Conservar solo el historial de esta cuenta';
+
+  @override
+  String get settingsLinkConflictDiscardConfirmTitle =>
+      '¿Descartar los datos de este dispositivo?';
+
+  @override
+  String get settingsLinkConflictDiscardConfirmBody =>
+      'Todo lo registrado en este dispositivo se eliminará de forma permanente. Se conservará el historial que ya tiene esta cuenta.';
+
+  @override
+  String get settingsDeleteAccountCta => 'Eliminar cuenta';
+
+  @override
+  String get settingsDeleteAccountConfirmTitle => '¿Eliminar tu cuenta?';
+
+  @override
+  String get settingsDeleteAccountConfirmBody =>
+      'Esto elimina tu cuenta y todo lo que has registrado de forma permanente. No se puede deshacer.';
+
+  @override
+  String get settingsDeleteAccountReauthMessage =>
+      'Vuelve a iniciar sesión para confirmar que eres tú';
+
+  @override
+  String get settingsCategoryCreateCta => 'Nueva categoría';
+
+  @override
+  String get settingsCategoryEditorNameLabel => 'Nombre';
+
+  @override
+  String get settingsCategoryArchiveCta => 'Archivar';
+
+  @override
+  String get settingsCategoryUnarchiveCta => 'Desarchivar';
+
+  @override
+  String get settingsCategoryArchivedLabel => 'Archivada';
+
+  @override
+  String get settingsCurrencyLabel => 'Moneda';
+
+  @override
+  String get settingsTimeZoneLabel => 'Zona horaria';
 }
