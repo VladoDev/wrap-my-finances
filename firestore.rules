@@ -44,6 +44,9 @@ service cloud.firestore {
         && incoming().uid is string
         && incoming().timeZone is string
         && incoming().timeZone.size() > 0
+        && (!('currencyCode' in incoming())
+            || incoming().currencyCode == null
+            || (incoming().currencyCode is string && incoming().currencyCode.size() == 3))
         && (!('wrappedLastSeenMonth' in incoming())
             || incoming().wrappedLastSeenMonth == null
             || (incoming().wrappedLastSeenMonth is string
@@ -74,12 +77,12 @@ service cloud.firestore {
       allow update: if isOwner(userId)
                     && incoming().uid == resource.data.uid
                     && isValidUserProfile();
-      allow delete: if false;
+      allow delete: if isOwner(userId);
 
       match /categories/{categoryId} {
         allow read:   if isOwner(userId);
         allow create, update: if isOwner(userId) && isValidCategory();
-        allow delete: if false;
+        allow delete: if isOwner(userId);
       }
 
       match /expenses/{expenseId} {

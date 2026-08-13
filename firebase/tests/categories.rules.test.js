@@ -6,7 +6,7 @@ const {
   assertSucceeds,
   assertFails,
 } = require('@firebase/rules-unit-testing');
-const { doc, setDoc, getDoc } = require('firebase/firestore');
+const { doc, setDoc, getDoc, deleteDoc } = require('firebase/firestore');
 
 const RULES_PATH = path.resolve(__dirname, '../../firestore.rules');
 
@@ -125,7 +125,11 @@ describe('categories security rules', () => {
     );
   });
 
-  it('delete is always denied', async () => {
+  // Owner delete — added by 007 (specs/007-account-linking-integrity), so
+  // AuthRepository.deleteAccount() can remove every category document
+  // client-side. See contracts/security-rules-delta.md.
+
+  it('owner can delete their own category', async () => {
     const alice = testEnv.authenticatedContext('alice');
     await assertSucceeds(
       setDoc(
@@ -133,10 +137,21 @@ describe('categories security rules', () => {
         validDefaultCategory,
       ),
     );
+    await assertSucceeds(
+      deleteDoc(doc(alice.firestore(), 'users/alice/categories/cat_food')),
+    );
+  });
+
+  it('a different user cannot delete alice\'s category', async () => {
+    await testEnv.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(
+        doc(ctx.firestore(), 'users/alice/categories/cat_food'),
+        validDefaultCategory,
+      );
+    });
+    const bob = testEnv.authenticatedContext('bob');
     await assertFails(
-      require('firebase/firestore').deleteDoc(
-        doc(alice.firestore(), 'users/alice/categories/cat_food'),
-      ),
+      deleteDoc(doc(bob.firestore(), 'users/alice/categories/cat_food')),
     );
   });
 });

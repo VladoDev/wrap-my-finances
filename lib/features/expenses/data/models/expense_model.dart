@@ -3,6 +3,12 @@ import 'package:wrap_my_finances/features/expenses/data/device_locale_defaults.d
 import 'package:wrap_my_finances/features/expenses/domain/entities/expense.dart';
 import 'package:wrap_my_finances/features/expenses/domain/entities/money.dart';
 
+// device_locale_defaults.dart is still used for monthKeyFor below —
+// currencyCode resolution moved to the caller (007 US8): the draft's own
+// Expense.amount.currencyCode is now the real, already-resolved value
+// (ExpenseCaptureController reads currentCurrencyCodeProvider at submit
+// time), not the 'XXX' placeholder this factory used to override.
+
 /// Firestore document shape for an expense, per `docs/DATA_MODEL.md`. Adds
 /// the infrastructure-only fields (`monthKey`, `syncedAt`, `deletedAt`,
 /// `schemaVersion`) the domain `Expense` entity deliberately doesn't carry.
@@ -19,16 +25,15 @@ class ExpenseModel {
     required this.createdAt,
   });
 
-  /// Builds the write payload for a new [expense]. `currencyCode`/`monthKey`
-  /// are derived from the device's current locale — see
-  /// `device_locale_defaults.dart`.
+  /// Builds the write payload for a new [expense]. `currencyCode` is
+  /// [expense]'s own, already-resolved `amount.currencyCode` — the caller's
+  /// job, not this factory's (007 US8). `monthKey` is still derived from
+  /// the device's current locale/timezone — see `device_locale_defaults.dart`.
   factory ExpenseModel.fromEntity(Expense expense) {
     return ExpenseModel(
       id: expense.id,
       amountMinor: expense.amount.minorUnits,
-      currencyCode: DeviceLocaleDefaults.currencyCodeFor(
-        DeviceLocaleDefaults.currentLanguageCode(),
-      ),
+      currencyCode: expense.amount.currencyCode,
       categoryId: expense.categoryId,
       date: expense.date,
       monthKey: DeviceLocaleDefaults.monthKeyFor(expense.date),

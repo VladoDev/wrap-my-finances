@@ -23,6 +23,11 @@ Future<GoRouter> _pump(WidgetTester tester) async {
             builder: (context, state) =>
                 const Scaffold(body: Center(child: Text('history'))),
           ),
+          GoRoute(
+            path: '/settings',
+            builder: (context, state) =>
+                const Scaffold(body: Center(child: Text('settings'))),
+          ),
         ],
       ),
     ],
@@ -41,13 +46,26 @@ Future<GoRouter> _pump(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('renders both nav destinations with semantic labels', (
+  testWidgets('renders all three nav destinations with semantic labels', (
     tester,
   ) async {
     await _pump(tester);
 
     expect(find.bySemanticsLabel('Log expense'), findsOneWidget);
     expect(find.bySemanticsLabel('History'), findsOneWidget);
+    expect(find.bySemanticsLabel('Settings'), findsOneWidget);
+  });
+
+  testWidgets('tapping the settings destination navigates to /settings', (
+    tester,
+  ) async {
+    await _pump(tester);
+    expect(find.text('capture'), findsOneWidget);
+
+    await tester.tap(find.bySemanticsLabel('Settings'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('settings'), findsOneWidget);
   });
 
   testWidgets('tapping the history destination navigates to /history', (

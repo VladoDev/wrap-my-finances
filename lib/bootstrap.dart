@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show appFlavor;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wrap_my_finances/app.dart';
+import 'package:wrap_my_finances/core/config/app_check_provider_selection.dart';
 import 'package:wrap_my_finances/core/config/app_environment.dart';
 import 'package:wrap_my_finances/core/config/flavor_guard.dart';
 import 'package:wrap_my_finances/core/di/injection.dart';
@@ -41,6 +43,20 @@ Future<void> bootstrap(
   }
 
   await Firebase.initializeApp(options: options);
+
+  // Fire-and-forget, started as early as possible: never awaited before
+  // runApp() (research.md #9/#4) — Firestore's own offline-queue-and-retry
+  // behavior cushions any write that happens to race ahead of the first
+  // token attaching. Enforcement itself is a separate Firebase
+  // Console/CLI toggle, not expressible here at all — see quickstart.md's
+  // manual provisioning steps.
+  final providers = appCheckProvidersFor(env);
+  unawaited(
+    FirebaseAppCheck.instance.activate(
+      providerAndroid: providers.android,
+      providerApple: providers.apple,
+    ),
+  );
 
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,

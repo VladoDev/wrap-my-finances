@@ -151,4 +151,66 @@ void main() {
       expect(find.text('5.00'), findsOneWidget);
     },
   );
+
+  testWidgets(
+    'a historical expense referencing an archived category still resolves '
+    'and renders it normally (007 US7)',
+    (tester) async {
+      final firestore = FakeFirebaseFirestore();
+      final auth = MockFirebaseAuth(signedIn: true);
+      final uid = auth.currentUser!.uid;
+      final expenseRepository = ExpenseRepositoryImpl(
+        ExpenseRemoteDataSource(firestore),
+        auth,
+      );
+      final categoryRepository = CategoryRepositoryImpl(
+        CategoryRemoteDataSource(firestore),
+        auth,
+      );
+      await categoryRepository.seedDefaultsIfNeeded();
+      final all = (await categoryRepository.getAll()).when(
+        success: (value) => value,
+        failed: (failure) => throw StateError('setup failed: $failure'),
+      );
+      final food = all.firstWhere((c) => c.nameKey == 'category_food');
+      await categoryRepository.setActive(food.id, isActive: false);
+
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('expenses')
+          .doc('a')
+          .set(
+            ExpenseModel.fromEntity(
+              Expense(
+                id: 'a',
+                amount: const Money(minorUnits: 500, currencyCode: 'MXN'),
+                categoryId: food.id,
+                date: DateTime(2026, 8, 10, 9),
+                createdAt: DateTime(2026, 8, 10, 9),
+              ),
+            ).toJson(),
+          );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            expenseRepositoryProvider.overrideWithValue(expenseRepository),
+            categoryRepositoryProvider.overrideWithValue(categoryRepository),
+          ],
+          child: MaterialApp(
+            theme: AppTheme.light,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const ExpenseHistoryPage(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Resolved by name/icon, not the raw categoryId fallback.
+      expect(find.text('Food'), findsOneWidget);
+      expect(find.text(food.id), findsNothing);
+    },
+  );
 }

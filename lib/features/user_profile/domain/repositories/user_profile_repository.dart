@@ -21,4 +21,14 @@ abstract class UserProfileRepository {
   /// — never merely from evaluating the trigger. See
   /// `specs/006-monthly-wrapped-summary/data-model.md` §4.
   Future<Result<void>> markWrappedSeen(String monthKey);
+
+  /// Sets the user's `currencyCode` preference. Affects only expenses
+  /// logged after this call — never rewrites a past expense's stored
+  /// amount or currency (`docs/DATA_MODEL.md`, amended by `007`).
+  Future<Result<void>> updateCurrencyCode(String currencyCode);
+
+  /// Sets the user's `timeZone` preference. Affects only how future
+  /// expenses compute `monthKey` — never re-evaluates or reassigns the
+  /// `monthKey` already stored on existing documents (`docs/DATA_MODEL.md`).
+  Future<Result<void>> updateTimeZone(String timeZone);
 }

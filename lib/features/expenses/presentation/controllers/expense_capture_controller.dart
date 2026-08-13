@@ -6,6 +6,7 @@ import 'package:wrap_my_finances/features/expenses/domain/entities/expense.dart'
 import 'package:wrap_my_finances/features/expenses/domain/entities/money.dart';
 import 'package:wrap_my_finances/features/expenses/domain/usecases/log_expense.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/controllers/amount_input_state.dart';
+import 'package:wrap_my_finances/features/expenses/presentation/current_currency_code_provider.dart';
 
 /// The capture screen's two steps.
 enum CaptureStep {
@@ -15,14 +16,6 @@ enum CaptureStep {
   /// Choosing a category.
   category,
 }
-
-/// Placeholder passed to [LogExpense] — `ExpenseModel.fromEntity` (data
-/// layer) recomputes the real currency code from the device locale and
-/// never reads this value, the same way the repository discards the
-/// placeholder `id`. Presentation must not import `data/` to compute the
-/// real one itself (Constitution Principle 4), so this documents the
-/// placeholder rather than leaving it a bare magic string.
-const _placeholderCurrencyCode = 'XXX';
 
 /// Screen state: which step is active, the amount typed so far, whether a
 /// submission is in flight, and the last local-write failure (if any, per
@@ -85,17 +78,25 @@ class ExpenseCaptureState {
 /// well as its own provider.
 class ExpenseCaptureController extends StateNotifier<ExpenseCaptureState> {
   /// Creates the controller for [locale], using [_logExpense] to persist.
+  /// [_currencyCodeOf] is a live getter, not a snapshot — read fresh on
+  /// every [submit], so a currency preference change (US8) takes effect
+  /// immediately without needing this controller to be rebuilt.
   ExpenseCaptureController({
     required LogExpense logExpense,
     required String locale,
+    required String Function() currencyCodeOf,
   })
     // The public param name stays `logExpense` for call-site clarity; only
     // the field itself is private.
     // ignore: prefer_initializing_formals
     : _logExpense = logExpense,
+       // Same reasoning as _logExpense above.
+       // ignore: prefer_initializing_formals
+       _currencyCodeOf = currencyCodeOf,
        super(ExpenseCaptureState.initial(locale));
 
   final LogExpense _logExpense;
+  final String Function() _currencyCodeOf;
 
   /// Appends [digit] to the amount.
   void appendDigit(String digit) {
@@ -132,7 +133,7 @@ class ExpenseCaptureController extends StateNotifier<ExpenseCaptureState> {
       id: '',
       amount: Money(
         minorUnits: state.amount.minorUnits,
-        currencyCode: _placeholderCurrencyCode,
+        currencyCode: _currencyCodeOf(),
       ),
       categoryId: categoryId,
       date: now,
@@ -159,5 +160,6 @@ final expenseCaptureControllerProvider =
       return ExpenseCaptureController(
         logExpense: ref.watch(logExpenseProvider),
         locale: ref.watch(deviceLanguageCodeProvider),
+        currencyCodeOf: () => ref.read(currentCurrencyCodeProvider),
       );
     });

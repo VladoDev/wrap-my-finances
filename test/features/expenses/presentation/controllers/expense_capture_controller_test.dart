@@ -30,6 +30,7 @@ void main() {
     controller = ExpenseCaptureController(
       logExpense: logExpense,
       locale: 'en',
+      currencyCodeOf: () => 'USD',
     );
   });
 
@@ -98,5 +99,60 @@ void main() {
       expect(controller.state.lastError, isNull);
       expect(controller.state.step, CaptureStep.amount);
     });
+  });
+
+  group('currency preference (007 US8)', () {
+    test(
+      'submit uses whatever currencyCodeOf() currently returns, read fresh '
+      'each time — not a snapshot taken at construction',
+      () async {
+        var code = 'USD';
+        final flexibleController = ExpenseCaptureController(
+          logExpense: logExpense,
+          locale: 'en',
+          currencyCodeOf: () => code,
+        );
+        when(() => logExpense.call(any())).thenAnswer(
+          (_) async => Success(
+            Expense(
+              id: 'exp_1',
+              amount: const Money(minorUnits: 500, currencyCode: 'USD'),
+              categoryId: 'cat_food',
+              date: DateTime(2026),
+              createdAt: DateTime(2026),
+            ),
+          ),
+        );
+
+        flexibleController
+          ..appendDigit('5')
+          ..advanceToCategory();
+        await flexibleController.submit('cat_food');
+
+        final firstDraft =
+            verify(
+                  () => logExpense.call(captureAny()),
+                ).captured.single
+                as Expense;
+        expect(firstDraft.amount.currencyCode, 'USD');
+
+        // Preference changes — e.g. edited in Settings mid-session — before
+        // the next expense is logged.
+        code = 'EUR';
+        flexibleController
+          ..appendDigit('7')
+          ..advanceToCategory();
+        await flexibleController.submit('cat_food');
+
+        // The second call's captured argument is the *new* draft only —
+        // LogExpense.call is a one-shot create, never a read or update, so
+        // the first (already-submitted) draft is structurally never
+        // touched again by this path.
+        final secondDraft =
+            verify(() => logExpense.call(captureAny())).captured.last
+                as Expense;
+        expect(secondDraft.amount.currencyCode, 'EUR');
+      },
+    );
   });
 }

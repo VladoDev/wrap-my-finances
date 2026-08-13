@@ -60,4 +60,24 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
       return Failed(UnknownFailure(error, stackTrace));
     }
   }
+
+  @override
+  Future<Result<void>> updateCurrencyCode(String currencyCode) async {
+    try {
+      await _remoteDataSource.updateCurrencyCode(_currentUserId, currencyCode);
+      return const Success(null);
+    } on Object catch (error, stackTrace) {
+      return Failed(UnknownFailure(error, stackTrace));
+    }
+  }
+
+  @override
+  Future<Result<void>> updateTimeZone(String timeZone) async {
+    try {
+      await _remoteDataSource.updateTimeZone(_currentUserId, timeZone);
+      return const Success(null);
+    } on Object catch (error, stackTrace) {
+      return Failed(UnknownFailure(error, stackTrace));
+    }
+  }
 }

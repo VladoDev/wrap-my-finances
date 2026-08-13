@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wrap_my_finances/core/design_system/theme/design_tokens.dart';
 import 'package:wrap_my_finances/core/design_system/widgets/app_button.dart';
 import 'package:wrap_my_finances/features/categories/domain/entities/category.dart';
-import 'package:wrap_my_finances/features/categories/presentation/active_categories_provider.dart';
+import 'package:wrap_my_finances/features/categories/presentation/all_categories_provider.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/controllers/expense_history_controller.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/widgets/history_day_header.dart';
 import 'package:wrap_my_finances/features/expenses/presentation/widgets/history_empty_state.dart';
@@ -25,8 +25,7 @@ class ExpenseHistoryPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(expenseHistoryControllerProvider);
     final controller = ref.read(expenseHistoryControllerProvider.notifier);
-    final categories =
-        ref.watch(activeCategoriesProvider).valueOrNull ?? const [];
+    final categories = ref.watch(allCategoriesProvider).valueOrNull ?? const [];
     final categoryById = <String, Category>{
       for (final category in categories) category.id: category,
     };

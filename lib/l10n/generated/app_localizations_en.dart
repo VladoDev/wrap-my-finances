@@ -127,4 +127,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wrappedMonthPickerTitle => 'Choose a month';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsAccountSection => 'Account';
+
+  @override
+  String get settingsCategoriesSection => 'Categories';
+
+  @override
+  String get settingsPreferencesSection => 'Preferences';
+
+  @override
+  String get settingsLinkAccountCta => 'Link an account';
+
+  @override
+  String settingsLinkedAsLabel(String provider) {
+    return 'Linked via $provider';
+  }
+
+  @override
+  String get settingsLinkGoogleOption => 'Continue with Google';
+
+  @override
+  String get settingsLinkAppleOption => 'Continue with Apple';
+
+  @override
+  String get settingsLinkUnavailableOfflineMessage =>
+      'Can\'t link right now — you\'re offline';
+
+  @override
+  String get settingsLinkConflictTitle => 'This account already has data';
+
+  @override
+  String get settingsLinkConflictBody =>
+      'The account you chose already has its own history. Decide what happens with each set of data.';
+
+  @override
+  String get settingsLinkConflictMergeOption => 'Combine both histories';
+
+  @override
+  String get settingsLinkConflictDiscardOption =>
+      'Keep only this account\'s history';
+
+  @override
+  String get settingsLinkConflictDiscardConfirmTitle =>
+      'Discard this device\'s data?';
+
+  @override
+  String get settingsLinkConflictDiscardConfirmBody =>
+      'Everything logged on this device will be permanently deleted. This account\'s existing history will be kept.';
+
+  @override
+  String get settingsDeleteAccountCta => 'Delete account';
+
+  @override
+  String get settingsDeleteAccountConfirmTitle => 'Delete your account?';
+
+  @override
+  String get settingsDeleteAccountConfirmBody =>
+      'This permanently deletes your account and everything you\'ve logged. This can\'t be undone.';
+
+  @override
+  String get settingsDeleteAccountReauthMessage =>
+      'Please sign in again to confirm it\'s really you';
+
+  @override
+  String get settingsCategoryCreateCta => 'New category';
+
+  @override
+  String get settingsCategoryEditorNameLabel => 'Name';
+
+  @override
+  String get settingsCategoryArchiveCta => 'Archive';
+
+  @override
+  String get settingsCategoryUnarchiveCta => 'Unarchive';
+
+  @override
+  String get settingsCategoryArchivedLabel => 'Archived';
+
+  @override
+  String get settingsCurrencyLabel => 'Currency';
+
+  @override
+  String get settingsTimeZoneLabel => 'Time zone';
 }
